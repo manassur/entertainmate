@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "799389121233",
+    "project_id": "entertainmate-9af32",
+    "storage_bucket": "entertainmate-9af32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799389121233:android:f553d6aff20ebede9723f0",
+        "android_client_info": {
+          "package_name": "com.app.entertainmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799389121233-5h38m4vrhkvt45rmr2t8d6b1lfavs8pj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8H-oL38k3Is17d3gFchV15QQGMNVzkkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799389121233-5h38m4vrhkvt45rmr2t8d6b1lfavs8pj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
