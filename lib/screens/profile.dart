@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile"),),
+      appBar: AppBar(title: Text("Profile", style: TextStyle(color: Colors.grey),),elevation: 0,backgroundColor: Colors.white,),
       body: Container(
         child: Column(
           children: [
@@ -22,22 +23,9 @@ class _ProfileState extends State<Profile> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
-
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 8.0,
-                      offset: Offset(0.0, 5.0),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Center(
-                    child: Container(
-                      child: Icon(Icons.person),
-                    ),
-                  ),
+                  image: new DecorationImage(
+                    image: AssetImage('images/sara.jpg'),
+                  )
                 ),
               ),
             ),
@@ -61,8 +49,10 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.fromLTRB(30.0,10.0,10.0,0),
                   child: Column(
                     children: [
-                      Text('1'),
-                      Text('Followers'),
+                      Text('1',style: TextStyle(
+                          fontWeight: FontWeight.w700),),
+                      Text('Followers', style: TextStyle(
+                          fontWeight: FontWeight.w700),),
                     ],
                   ),
                 ),
@@ -70,27 +60,28 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.fromLTRB(30.0,10.0,10.0,0),
                   child: Column(
                     children: [
-                      Text('1'),
-                      Text('Following'),
+                      Text('1',style: TextStyle(
+                          fontWeight: FontWeight.w700),),
+                      Text('Following',style: TextStyle(
+                          fontWeight: FontWeight.w700),),
                     ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30.0,10.0,10.0,0),
                   child: RaisedButton(
-                    child: Text('Invite Friends'),
-                    textColor: Colors.white,
+                    child: Text('Invite Friends',style: TextStyle(color: Colors.white),),
                     color: Colors.grey,
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(3),
-                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        ),
                   ),
                 ),
               ],
             ),
               Divider(),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 15),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 15),
               height: 250,
               width: double.maxFinite,
               child: Padding(
@@ -109,12 +100,12 @@ class _ProfileState extends State<Profile> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Image.asset('images/download.png'),
-                          Icon(Icons.keyboard_backspace),
-                          Icon(Icons.keyboard_backspace),
-                          Icon(Icons.keyboard_backspace),
-                          Icon(Icons.keyboard_backspace),
-                          Icon(Icons.keyboard_backspace),
+                          SvgPicture.asset('images/005-instagram.svg', height: 20, width: 15, color: Colors.grey,),
+                          SvgPicture.asset('images/004-twitter.svg', height: 20, width: 15, color: Colors.grey,),
+                          SvgPicture.asset('images/003-facebook.svg', height: 20, width: 15, color: Colors.grey,),
+                          SvgPicture.asset('images/002-linkedin-logo.svg', height: 20, width: 15, color: Colors.grey,),
+                          SvgPicture.asset('images/001-email.svg', height: 20, width: 15, color: Colors.grey,),
+
 
                         ],
                       ),
@@ -125,27 +116,36 @@ class _ProfileState extends State<Profile> {
             ),
             Divider(),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30.0,0.0,20.0,0.0),
+            Container(
+              margin: EdgeInsets.all(10),
+              height: 40.0,
+              width: double.infinity,
               child: RaisedButton(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Center(child: Text("Edit Profile")),
-                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: Colors.grey )),
+                onPressed: () {},
+                padding: EdgeInsets.all(10.0),
                 color: Colors.white,
                 textColor: Colors.black,
-                splashColor: Colors.white,
+                child: Text("Edit Profile",
+                    style: TextStyle(fontSize: 15)),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30.0,5.0,20.0,0.0),
+            Container(
+              margin: EdgeInsets.all(10),
+              height: 40.0,
+              width: double.infinity,
               child: RaisedButton(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Center(child: Text("Save & Continue")),
-                ),
-                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
+                onPressed: () {},
+                padding: EdgeInsets.all(10.0),
+                color: Color.fromRGBO(0, 160, 227, 1),
                 textColor: Colors.white,
+                child: Text("Save and Continue",
+                    style: TextStyle(fontSize: 15)),
               ),
             ),
           ],

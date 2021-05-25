@@ -17,9 +17,8 @@ class _CongratsState extends State<Congrats> {
               image: AssetImage('images/street.jpg'),
               fit: BoxFit.cover
           ) ,
-        ):BoxDecoration(  color: Colors.white70,
+        )
         ),
-      ),
-    );
+      );
   }
 }
