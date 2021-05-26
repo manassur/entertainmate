@@ -1,6 +1,7 @@
 
 
 import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:entertainmate/screens/utility/verify_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,11 +17,12 @@ void main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CompleteProfileProvider()),
+          ChangeNotifierProvider(create: (_) => VerifyUserProvider()),
 
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Profile ( ),
+          home: Welcome ( ),
         ),
       ),
    );

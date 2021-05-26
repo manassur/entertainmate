@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:provider/provider.dart';
 
 class CompleteBio extends StatefulWidget {
   @override
@@ -6,8 +8,18 @@ class CompleteBio extends StatefulWidget {
 }
 
 class _CompleteBioState extends State<CompleteBio> {
+  CompleteProfileProvider _detailsProvider;
+
+
+  @override
+  void initState() {
+    super.initState ( );
+    _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+  }
   @override
   Widget build(BuildContext context) {
+    return  Consumer<CompleteProfileProvider>(
+        builder: (context, data, child) {
     return Scaffold(
       body: Container(
         child: Column(
@@ -49,9 +61,8 @@ class _CompleteBioState extends State<CompleteBio> {
                     maxLines: 8,
                     minLines: 8,
                     onChanged:(value) {
-//                      setState(() {
-//                        smsOTP = value;
-//                      });
+                        data.setBio(value);
+
                     },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -71,9 +82,7 @@ class _CompleteBioState extends State<CompleteBio> {
                 Expanded(
                   child: InkResponse(
                     onTap: (){
-//                      if(_otpController.text.isNotEmpty){
-//                        _submitOTP();
-//                      }
+                    data.setCurrentPage(2);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top:20.0),
@@ -82,7 +91,9 @@ class _CompleteBioState extends State<CompleteBio> {
                         padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color:Colors.blue,
+                            color: data
+                                .bio.isNotEmpty ? Colors
+                                .blue : Colors.white,
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 color: Colors.black54.withOpacity(0.2),
@@ -90,7 +101,12 @@ class _CompleteBioState extends State<CompleteBio> {
                               )
                             ]
                         ),
-                        child: Center(child: Text('Next', style:TextStyle(fontSize: 15.0,color: Colors.white) ,)),
+                        child: Center ( child: Text ( 'Next',
+                          style: TextStyle ( fontSize: 15.0,
+                              color: data
+                                  .bio.isNotEmpty
+                                  ? Colors.white
+                                  : Colors.blue ), ) ),
                       ),
                     ),
                   ),
@@ -102,5 +118,6 @@ class _CompleteBioState extends State<CompleteBio> {
         ),
       ),
     );
+        });
   }
 }

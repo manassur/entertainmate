@@ -5,7 +5,31 @@ import 'package:flutter/material.dart';
 // https://punchng.com/wp-json/wp/v2/posts?categories=13&per_page=10
 // https://punchng.com/wp-json/wp/v2/search?s=boko
 
-const String BASE_URL="https://punchng.com/wp-json/wp/v2/";
+// http client constants
+var headers = <String, String>{
+  "Accept": "application/x-www-form-urlencoded",
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'app_key': 'vvv'
+};
+
+
+
+const String BASE_URL="http://innovativehill.com/entertainmate/api/index.php/";
+
+const String CHECK_USER_EXIST =BASE_URL+"user/check/phone/";
+const String CHECK_USERNAME_AVAILABLE =BASE_URL+"user/check/username/";
+const String CREATE_USER =BASE_URL+"user/create/";
+const String CHECK_SAVE_PROFILE =BASE_URL+"/user/profile/save/";
+
+
+
+
+
+
+
+
+
+
 const String SINGLE_NEWS ="posts?slug=";
 
 const String LATEST_NEWS ="posts?per_page=20&page=1";

@@ -17,6 +17,7 @@ class _PhoneState extends State<Phone> {
   TextEditingController _phoneNumberController = TextEditingController();
   AuthCredential _phoneAuthCredential;
   CountryCode cc;
+  bool isLoading=false;
 
   void _onCountryChange(CountryCode countryCode) {
     //TODO : manipulate the selected country code here
@@ -28,6 +29,9 @@ class _PhoneState extends State<Phone> {
   }
 
   Future<void> _submitPhoneNumber() async {
+    setState(() {
+      isLoading = true;
+    });
     /// NOTE: Either append your phone number country code or add in the code itself
     String phoneNumber = cc.dialCode + _phoneNumberController.text.toString().trim();
     print(phoneNumber);
@@ -45,6 +49,7 @@ class _PhoneState extends State<Phone> {
 
     void codeSent(String verificationId, [int code]) {
       setState(() {
+        isLoading =false;
         smsOTP = code.toString();
       });
       Navigator.push(context,    MaterialPageRoute(builder: (context) => Otp(phoneNo: this._phoneNumberController.text,verificationId: verificationId,smsOTP: this.smsOTP,phoneAuthCredential: this._phoneAuthCredential,)));
@@ -146,7 +151,7 @@ class _PhoneState extends State<Phone> {
                     child: TextField(
                       onChanged:(value) {
                         setState(() {
-                          phoneNo = value;
+                          phoneNo = cc.dialCode+ value;
                         });
                       },
                   controller: _phoneNumberController,
@@ -180,7 +185,11 @@ class _PhoneState extends State<Phone> {
                             )
                           ]
                       ),
-                      child: Center(child: Text('Next', style:TextStyle(fontSize: 15.0,color:phoneNo.isNotEmpty? Colors.white:Colors.black) ,)),
+                      child: Center(
+                          child:isLoading==false?
+                          Text('Next', style:TextStyle(fontSize: 17.0,color:phoneNo.isNotEmpty? Colors.white:Colors.black) ,)
+                              : SizedBox(height: 20,width: 20, child:CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),))
+                      ),
                     ),
                   ),
                 ),

@@ -2,9 +2,11 @@ import 'dart:math';
 import 'package:entertainmate/screens/complete_profile_screen.dart';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:entertainmate/screens/utility/verify_user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Otp extends StatefulWidget {
   Otp({this.phoneNo,this.verificationId,this.smsOTP,this.phoneAuthCredential});
@@ -18,12 +20,19 @@ String verificationId;
 }
 
 class _OtpState extends State<Otp> {
+  VerifyUserProvider _detailsProvider;
+  @override
+  void initState() {
+    super.initState ( );
+    _detailsProvider = Provider.of<VerifyUserProvider>(context,listen:false);
+
+  }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
   String smsOTP="";
   String errorMessage = '';
   TextEditingController _otpController = TextEditingController();
-  void _bottomSheetMore(context) {
+  void _bottomSheetMore(context, String referer) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
         context: context,
@@ -47,7 +56,9 @@ class _OtpState extends State<Otp> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('You have been invited by @user!'),
+                  Visibility(
+                      visible: referer.isNotEmpty==true,
+                      child: Text('You have been invited by @'+referer+'!')),
                   SizedBox(
                     height: 10,
                   ),
@@ -63,7 +74,7 @@ class _OtpState extends State<Otp> {
                       Expanded(
                         child: InkResponse(
                           onTap: (){
-                            Navigator.push(context,    MaterialPageRoute(builder: (context) => CompleteProfileScreen()));
+                            Navigator.push(context,    MaterialPageRoute(builder: (context) => CompleteProfileScreen(phone: widget.phoneNo,)));
 
                           },
                           child: Padding(
@@ -99,6 +110,10 @@ class _OtpState extends State<Otp> {
 
 
   void _submitOTP() async{
+    _detailsProvider.setContext(context);
+
+    _detailsProvider.setLoading(true);
+
     /// get the `smsCode` from the user
     print("submittinh otp");
     String smsCode = _otpController.text.toString().trim();
@@ -113,7 +128,17 @@ class _OtpState extends State<Otp> {
       final User user = (await _auth.signInWithCredential(credential)).user;
       final User currentUser =  _auth.currentUser;
       if(user.uid == currentUser.uid){
-        _bottomSheetMore(context);
+        _detailsProvider.setLoading(true);
+        _detailsProvider.setPhone(widget.phoneNo);
+        _detailsProvider.checkIfUserIsFirstimeUser();
+        if(_detailsProvider.response.message.toLowerCase().contains("old") == false){
+       if (_detailsProvider.response.isRefered == true ){
+         _bottomSheetMore(context,_detailsProvider.response.referer);
+        }else {
+         _bottomSheetMore(context,'');
+       }
+        }
+
 
       }
       print("verId"+widget.verificationId);
@@ -150,7 +175,9 @@ class _OtpState extends State<Otp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Consumer<VerifyUserProvider>(
+        builder: (context, data, child) {
+          return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
         title: Center(
@@ -230,16 +257,21 @@ class _OtpState extends State<Otp> {
                               )
                             ]
                         ),
-                        child: Center(child: Text('Next', style:TextStyle(fontSize: 15.0,color:smsOTP.isNotEmpty? Colors.white:Colors.black) ,)),
-                      ),
+                        child: Center(
+                            child:data.loading==false?
+                            Text('Next', style:TextStyle(fontSize: 17.0,color:smsOTP.isNotEmpty? Colors.white:Colors.black) ,)
+                                : SizedBox(height: 20,width: 20, child:CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),))
+                        ),
                     ),
                   ),
-                ),
+                ),)
               ],
             ),
           ],
         ),
       ),
-    );
+        );
+        }
+        );
   }
 }

@@ -9,9 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'complete_done.dart';
+import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:provider/provider.dart';
+import 'dart:io';
 
 
 class CompleteProfileScreen extends StatefulWidget {
+  String phone;
+  CompleteProfileScreen({this.phone});
   @override
   _CompleteProfileScreenState createState() => _CompleteProfileScreenState();
 }
@@ -20,7 +25,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   PageController controller = PageController();
 
   int currentPage=0;
+  CompleteProfileProvider _detailsProvider;
 
+  @override
+  void initState() {
+    super.initState ( );
+    _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +52,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
           child: Column(
             children: [
               SmoothPageIndicator(
-                  controller: controller,  // PageController
+                  controller: _detailsProvider.controller,  // PageController
                   count:  5,
                   effect:  SlideEffect(
                     dotColor:   Colors.grey[200],
@@ -56,14 +67,16 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               ),
               Expanded(
                 child: PageView(
-                  controller: controller,
+                  controller: _detailsProvider.controller,
+               // physics: NeverScrollablePhysics(),
                   onPageChanged: (int pageno){
                     setState(() {
                       currentPage = pageno;
+                      _detailsProvider.setCurrentPage(pageno);
                     });
                   },
                   children: [
-                    CompleteName(),
+                    CompleteName(phone: widget.phone,),
                     CompleteBio(),
                     CompleteAddPhoto(),
                     CompleteSocial(),

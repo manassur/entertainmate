@@ -39,6 +39,24 @@ class ApiClient {
     return responseJson;
   }
 
+  Future<dynamic> postForm(String url, Map body) async {
+    print('Api Post, url :' + url);
+    print('parameters:' + body.toString());
+
+    var responseJson;
+    try {
+      final response =
+      await http.post(url, body: body, headers: Constants.headers);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+    print('api post.');
+    print("responsejson" + responseJson.toString());
+
+    return responseJson;
+  }
 
   Future<dynamic> put(String url, dynamic body) async {
     // print('Api Put, url $url');

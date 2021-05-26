@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 class CompleteAddPhoto extends StatefulWidget {
   @override
   _CompleteAddPhotoState createState() => _CompleteAddPhotoState();
@@ -62,6 +64,8 @@ class _CompleteAddPhotoState extends State<CompleteAddPhoto> {
   }
   @override
   Widget build(BuildContext context) {
+    return  Consumer<CompleteProfileProvider>(
+        builder: (context, data, child) {
     return Scaffold(
       body: Container(
         child: Column(
@@ -176,9 +180,8 @@ class _CompleteAddPhotoState extends State<CompleteAddPhoto> {
                 Expanded(
                   child: InkResponse(
                     onTap: (){
-//                      if(_otpController.text.isNotEmpty){
-//                        _submitOTP();
-//                      }
+                      data.setFile(_image);
+                      data.setCurrentPage(4);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top:20.0),
@@ -187,7 +190,8 @@ class _CompleteAddPhotoState extends State<CompleteAddPhoto> {
                         padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color:Colors.blue,
+                            color: _image!=null ? Colors
+                                .blue : Colors.white,
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 color: Colors.black54.withOpacity(0.2),
@@ -195,7 +199,11 @@ class _CompleteAddPhotoState extends State<CompleteAddPhoto> {
                               )
                             ]
                         ),
-                        child: Center(child: Text('Next', style:TextStyle(fontSize: 15.0,color: Colors.white) ,)),
+                        child: Center ( child: Text ( 'Next',
+                          style: TextStyle ( fontSize: 15.0,
+                              color: _image!=null
+                                  ? Colors.white
+                                  : Colors.blue ), ) ),
                       ),
                     ),
                   ),
@@ -207,5 +215,7 @@ class _CompleteAddPhotoState extends State<CompleteAddPhoto> {
         ),
       ),
     );
+        });
+
   }
 }

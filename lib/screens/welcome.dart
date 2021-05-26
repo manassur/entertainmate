@@ -16,6 +16,7 @@ class _WelcomeState extends State<Welcome> {
 
   int currentPage=0;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
