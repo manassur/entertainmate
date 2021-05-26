@@ -36,6 +36,7 @@ dependencies:
   provider: ^4.1.2
   shared_preferences: ^0.5.6+3
   http: ^0.12.1
+  flutter_svg: ^0.18.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -53,7 +54,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - images/sara.jpg
     - images/street.jpg
+    - images/download.png
+    - images/002-linkedin-logo.svg
+    - images/003-facebook.svg
+    - images/004-twitter.svg
+    - images/005-instagram.svg
+    - images/001-email.svg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
