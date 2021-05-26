@@ -35,72 +35,102 @@ class _MateState extends State<Mate> {
           )
         ],
       ) ,
-      body: Container(
-        color: Colors.white10,
-        child: Container(
-          height: 50,
-          width: double.infinity,
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white10,
+            child: Container(
+              height: 50,
+              width: double.infinity,
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.timer,
-                        color: Colors.grey,
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.timer,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          'Today',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Today',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
+
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.navigation,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          'Athens,OH',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.navigation,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          'Athens,OH',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
-
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.navigation,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      'Athens,OH',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-
-
-                  ],
-                ),
-                Container(
-                  child:  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.filter,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        'Filter',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
-
-        ),
+          ),
+          Spacer(),
+      BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey.withOpacity(.60),
+            selectedFontSize: 14,
+            unselectedFontSize: 14,
+            onTap: (value) {
+              // Respond to item press.
+            },
+            items: [
+              BottomNavigationBarItem(
+                title: Text('Home', style: TextStyle(color: Colors.black),),
+                icon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                title: Text('Deals', style: TextStyle(color: Colors.black),),
+                icon: Icon(Icons.backpack),
+              ),
+              BottomNavigationBarItem(
+                title: Text('Notification', style: TextStyle(color: Colors.black),),
+                icon: Icon(Icons.notifications),
+              ),
+              BottomNavigationBarItem(
+                title: Text('Profile', style: TextStyle(color: Colors.black),),
+                icon: Icon(Icons.person),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
