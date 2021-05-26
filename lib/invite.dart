@@ -1,3 +1,4 @@
+import 'package:entertainmate/phone_invite.dart';
 import 'package:entertainmate/screens/phone_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,7 @@ class _InviteState extends State<Invite> {
             ),
           ),
           body:TabBarView(children: [
-            Phone(),
+            Phone_Invite(),
             Icon(Icons.movie),
           ]),
         )

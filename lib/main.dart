@@ -24,7 +24,7 @@ void main() async {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Mate ( ),
+          home: Invite ( ),
         ),
       ),
    );
