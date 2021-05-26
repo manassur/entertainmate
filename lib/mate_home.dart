@@ -9,32 +9,7 @@ class _Mate_HomeState extends State<Mate_Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("EntertainMate", style: TextStyle(color: Colors.grey),),elevation: 0,backgroundColor: Colors.white,
-        actions: <Widget>[
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // do something
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // do something
-                },
-              ),
-            ],
-          )
-        ],
-      ) ,
+
       body: Column(
         children: [
           Container(
@@ -44,7 +19,7 @@ class _Mate_HomeState extends State<Mate_Home> {
               width: double.infinity,
               color: Colors.white,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     children: [
@@ -67,7 +42,7 @@ class _Mate_HomeState extends State<Mate_Home> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.navigation,
+                        child: Icon(Icons.navigation_outlined,
                           color: Colors.grey,
                         ),
                       ),
@@ -83,12 +58,12 @@ class _Mate_HomeState extends State<Mate_Home> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.navigation,
+                        child: Icon(Icons.filter_list,
                           color: Colors.grey,
                         ),
                       ),
                       Text(
-                        'Athens,OH',
+                        'Today',
                         style: TextStyle(
                           color: Colors.black,
                         ),
