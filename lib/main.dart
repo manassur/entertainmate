@@ -1,5 +1,6 @@
 
 
+import 'package:entertainmate/account_settings.dart';
 import 'package:entertainmate/mate.dart';
 import 'package:entertainmate/screens/log_in.dart';
 import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
@@ -24,7 +25,7 @@ void main() async {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Invite ( ),
+          home: Account_Settings ( ),
         ),
       ),
    );
