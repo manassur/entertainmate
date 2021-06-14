@@ -1,3 +1,6 @@
+import 'package:entertainmate/screens/model/user.dart';
+import 'package:entertainmate/screens/repository/repository.dart';
+import 'package:entertainmate/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
 class Account_Settings extends StatefulWidget {
@@ -6,39 +9,40 @@ class Account_Settings extends StatefulWidget {
 }
 
 class _Account_SettingsState extends State<Account_Settings> {
+  Repository _userRepository;
+  bool isUserLoggedIn = false;
+  User user = User();
+
+  @override
+  void initState() {
+    _userRepository = Repository();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.white,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0,0,40,0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      Text('Back', style: TextStyle(color: Colors.black),),
-                    ],
-                  ),
-                ),
-                Center(
-                  child: Text('Account Settings', style: TextStyle(
-                    fontSize: 18.0, fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left:30.0),
-                  child: Text('Log Out', style: TextStyle(color: Colors.blueAccent, fontSize: 15),),
-                ),
-              ],
-            ),
+            leading: IconButton(color:Colors.grey,icon:Icon( Icons.arrow_back_ios),onPressed: (){Navigator.of(context).pop();},),
+            title: Text("Account Settings",style: TextStyle(color: Colors.black),),
+            centerTitle: true,
+            actions: [Center(child: Padding(
+              padding: const EdgeInsets.only(right:15.0),
+              child: InkResponse(
+                onTap: (){
+                  _userRepository.logoutUser();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Welcome(),
+                    ),
+                        (route) => false,
+                  );
+                },
+                  child: Text("Log out",style: TextStyle(color:Colors.blue,fontSize: 18,fontWeight: FontWeight.w500),)),
+            ))],
           ),
       body: Container(
         color: Colors.white12,
@@ -50,30 +54,36 @@ class _Account_SettingsState extends State<Account_Settings> {
               child: Padding(
                 padding: const EdgeInsets.only(top:35.0),
                 child: Container(
-                  margin: EdgeInsets.all(30.0),
-                  padding: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(20.0),
                   alignment: Alignment.topCenter,
                   width: 100,
-                  height: 90,
                   decoration: BoxDecoration(
+
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
+                      boxShadow: <BoxShadow>[
+                  BoxShadow (
+                  color: Colors.black54.withOpacity (
+                      0.2 ),
+                  blurRadius: 8.0,
+                ),]
                   ),
                   child: Column(
                     children: [
                       Row(
                         children: [
-                          Text("Events", style: TextStyle(fontSize: 15)),
+                          Text("Events", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
                           Spacer(),
-                          Icon(Icons.event_note_outlined),
+                          Icon(Icons.event_note_outlined,color: Colors.blue,),
                         ],
                       ),
                       Divider(),
                       Row(
                         children: [
-                          Text("Local deals", style: TextStyle(fontSize: 15)),
+                          Text("Local deals", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
                           Spacer(),
-                          Icon(Icons.money_outlined),
+                          Icon(Icons.attach_money,color: Colors.blue,),
                         ],
                       ),
                     ],
@@ -84,25 +94,38 @@ class _Account_SettingsState extends State<Account_Settings> {
             Container(
               width: double.infinity,
               child: Container(
-                margin: EdgeInsets.all(30.0),
-                padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(20.0),
                 alignment: Alignment.topCenter,
-                width: 100,
-                height: 150,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow (
+                        color: Colors.black54.withOpacity (
+                            0.2 ),
+                        blurRadius: 8.0,
+                      ),]
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Updates", style: TextStyle(fontSize: 15)),
+                    SizedBox(height: 10,),
+                    Text("Updates", style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                    SizedBox(height: 10,),
                     Divider(),
-                    Text("FAQ", style: TextStyle(fontSize: 15)),
+                    SizedBox(height: 10,),
+                    Text("FAQ", style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                    SizedBox(height: 10,),
                     Divider(),
-                    Text("Terms of use", style: TextStyle(fontSize: 15)),
+                    SizedBox(height: 10,),
+                    Text("Terms of use", style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                    SizedBox(height: 10,),
                     Divider(),
-                    Text("Privacy policies", style: TextStyle(fontSize: 15)),
+                    SizedBox(height: 10,),
+                    Text("Privacy policies", style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                    SizedBox(height: 10,),
                   ],
                 ),
               ),

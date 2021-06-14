@@ -17,12 +17,24 @@ var headers = <String, String>{
 const String BASE_URL="http://innovativehill.com/entertainmate/api/index.php/";
 
 const String CHECK_USER_EXIST =BASE_URL+"user/check/phone/";
+const String CHECK_HAS_REFERER =BASE_URL+"user/check/referstatus/";
+
 const String CHECK_USERNAME_AVAILABLE =BASE_URL+"user/check/username/";
+const String CHECK_EMAIL_AVAILABLE =BASE_URL+"user/check/email";
+
 const String CREATE_USER =BASE_URL+"user/create/";
-const String CHECK_SAVE_PROFILE =BASE_URL+"/user/profile/save/";
+const String CHECK_SAVE_PROFILE =BASE_URL+"user/profile/update";
+const String SEND_SMS_INVITE =BASE_URL+"user/sms/invite";
+const String SEND_EMAIL_INVITE =BASE_URL+"user/email/invite";
+const String UPDATE_USER_DETAILS =BASE_URL+"user/profile/edit";
+const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
 
 
-
+// secure storage keys
+const String CHECK_LOGIN_STATUS = "loginstatus";
+const String SESSION_ID = "session_id";
+const String SESSION_TOKEN = "session_token";
+const String LOGGED_IN_USER = "user";
 
 
 

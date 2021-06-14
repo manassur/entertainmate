@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+
+import '../mate.dart';
 class Congrats extends StatefulWidget {
-  Congrats({this.isRefered,this.referer});
-  bool isRefered;
+  Congrats({this.isRefered,this.referer,this.isOldUser=false});
+  bool isRefered,isOldUser;
   String referer;
   @override
   _CongratsState createState() => _CongratsState();
@@ -62,13 +64,22 @@ class _CongratsState extends State<Congrats> {
                             SizedBox(
                               height: 10,
                             ),
+                            Visibility(
+                                visible: widget.isRefered==false,
+                                child: Text('You have been successfully registered, but you need an invitation to continue using this app')),
                 Visibility(
-                    visible: widget.isRefered,
+                    visible: widget.isRefered==true,
                     child: Text('You have been invited by @'+widget.referer+'!')),
                             SizedBox(
                               height: 10,
                             ),
-                            Text('One more step is to finalize your registration. Please continue and complete your profile. We hope you enjoy this app.'),
+                            Visibility(
+                                visible: widget.isRefered==true,
+                                child: Text('You are a fully registered member, enjoy events and latest deals.. We hope you enjoy this app.')),
+                            Visibility(
+                                visible: widget.isRefered==false,
+                                child: Text('Get someone that is already on the app to invite you by email or phone number, then you can proceed to enjoy the amazing features of this platform.')),
+
                             SizedBox(
                               height: 10,
                             ),
@@ -89,8 +100,13 @@ class _CongratsState extends State<Congrats> {
                         Expanded(
                           child: InkResponse(
                             onTap: (){
-                              //   Navigator.push(context,    MaterialPageRoute(builder: (context) => CompleteProfileScreen(phone: widget.phoneNo,)));
-
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Mate(),
+                                ),
+                                    (route) => false,
+                              );
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(top:20.0),

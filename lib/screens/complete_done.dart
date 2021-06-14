@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:entertainmate/screens/profile.dart';
+import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CompleteDone extends StatefulWidget {
   @override
@@ -6,8 +10,20 @@ class CompleteDone extends StatefulWidget {
 }
 
 class _CompleteDoneState extends State<CompleteDone> {
+  CompleteProfileProvider _detailsProvider;
+
+
+
+  @override
+  void initState() {
+    super.initState ( );
+    _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    return  Consumer<CompleteProfileProvider>(
+        builder: (context, data, child) {
     return Scaffold(
       body: Container(
         child: Column(
@@ -45,9 +61,8 @@ class _CompleteDoneState extends State<CompleteDone> {
                 Expanded(
                   child: InkResponse(
                     onTap: (){
-//                      if(_otpController.text.isNotEmpty){
-//                        _submitOTP();
-//                      }
+                      Navigator.push(context,    MaterialPageRoute(builder: (context) => Profile()));
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top:20.0),
@@ -76,5 +91,7 @@ class _CompleteDoneState extends State<CompleteDone> {
         ),
       ),
     );
-  }
+  });
+
+}
 }

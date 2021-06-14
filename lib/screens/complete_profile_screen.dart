@@ -4,6 +4,7 @@ import 'package:entertainmate/screens/complete_bio.dart';
 import 'package:entertainmate/screens/complete_social.dart';
 
 import 'package:entertainmate/screens/complete_add_photo.dart';
+import 'package:entertainmate/screens/welcome.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -12,6 +13,8 @@ import 'complete_done.dart';
 import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+
+import 'utility/verify_user_provider.dart';
 
 
 class CompleteProfileScreen extends StatefulWidget {
@@ -31,6 +34,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   void initState() {
     super.initState ( );
     _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+    _detailsProvider.setPhone(widget.phone);
   }
   @override
   Widget build(BuildContext context) {
@@ -39,11 +43,35 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: Center(child: Text("Cancel",style: TextStyle(color: Colors.black87),)),
+        leading: InkResponse(
+            onTap: (){
+              //Provider. of<CompleteProfileProvider>(context,listen: false). dispose();
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>   MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(create: (_) => CompleteProfileProvider()),
+                        ChangeNotifierProvider(create: (_) => VerifyUserProvider()),
+                      ],child: Welcome())
+                ),
+                    (route) => false,
+              );
+            },
+            child: Center(child: Text("Cancel",style: TextStyle(color: Colors.black87),))),
         title: Center(child: Text("Complete your profile",style: TextStyle(color: Colors.black87),)),
         actions: [Center(child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Text("skip",style: TextStyle(color:Colors.blue),),
+          child: Visibility(
+            visible: _detailsProvider.currentPage!=0 && _detailsProvider.currentPage!=4,
+              child: InkResponse(onTap: (){
+                if((_detailsProvider.currentPage!=0 && _detailsProvider.currentPage!=4)){
+                var  pagetogo = _detailsProvider.currentPage+1;
+                  _detailsProvider.setCurrentPage(pagetogo);
+                }
+                } ,
+                  child: Text("skip",style: TextStyle(color:Colors.blue),))),
         ))],
       ),
         body: Container(
@@ -68,7 +96,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               Expanded(
                 child: PageView(
                   controller: _detailsProvider.controller,
-               // physics: NeverScrollablePhysics(),
+                    physics : NeverScrollableScrollPhysics(),
                   onPageChanged: (int pageno){
                     setState(() {
                       currentPage = pageno;

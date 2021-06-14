@@ -1,6 +1,10 @@
 import 'package:entertainmate/phone_invite.dart';
-import 'package:entertainmate/screens/phone_widget.dart';
+import 'package:entertainmate/screens/email_invite.dart';
+import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/phone_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'screens/utility/complete_profile_provider.dart';
 
 class Invite extends StatefulWidget {
   @override
@@ -8,39 +12,31 @@ class Invite extends StatefulWidget {
 }
 
 class _InviteState extends State<Invite> {
+    CompleteProfileProvider _detailsProvider;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+
+  }
   @override
   Widget build(BuildContext context) {
     return  DefaultTabController(
         length: 2,
-        child: Scaffold(
+        child:Consumer<CompleteProfileProvider>(
+        builder: (context, data, child)
+    {return Scaffold(
           appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0,0,40,0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      Text('Back', style: TextStyle(color: Colors.black),),
-                    ],
-                  ),
-                ),
-                Center(
-                  child: Text('Log in', style: TextStyle(
-                    fontSize: 20.0, fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left:30.0),
-                  child: Text('4 invites left', style: TextStyle(color: Colors.blueAccent, fontSize: 15),),
-                ),
-              ],
-            ),
+            leading: IconButton(color:Colors.grey,icon:Icon( Icons.arrow_back_ios),onPressed: (){Navigator.of(context).pop();},),
+              title: Text("Invite Friends",style: TextStyle(color: Colors.black),),
+              centerTitle: true,
+              actions: [Center(child: Padding(
+                padding: const EdgeInsets.only(right:15.0),
+                child: Text((5-data.user.invites).toString()+" Invites left",style: TextStyle(color:Colors.blue,fontSize: 16,fontWeight: FontWeight.w500),),
+              ))],
             backgroundColor: Colors.white,
             elevation: 0,
             bottom: new PreferredSize(
@@ -80,11 +76,15 @@ class _InviteState extends State<Invite> {
               ),
             ),
           ),
-          body:TabBarView(children: [
-            Phone_Invite(),
-            Icon(Icons.movie),
-          ]),
-        )
-    );
+          body:Container(
+            margin: EdgeInsets.only(top:20),
+            child: TabBarView(children: [
+              Phone_Invite(),
+              EmailInvite(),
+            ]),
+          ),
+        );
+    }));
+
   }
 }

@@ -1,6 +1,8 @@
-import 'package:entertainmate/screens/phone_widget.dart';
+import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/phone_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'verify_email/email_widget.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -15,14 +17,13 @@ class _LoginState extends State<Login> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Center(
-              child: Text('Log in', style: TextStyle(
-                fontSize: 20.0, fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),),
-            ),
+            elevation:0,
+            title: Text('Log in', style: TextStyle(
+              fontSize: 20.0, fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),),
+            centerTitle: true,
             backgroundColor: Colors.white,
-            elevation: 0,
             bottom: new PreferredSize(
             preferredSize: new Size(0.0, 40.0),
               child: Container(
@@ -62,7 +63,7 @@ class _LoginState extends State<Login> {
           ),
           body: TabBarView(children: [
             Phone(),
-            Icon(Icons.movie),
+           Email(),
           ]),
         )
     );

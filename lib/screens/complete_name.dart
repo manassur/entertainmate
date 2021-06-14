@@ -1,5 +1,6 @@
 import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class CompleteName extends StatefulWidget {
@@ -13,11 +14,21 @@ class _CompleteNameState extends State<CompleteName> {
   CompleteProfileProvider _detailsProvider;
   TextEditingController _nameController= TextEditingController();
   TextEditingController _headlineController= TextEditingController();
+  TextEditingController _usernameController= TextEditingController();
 
   @override
   void initState() {
-    super.initState ( );
+    super.initState ();
     _detailsProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
+    if(_detailsProvider.username.isNotEmpty){
+      _usernameController.text = _detailsProvider.username;
+    }
+    if(_detailsProvider.headline.isNotEmpty){
+      _nameController.text = _detailsProvider.headline;
+    }
+    if(_detailsProvider.name.isNotEmpty){
+      _headlineController.text = _detailsProvider.name;
+    }
   }
 
     @override
@@ -34,6 +45,7 @@ class _CompleteNameState extends State<CompleteName> {
                       SizedBox (
                         height: 8,
                       ),
+
                       Padding (
                         padding: const EdgeInsets.fromLTRB( 10, 30, 10, 10 ),
                         child: Container (
@@ -62,7 +74,14 @@ class _CompleteNameState extends State<CompleteName> {
                         height: 20,
                       ),
                       Container (
-                        margin: EdgeInsets.only ( left: 10, right: 10 ),
+                        margin:EdgeInsets.only(left:20,right:20),
+                        padding:EdgeInsets.symmetric(horizontal:20,vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width:1,
+                            color: Colors.grey[300],
+                          ),),
                         child: Row (
                           children: [
 
@@ -75,11 +94,10 @@ class _CompleteNameState extends State<CompleteName> {
 //                        smsOTP = value;
 //                      });
                               },
-                              decoration: InputDecoration (
-                                border: OutlineInputBorder ( ),
-                                labelText: 'Name',
+                              decoration:InputDecoration(
+                                  border:InputBorder.none,
+                                  hintText: 'Name'
                               ),
-
                             ) )
                           ],
                         ),
@@ -88,7 +106,14 @@ class _CompleteNameState extends State<CompleteName> {
                         height: 20,
                       ),
                       Container (
-                        margin: EdgeInsets.only ( left: 10, right: 10 ),
+                        margin:EdgeInsets.only(left:20,right:20),
+                        padding:EdgeInsets.symmetric(horizontal:20,vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width:1,
+                            color: Colors.grey[300],
+                          ),),
                         child: Row (
                           children: [
 
@@ -104,9 +129,9 @@ class _CompleteNameState extends State<CompleteName> {
                               },
                               maxLines: 1,
                               maxLength: 50,
-                              decoration: InputDecoration (
-                                border: OutlineInputBorder ( ),
-                                labelText: 'Headline',
+                              decoration:InputDecoration(
+                                  border:InputBorder.none,
+                                  hintText: 'Headline'
                               ),
 
                             ) )
@@ -116,19 +141,54 @@ class _CompleteNameState extends State<CompleteName> {
                       SizedBox (
                         height: 20,
                       ),
+                  Padding(
+                    padding: const EdgeInsets.only(right:30.0),
+                    child: Row (
+                      mainAxisAlignment:MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right:10.0),
+                          child: Text ( data.getMessage ( ), style: TextStyle (
+                              fontSize: 13,
+                              color: data.isUsernameAvailable == true
+                                  ? Colors.green
+                                  : Colors.redAccent ), ),
+                        ),
+                        data.isLoading() == true ? SizedBox (
+                            height: 13,
+                            width: 13,
+                            child: CircularProgressIndicator (
+                              strokeWidth: 1,
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.grey ), ) ) : Container ( ),
+
+                      ]),
+                  ),
+                      SizedBox (
+                        height: 8,
+                      ),
                       Container (
-                        margin: EdgeInsets.only ( left: 10, right: 10 ),
+                        margin:EdgeInsets.only(left:20,right:20),
+                        padding:EdgeInsets.symmetric(horizontal:20,vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width:1,
+                            color: Colors.grey[300],
+                          ),),
                         child: Row (
                           children: [
 
                             Expanded ( child: TextField (
+                              keyboardType: TextInputType.text,
+                              controller: _usernameController,
                               onChanged: (
                                   value
                                   ) {
                                 setState ( (
                                     ) {
                                   if ( value.length > 5 ) {
-                                    data.setMessage ( "" );
+                                    data.setMessage ( "checking username...." );
                                     data.setUsername ( value );
                                     data.checkIfUsernameIsAvailable ( );
                                   }
@@ -148,11 +208,13 @@ class _CompleteNameState extends State<CompleteName> {
                                 } );
                               },
                               maxLength: 50,
-                              decoration: InputDecoration (
-                                border: OutlineInputBorder ( ),
-                                labelText: '@Username',
+                              decoration:InputDecoration(
+                                  border:InputBorder.none,
+                                  hintText: '@Username'
                               ),
-
+                              inputFormatters: [BlacklistingTextInputFormatter(
+                                  new RegExp(r"\s\b|\b\s")
+                              )],
                             ) ),
                           ],
                         ),
@@ -160,26 +222,16 @@ class _CompleteNameState extends State<CompleteName> {
                       SizedBox (
                         height: 10,
                       ),
-                      data.isLoading() == true ? SizedBox (
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator (
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.blue ), ) ) : Container ( ),
-                      Text ( data.getMessage ( ), style: TextStyle (
-                          fontSize: 17,
-                          color: data.isUsernameAvailable == true
-                              ? Colors.green
-                              : Colors.redAccent ), ),
-                      SizedBox (
-                        height: 10,
-                      ),
+
+
                       Row (
                         children: [
                           Expanded (
                             child: InkResponse (
                               onTap: (
                                   ) {
+                                // check if username has been made available
+                                if(data.isUsernameAvailable==true){
                       if(_nameController.text.isNotEmpty && _headlineController.text.isNotEmpty &&  data.username.isNotEmpty){
                         data.setName(_nameController.text);
                         data.setPhone(widget.phone);
@@ -187,7 +239,9 @@ class _CompleteNameState extends State<CompleteName> {
                         data.saveNames();
                       }else{
                         data.setMessage("please fill in all fields");
-                      }
+                      }}else{
+                                  data.setMessage("please try a different username");
+                                }
                               },
                               child: Padding (
                                 padding: const EdgeInsets.only( top: 20.0 ),

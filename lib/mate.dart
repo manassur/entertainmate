@@ -1,7 +1,11 @@
 import 'package:entertainmate/mate_home.dart';
 import 'package:entertainmate/screens/congrats.dart';
+import 'package:entertainmate/screens/mate_deals.dart';
+import 'package:entertainmate/screens/mate_notification.dart';
 import 'package:entertainmate/screens/profile.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/profile_main.dart';
 
 class Mate extends StatefulWidget {
   @override
@@ -14,9 +18,9 @@ class _MateState extends State<Mate> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
     Mate_Home(),
-    Profile(),
-    Congrats(),
-    Profile(),
+    MateDeals(),
+    MateNotification(),
+    ProfileMain(),
 
   ];
 
@@ -28,35 +32,6 @@ class _MateState extends State<Mate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("EntertainMate", style: TextStyle(color: Colors.grey),),
-        elevation: 0,
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // do something
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // do something
-                },
-              ),
-            ],
-          )
-        ],
-      ) ,
       bottomNavigationBar:BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
@@ -75,7 +50,7 @@ class _MateState extends State<Mate> {
           ),
           BottomNavigationBarItem(
             label: 'Deals',
-            icon: Icon(Icons.backpack),
+            icon: Icon(Icons.shopping_cart),
           ),
           BottomNavigationBarItem(
             label: 'Notification',

@@ -9,6 +9,47 @@ class _Mate_HomeState extends State<Mate_Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:  RichText(
+          text: TextSpan(
+              text: 'Entertain',
+              style: TextStyle(
+                  color: Colors.grey, fontSize: 20,fontWeight: FontWeight.w700),
+              children: <TextSpan>[
+                TextSpan(text: 'Mate',
+                  style: TextStyle(
+                      color: Colors.blueAccent, fontSize: 20,fontWeight: FontWeight.w700),
+
+                )
+              ]
+          ),),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  // do something
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  // do something
+                },
+              ),
+            ],
+          )
+        ],
+      ) ,
 
       body: Column(
         children: [
@@ -63,7 +104,7 @@ class _Mate_HomeState extends State<Mate_Home> {
                         ),
                       ),
                       Text(
-                        'Today',
+                        'Filter',
                         style: TextStyle(
                           color: Colors.black,
                         ),

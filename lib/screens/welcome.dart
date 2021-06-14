@@ -23,7 +23,7 @@ class _WelcomeState extends State<Welcome> {
         body: Container(
           padding: EdgeInsets.all(20),
           decoration: currentPage == 0?BoxDecoration(
-            color: Colors.blue,
+            color: Colors.grey,
             image: DecorationImage(
                 image: AssetImage('images/street.jpg'),
                 fit: BoxFit.cover

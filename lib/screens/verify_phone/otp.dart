@@ -6,7 +6,11 @@ import 'package:entertainmate/screens/utility/verify_user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:entertainmate/mate.dart';
+import 'package:entertainmate/screens/welcome.dart';
+
 
 class Otp extends StatefulWidget {
   Otp({this.phoneNo,this.verificationId,this.smsOTP,this.phoneAuthCredential});
@@ -74,6 +78,7 @@ class _OtpState extends State<Otp> {
                       Expanded(
                         child: InkResponse(
                           onTap: (){
+                            Navigator.pop(context);
                             Navigator.push(context,    MaterialPageRoute(builder: (context) => CompleteProfileScreen(phone: widget.phoneNo,)));
 
                           },
@@ -107,6 +112,111 @@ class _OtpState extends State<Otp> {
         },
     );
   }
+  void _bottomSheetYesOrNo(context, String referer) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (builder) {
+        return  Container(
+            height: 300,
+            decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(20.0),
+                    topRight: const Radius.circular(20.0))),
+
+
+            child:  Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Do you wish to continue?',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('oops! it seems you have not been invited to the EntertainMate app yet. However you can proceed to create your profile and we will notify you when any of your friends has invited you. \n Thanks for understanding '),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Cheers,'),
+                  Text('EntertainMate Team.'),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkResponse(
+                          onTap: (){
+                            Navigator.pop(context);
+                            Navigator.push(context,    MaterialPageRoute(builder: (context) => Welcome()));
+
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:20.0),
+                            child: Container(
+                              margin: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  color:Colors.white.withOpacity(0.9),
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color: Colors.black54.withOpacity(0.2),
+                                      blurRadius: 8.0,
+                                    )
+                                  ]
+                              ),
+                              child: Center(child: Text('NO', style:TextStyle(fontSize: 15.0,color:Colors.red) ,)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkResponse(
+                          onTap: (){
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => CompleteProfileScreen(phone: widget.phoneNo,),
+                              ),
+                                  (route) => false,
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:20.0),
+                            child: Container(
+                              margin: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  color:Colors.white.withOpacity(0.9),
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color: Colors.black54.withOpacity(0.2),
+                                      blurRadius: 8.0,
+                                    )
+                                  ]
+                              ),
+                              child: Center(child: Text('YES', style:TextStyle(fontSize: 15.0,color:Colors.blue) ,)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
+            )
+        );
+      },
+    );
+  }
 
 
   void _submitOTP() async{
@@ -130,15 +240,21 @@ class _OtpState extends State<Otp> {
       if(user.uid == currentUser.uid){
         _detailsProvider.setLoading(true);
         _detailsProvider.setPhone(widget.phoneNo);
-        _detailsProvider.checkIfUserIsFirstimeUser();
-        if(_detailsProvider.response.message.toLowerCase().contains("old") == false){
-       if (_detailsProvider.response.isRefered == true ){
-         _bottomSheetMore(context,_detailsProvider.response.referer);
-        }else {
-         _bottomSheetMore(context,'');
-       }
-        }
+        _detailsProvider.checkIfUserIsFirstimeUser().then((value) => {
+         print("at this point i have entered checkIfUserIsFirstimeUser()"+_detailsProvider.response.message),
+       // if user is new
+       if(_detailsProvider.response.message.toLowerCase().contains("new") == true){
+         print("at this point i have entered checkIfUserIsFirstimeUser() 2"+_detailsProvider.response.message),
 
+         //   if he has an invite, let him proceed
+           if (_detailsProvider.response.isRefered == true ){
+          _bottomSheetMore(context,_detailsProvider.response.referer)
+        }else {
+        // else ask him if he wants to proceed
+        _bottomSheetYesOrNo(context,'')
+      }
+    }
+       });
 
       }
       print("verId"+widget.verificationId);
@@ -147,8 +263,7 @@ class _OtpState extends State<Otp> {
       print("expected to have submitted");
     }catch(e){
       print("error dey o"+ e.toString());
-
-      handleError(e);
+      _detailsProvider.setMessage('could not  verify  at this time');
     }
 
   }
@@ -180,13 +295,12 @@ class _OtpState extends State<Otp> {
           return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-        title: Center(
-        child: Text('Log in', style: TextStyle(
+        centerTitle: true,
+        title: Text('Log in', style: TextStyle(
         fontSize: 20.0, fontWeight: FontWeight.bold,
         color: Colors.black,
            ),
         ),
-          ),
         ),
       body: Container(
         child: Column(
@@ -212,22 +326,35 @@ class _OtpState extends State<Otp> {
             ),
 
             Container(
-              margin:EdgeInsets.only(left:30,right:30),
+              margin:EdgeInsets.only(left:20,right:20),
+              padding:EdgeInsets.symmetric(horizontal:20,vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  width:1,
+                  color: Colors.grey[300],
+                ),),
               child: Row(
                 children: [
 
                   Expanded(child: TextField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    style:TextStyle(fontSize:25),
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
                     controller: _otpController,
                     onChanged:(value) {
                       setState(() {
                         smsOTP = value;
                       });
                     },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Verification Code',
+                    decoration:InputDecoration(
+                        counterText: "",
+                        border:InputBorder.none,
+                        hintText: 'Verification Code'
                     ),
-
                   ))
                 ],
               ),
