@@ -1,7 +1,8 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:entertainmate/screens/utility/verify_user_provider.dart';
+import 'package:entertainmate/screens/verify_phone/otp.dart';
 import '../complete_profile_screen.dart';
-import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/otp.dart';
+// import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,6 @@
 import 'package:entertainmate/phone_invite.dart';
 import 'package:entertainmate/screens/email_invite.dart';
-import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/phone_widget.dart';
+// import 'file:///C:/Users/Olugunde/Documents/FlutterApps/entertainmate/lib/screens/verify_phone/phone_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
