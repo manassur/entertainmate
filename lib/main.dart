@@ -1,11 +1,10 @@
 
 
+import 'package:entertainmate/mate.dart';
 import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
 import 'package:entertainmate/screens/utility/verify_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'screens/profile.dart';
 import 'screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -22,7 +21,8 @@ void main() async {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: SplashScreen (),
+          // home: SplashScreen (),
+          home: Mate(),
         ),
       ),
    );

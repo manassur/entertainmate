@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 //import 'package:timeago/timeago.dart' as timeago;
 
-// https://punchng.com/wp-json/wp/v2/posts?per_page=30
-// https://punchng.com/wp-json/wp/v2/posts?categories=13&per_page=10
-// https://punchng.com/wp-json/wp/v2/search?s=boko
 
 // http client constants
 var headers = <String, String>{
   "Accept": "application/x-www-form-urlencoded",
   'Content-Type': 'application/x-www-form-urlencoded',
-  'app_key': 'vvv'
+  'Authorization' : '342b86b7248d791b858b878e57c9aef3hjkkkhhuuu'
 };
 
 
@@ -28,6 +25,8 @@ const String SEND_SMS_INVITE =BASE_URL+"user/sms/invite";
 const String SEND_EMAIL_INVITE =BASE_URL+"user/email/invite";
 const String UPDATE_USER_DETAILS =BASE_URL+"user/profile/edit";
 const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
+const String FETCH_HOME_FEED ="user/feed";
+const String FETCH_FEED_DETAILS ="feed/details/1";
 
 
 // secure storage keys
@@ -136,7 +135,6 @@ class Constants {
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
     accentColor: lightAccent,
-    cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
@@ -161,7 +159,6 @@ class Constants {
     primaryColor: darkPrimary,
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
     appBarTheme: AppBarTheme(
       elevation: 0,
       textTheme: TextTheme(

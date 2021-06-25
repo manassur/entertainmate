@@ -1,9 +1,5 @@
-import 'package:entertainmate/screens/description_screen.dart';
-import 'package:entertainmate/screens/location_screen.dart';
 import 'package:entertainmate/screens/new_in_person_event.dart';
 import 'package:entertainmate/screens/photo_screen.dart';
-import 'package:entertainmate/screens/target_audience.dart';
-import 'package:entertainmate/screens/title_screen.dart';
 import 'package:flutter/material.dart';
 
 

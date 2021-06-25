@@ -11,9 +11,10 @@ class ApiClient {
 
   Future<dynamic> get(String url) async {
     print('Api Get, url $_baseUrl$url');
+
     var responseJson;
     try {
-      final response = await http.get(_baseUrl + url);
+      final response = await http.get(_baseUrl + url,  headers: Constants.headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       // print('No net');

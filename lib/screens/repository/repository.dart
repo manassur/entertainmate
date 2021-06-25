@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/generic_response.dart';
+import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/model/phone_check_response.dart';
 import 'package:entertainmate/screens/model/save_profile_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
@@ -140,7 +142,29 @@ class Repository {
   }
 
 
+  // Future<List<MateHomeModel>>fetchHomeFeed() async {
+  //   final response = await _apiClient.get(Constants.FETCH_HOME_FEED);
+  //   var data = json.decode(response);
+  //   print("this is response " + response.toString());
+  //   MateHomeResponse  mateHomeResponse = MateHomeResponse.fromJson(data);
+  //   return mateHomeResponse.mateHomes;
+  // }
 
+  Future<MateHomeModel>fetchHomeFeed() async {
+    final response = await _apiClient.get(Constants.FETCH_HOME_FEED);
+    final data = json.decode(response);
+      print("this is response feeds " + response.toString());
+
+    return MateHomeModel.fromJson(data);
+  }
+
+  Future<FeedDetailsModel>fetchFeedDetails() async {
+    final response = await _apiClient.get(Constants.FETCH_FEED_DETAILS);
+    final data = json.decode(response);
+    print("this is response feed details " + response.toString());
+
+    return FeedDetailsModel.fromJson(data);
+  }
 
 
   SharedPreferences prefs= null;

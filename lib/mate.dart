@@ -1,10 +1,11 @@
 import 'package:entertainmate/mate_home.dart';
-import 'package:entertainmate/screens/congrats.dart';
 import 'package:entertainmate/screens/mate_deals.dart';
 import 'package:entertainmate/screens/mate_notification.dart';
-import 'package:entertainmate/screens/profile.dart';
+import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/feed_home/mate_home_bloc.dart';
 import 'screens/profile_main.dart';
 
 class Mate extends StatefulWidget {
@@ -17,7 +18,11 @@ class _MateState extends State<Mate> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
-    Mate_Home(),
+
+    BlocProvider<MateHomeBloc>(
+        create: (context) => MateHomeBloc(mateHomeRepository: Repository()),
+        child: MateHome()
+    ),
     MateDeals(),
     MateNotification(),
     ProfileMain(),

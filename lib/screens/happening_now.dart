@@ -1,7 +1,9 @@
 import 'package:entertainmate/screens/utility/read_more.dart';
 import 'package:entertainmate/widgets/comments_widget.dart';
+import 'package:entertainmate/widgets/details_widget.dart';
 import 'package:entertainmate/widgets/interested_widget.dart';
 import 'package:entertainmate/widgets/people_widget.dart';
+import 'package:entertainmate/widgets/photos_widget.dart';
 import 'package:flutter/material.dart';
 
 class HappeningNowScreen extends StatefulWidget {
@@ -13,8 +15,12 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
-        backgroundColor: Colors.grey[300],
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+
         appBar:  AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -37,13 +43,14 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
             ),
           ],
         ),
-        body:SingleChildScrollView(
-          child: Column(
-            children: [
+
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top:0.3),
                 child: Container(
-                  color: Colors.white,
+                    color: Colors.white,
                     height: 45,
                     width: MediaQuery.of(context).size.width,
                     child: Center(
@@ -53,7 +60,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
               ),
 
               Padding (
-                padding: EdgeInsets.only (top: 10, bottom: 20 ),
+                padding: EdgeInsets.only (top: 10, bottom: 0 ),
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
                   decoration: BoxDecoration(
@@ -65,34 +72,34 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height:15),
+                      SizedBox(height:10),
 
                       Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.access_time, color: Colors.grey,),
-                       SizedBox(width:20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text("Today ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                                Text("7.00 ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                                Text("pm ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                                Text("until ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                                Text("9.00 ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                                Text("pm", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top:2.0),
-                              child: Text("Thursday, June 4", style: TextStyle(color: Colors.grey[500]),),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.access_time, color: Colors.grey,),
+                          SizedBox(width:20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Today ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                  Text("7.00 ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                  Text("pm ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                  Text("until ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                  Text("9.00 ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                  Text("pm", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top:2.0),
+                                child: Text("Thursday, June 4", style: TextStyle(color: Colors.grey[500]),),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                       SizedBox(height:20),
 
                       Row(
@@ -137,10 +144,10 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height:20),
+                      SizedBox(height:15),
 
-                      Divider(color: Colors.grey,),
-                      SizedBox(height:20),
+                      Divider(color: Colors.grey[400],),
+                      SizedBox(height:15),
 
                       Column(
                         children: [
@@ -224,18 +231,14 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
 
-                                    Column(
-                                      children: [
-                                        ReadMoreText(
-                                          "Lorem ipsum dolor sit amet, something for lorem Lorem ipsum dolor sit amet, something Lorem ipsum dolor sit amet, something lorem ipsum dolor omething lorem ipsum dolor omething lorem ipsum dolor",
-                                          trimLines: 3,
-                                          colorClickableText: Colors.grey.withOpacity(0.9),
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: '...See More',
-                                          trimExpandedText: ' See Less',
-                                          style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                                        ),
-                                      ],
+                                    ReadMoreText(
+                                      "Lorem ipsum dolor sit amet, something for lorem Lorem ipsum dolor sit amet, something Lorem ipsum dolor sit amet, something lorem ipsum dolor omething lorem ipsum dolor omething lorem ipsum dolor",
+                                      trimLines: 3,
+                                      colorClickableText: Colors.grey.withOpacity(0.9),
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: '...See More',
+                                      trimExpandedText: ' See Less',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                                     ),
                                   ],
                                 ),
@@ -252,50 +255,101 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                 ),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: 80,
-                      height: 26,
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(15.0),
-                         color: Colors.lightBlueAccent.withOpacity(0.2),
-                       ),
-                      child: Center(child: Text("People",
-                          style: TextStyle(color: Colors.blue, letterSpacing:1 , fontWeight: FontWeight.w500),))
-                  ),
+              DefaultTabController(
+                  length: 3,
+                  initialIndex: 0,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                          child: SizedBox(
+                            height: 50,
+                            child: AppBar(
+                              elevation: 0,
+                              backgroundColor: Colors.grey[200],
+                              bottom:  TabBar(
+                                unselectedLabelColor: Colors.grey[700],
+                                indicatorSize: TabBarIndicatorSize.label,
+                                labelColor: Colors.blue,
+                                indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30), // Creates border
+                                  color: Colors.lightBlueAccent.shade100.withOpacity(0.2),
 
-                  Container(
-                      width: 80,
-                      height: 26,
-                      child: Center(child: Text("Photos",
-                        style: TextStyle(color: Colors.grey[800], letterSpacing:1, fontWeight: FontWeight.w500 ),))
-                  ),
-                  Container(
-                      width: 80,
-                      height: 26,
-                      child: Center(child: Text("Details",
-                        style: TextStyle(color: Colors.grey[800], letterSpacing:1, fontWeight: FontWeight.w500 ),))
-                  ),
-                ],
-              ),
+                                ),
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 20.0),
-                child: Divider(color: Colors.grey[400]),
-              ),
+                                tabs: [
+                                  Container(
+                                    // color: Colors.red,
+                                    width: 85,
+                                    height: 30,
+                                    child: Tab(
+                                      text: "People",
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 85,
+                                    height: 30,
+                                    child: Tab(
+                                      text: "Photos",
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 85,
+                                    height: 30,
+                                    child: Tab(
+                                      text: "Details",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
 
-              PeopleWidget(),
+                        Padding(
+                          padding: const EdgeInsets.only(right:15.0, left: 15.0),
+                          child: Divider(color: Colors.grey[400],),
+                        ),
 
-              InterestedWidget(),
+                        SizedBox(height: 10,),
 
-              CommentWidget(),
 
-            ],
+                        SingleChildScrollView(
+                          child: Container(
+                              height: MediaQuery.of(context).size.height, //height of TabBarView
+
+                              child: TabBarView(children: <Widget>[
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(child: PeopleWidget()),
+
+                                      SizedBox(height: 15),
+
+                                      Expanded(child: InterestedWidget()),
+
+                                      SizedBox(height: 15),
+
+                                      Expanded(child: CommentWidget()),
+
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: PhotosWidget(),
+                                ),
+                                Container(
+                                  child:DetailsWidget(),
+                                ),
+                              ])),
+                        )
+                      ])),
+            ]),
           ),
         ),
-
+      ),
     );
   }
 }

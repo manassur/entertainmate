@@ -6,7 +6,6 @@ import 'package:entertainmate/screens/target_audience.dart';
 import 'package:entertainmate/screens/title_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class NewInPersonEventScreen extends StatefulWidget {
   @override
   _NewInPersonEventScreenState createState() => _NewInPersonEventScreenState();
