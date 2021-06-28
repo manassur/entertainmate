@@ -7,6 +7,7 @@ class NeighborhoodScreen extends StatefulWidget {
 }
 
 class _NeighborhoodScreenState extends State<NeighborhoodScreen> {
+  bool inPerson = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,16 @@ class _NeighborhoodScreenState extends State<NeighborhoodScreen> {
                     Text("In-person",
                       style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                  Spacer(),
-                  Icon(Icons.subdirectory_arrow_right_sharp, color: Colors.blue.shade600,)
+                    Checkbox(
+                      checkColor: Colors.blue.shade600,
+                      activeColor: Colors.white,
+                      value: this.inPerson,
+                      onChanged: (bool value) {
+                        setState(() {
+                          this.inPerson = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),

@@ -162,7 +162,6 @@ class Repository {
     final response = await _apiClient.get(Constants.FETCH_FEED_DETAILS);
     final data = json.decode(response);
     print("this is response feed details " + response.toString());
-
     return FeedDetailsModel.fromJson(data);
   }
 

@@ -9,7 +9,9 @@ class InPersonEventScreen extends StatefulWidget {
 }
 
 class _InPersonEventScreenState extends State<InPersonEventScreen> {
-  bool _flutter = false;
+  bool locationAudience = false;
+  bool interested = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -176,12 +178,12 @@ class _InPersonEventScreenState extends State<InPersonEventScreen> {
               SwitchListTile(
                 title: Text('Show location to the audience',
                   style: TextStyle(fontSize: 16),),
-                value: _flutter,
+                value: locationAudience,
                 activeColor: Colors.blue,
                 inactiveTrackColor: Colors.grey,
                 onChanged: (bool value) {
                   setState(() {
-                    _flutter = value;
+                    locationAudience = value;
                   });
                 },
               ),
@@ -189,12 +191,12 @@ class _InPersonEventScreenState extends State<InPersonEventScreen> {
                 title: Text('First interested first added to DM ROOM',
                   style: TextStyle(fontSize: 16),
                 ),
-                value: _flutter,
+                value: interested,
                 activeColor: Colors.blue,
                 inactiveTrackColor: Colors.grey,
                 onChanged: (bool value) {
                   setState(() {
-                    _flutter = value;
+                    interested = value;
                   });
                 },
               ),

@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 
-
 class FilterScreen extends StatefulWidget {
   @override
   _FilterScreenState createState() => _FilterScreenState();
 }
 
 class _FilterScreenState extends State<FilterScreen> {
+  bool soonLatest = true;
+  bool availableSeats = false;
+  bool fullSeat = true;
+  bool social = false;
+  bool sports = true;
+  bool arts = true;
+  bool nature = false;
+  bool moderating = true;
+  bool coModerating = false;
+  bool going = false;
+  bool interested = true;
+  bool invited = true;
+  bool commented = true;
+  bool saved = false;
+  bool others = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +73,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Soonest to latest",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                    Spacer(),
-                    Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.soonLatest,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.soonLatest = value;
+                          });
+                        },
+                      ),                      ],
                   ),
                 ),
               ),
@@ -96,7 +119,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Have available seats",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.availableSeats,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.availableSeats = value;
+                          });
+                        },
+                      ),
                     ],
                   ),
                    ),
@@ -114,8 +146,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Full(no available seats)",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.fullSeat,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.fullSeat = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
 
@@ -146,8 +186,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Social",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.social,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.social = value;
+                          });
+                        },
+                      ),                    ],
                   ),
                 ),
               ),
@@ -164,8 +212,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Sports",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.sports,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.sports = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -181,8 +237,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Arts",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.arts,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.arts = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -198,8 +262,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Nature",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.nature,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.nature = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
 
@@ -230,8 +302,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Moderating",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.moderating,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.moderating = value;
+                          });
+                        },
+                      ),                    ],
                   ),
                 ),
               ),
@@ -248,8 +328,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Co-moderating",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.coModerating,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.coModerating = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -265,8 +353,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Going",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.going,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.going = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -282,8 +378,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Interested",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.interested,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.interested = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -299,8 +403,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Invited",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.invited,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.invited = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -316,8 +428,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Commented",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.commented,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.commented = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -333,8 +453,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Saved",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
-                    ],
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.saved,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.saved = value;
+                          });
+                        },
+                      ),                    ],
                   ),),
               ),
               SizedBox(height: 0.7,),
@@ -350,7 +478,16 @@ class _FilterScreenState extends State<FilterScreen> {
                       Text("Others",
                         style: TextStyle(fontSize: 17, color: Colors.blue.shade600, fontWeight: FontWeight.w400),),
                       Spacer(),
-                      Icon(Icons.check, color: Colors.blue.shade600,)
+                      Checkbox(
+                        checkColor: Colors.blue.shade600,
+                        activeColor: Colors.white,
+                        value: this.others,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.others = value;
+                          });
+                        },
+                      ),
                     ],
                   ),),
               ),

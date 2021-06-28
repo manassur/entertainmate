@@ -86,6 +86,8 @@ class Post {
   String startDate;
   String endDate;
   List<GoingUsers> goingUsers;
+  List<Commenters> commenters;
+  List<InterestedUsers> interestedUsers;
 
   Post(
       {this.postId,
@@ -105,7 +107,9 @@ class Post {
         this.comments,
         this.startDate,
         this.endDate,
-        this.goingUsers});
+        this.goingUsers,
+        this.commenters,
+        this.interestedUsers});
 
   Post.fromJson(Map<String, dynamic> json) {
     postId = json['post_id'];
@@ -129,6 +133,18 @@ class Post {
       goingUsers = new List<GoingUsers>();
       json['going_users'].forEach((v) {
         goingUsers.add(new GoingUsers.fromJson(v));
+      });
+    }
+    if (json['commenters'] != null) {
+      commenters = new List<Commenters>();
+      json['commenters'].forEach((v) {
+        commenters.add(new Commenters.fromJson(v));
+      });
+    }
+    if (json['interested_users'] != null) {
+      interestedUsers = new List<InterestedUsers>();
+      json['interested_users'].forEach((v) {
+        interestedUsers.add(new InterestedUsers.fromJson(v));
       });
     }
   }
@@ -155,6 +171,13 @@ class Post {
     if (this.goingUsers != null) {
       data['going_users'] = this.goingUsers.map((v) => v.toJson()).toList();
     }
+    if (this.commenters != null) {
+      data['commenters'] = this.commenters.map((v) => v.toJson()).toList();
+    }
+    if (this.interestedUsers != null) {
+      data['interested_users'] =
+          this.interestedUsers.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -166,6 +189,44 @@ class GoingUsers {
   GoingUsers({this.id, this.profilePhoto});
 
   GoingUsers.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    profilePhoto = json['profilePhoto'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['profilePhoto'] = this.profilePhoto;
+    return data;
+  }
+}
+
+class Commenters {
+  String id;
+  String profilePhoto;
+
+  Commenters({this.id, this.profilePhoto});
+
+  Commenters.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    profilePhoto = json['profilePhoto'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['profilePhoto'] = this.profilePhoto;
+    return data;
+  }
+}
+
+class InterestedUsers {
+  String id;
+  String profilePhoto;
+
+  InterestedUsers({this.id, this.profilePhoto});
+
+  InterestedUsers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     profilePhoto = json['profilePhoto'];
   }
