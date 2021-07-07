@@ -6,6 +6,7 @@ import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/model/phone_check_response.dart';
 import 'package:entertainmate/screens/model/save_profile_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
+import 'package:entertainmate/screens/model/user_comment.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utility/constants.dart' as Constants;
@@ -165,6 +166,20 @@ class Repository {
     return FeedDetailsModel.fromJson(data);
   }
 
+  Future<UserCommentModel>fetchUserComments() async {
+    final response = await _apiClient.get(Constants.FETCH_USER_COMMENTS);
+    final data = json.decode(response);
+    print("this is response user details  " + response.toString());
+    return UserCommentModel.fromJson(data);
+  }
+
+  // Future<List<UserCommentModel>>fetchUserComment() async {
+  //   final response = await _apiClient.get(Constants.FETCH_USER_COMMENTS);
+  //   final data = json.decode(response);
+  //   print("this is response user comments " + response.toString());
+  //   UserCommentResponse userCommentResponse = UserCommentResponse.fromJson(data);
+  //   return userCommentResponse.userComments;
+  // }
 
   SharedPreferences prefs= null;
 

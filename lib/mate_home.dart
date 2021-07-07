@@ -1,6 +1,7 @@
 import 'package:entertainmate/screens/create_event.dart';
 import 'package:entertainmate/screens/filter_screen.dart';
 import 'package:entertainmate/screens/happening_now.dart';
+import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/neighborhood_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
@@ -22,6 +23,7 @@ class _MateHomeState extends State<MateHome> {
   Repository homeMateRepository;
   Repository feedDetailsRepository;
   MateHomeModel homeMateModel;
+  FeedDetailsModel feedDetailsModel;
   // RefreshController refreshController;
 
   bool isRefreshing=false;
@@ -223,7 +225,7 @@ class _MateHomeState extends State<MateHome> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>
               BlocProvider<FeedDetailsBloc>(
               create: (context) => FeedDetailsBloc(feedDetailsRepository: Repository()),
-              child: HappeningNowScreen()
+              child: HappeningNowScreen(postId: mateHomeModel.feeds[0].post.postId,)
           )
           ));
         },
@@ -249,8 +251,7 @@ class _MateHomeState extends State<MateHome> {
                       borderRadius: BorderRadius.circular(17.0),
                       image:  DecorationImage(
                         image: NetworkImage(
-                          "http://innovativehill.com/entertainmate/api/index.php/user/profilePhoto/hjkkkhhuuu"),
-                          //   'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
+                            'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
                         // image: NetworkImage('${mateHomeModel.feeds[0].profilePhoto}'),
                         fit: BoxFit.cover,
                       ),

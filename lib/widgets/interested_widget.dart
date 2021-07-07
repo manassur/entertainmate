@@ -32,7 +32,8 @@ class _InterestedWidgetState extends State<InterestedWidget> {
 
           ],
         ),
-      ),);
+      ),
+    );
   }
 
   Widget interestedList (){

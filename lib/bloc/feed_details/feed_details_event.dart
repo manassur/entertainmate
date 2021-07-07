@@ -1,4 +1,6 @@
+import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class FeedDetailsEvent extends Equatable {
   @override
@@ -6,6 +8,9 @@ abstract class FeedDetailsEvent extends Equatable {
 }
 
 class FetchFeedDetailsEvent extends FeedDetailsEvent {
+  List<FeedDetailsModel> feedDetails;
+  final String postId;
+  FetchFeedDetailsEvent({ @required this.postId});
   @override
   List<Object> get props => [];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 //import 'package:timeago/timeago.dart' as timeago;
 
 
@@ -11,7 +12,7 @@ var headers = <String, String>{
 
 
 
-const String BASE_URL="http://innovativehill.com/entertainmate/api/index.php/";
+const String BASE_URL="http://apprant.com/entertainmate/api/index.php/";
 
 const String CHECK_USER_EXIST =BASE_URL+"user/check/phone/";
 const String CHECK_HAS_REFERER =BASE_URL+"user/check/referstatus/";
@@ -27,7 +28,7 @@ const String UPDATE_USER_DETAILS =BASE_URL+"user/profile/edit";
 const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
 const String FETCH_HOME_FEED ="user/feed";
 const String FETCH_FEED_DETAILS ="feed/details/1";
-
+const String FETCH_USER_COMMENTS="feed/comments/1";
 
 // secure storage keys
 const String CHECK_LOGIN_STATUS = "loginstatus";
@@ -36,50 +37,24 @@ const String SESSION_TOKEN = "session_token";
 const String LOGGED_IN_USER = "user";
 
 
-
-
-
-
-
-const String SINGLE_NEWS ="posts?slug=";
-
-const String LATEST_NEWS ="posts?per_page=20&page=1";
-const String MORE_LATEST_NEWS ="posts?per_page=20&page=";
-
-const String NEWS_BY_CATEGORY ="posts?per_page=20&page=1&categories=";
-// const String MORE_NEWS_BY_CATEGORY ="posts?per_page=20&categories=&page=";
-const String MORE_NEWS_BY_CATEGORY ="posts?per_page=20&page=";
-// const String MORE_NEWS_BY_CATEGORY ="posts?per_page=20&page=&categories=&";
-
-//https://punchng.com/wp-json/wp/v2/posts?tags=370,2160
-const String NEWS_TAG ="posts?tags=";
-
-const String SEARCH_RESULT ="search?per_page=20&search=";
-const String MORE_SEARCH_RESULT ="search?per_page=20&search=&page=";
-
-// https://punchng.com/wp-json/wp/v2/pages/778714
-const String PRIVACY_POLICY ="pages/778714";
-const String ABOUT_US ="pages/164902";
-
-// https://punchng.com/category-payload/
-const String CATEGORY_LIST ="https://punchng.com/category-payload/";
-
-const String FEATURED_NEWS ="posts?categories=";
-// const String CATEGORY_LIST ="categories";
-// const String NEWS_BY_CATEGORY ="posts?categories=";
-// const String SEARCH_NEWS ="search?search=";
-// const String LATEST_NEWS ="posts?per_page=30";
-
-// newly added
-const String netCoreUrl ="https://api.netcoresmartech.com/apiv2?type=contact&activity=add&apikey=28b46bfdfd06f61d3a5b1d266e0b30d8";
-
 class Constants {
-//  static String readTimestamp(String timestamp) {
-//    final DateTime date = DateTime.parse(timestamp);
-//    var time = timeago.timeAgo(date);
-//    // print('time : '+time);
-//    return time;
-//  }
+ // static String readTimestamp(String timestamp) {
+ //   final DateTime date = DateTime.parse(timestamp);
+ //   var time = timeago.timeAgo(date);
+ //   // print('time : '+time);
+ //   return time;
+ // }
+
+
+ static String formattedTime(String dateTime) {
+  final DateTime timeDate = DateTime.parse(dateTime.toString());
+  var time =
+  // DateFormat().add_jm().format(timeDate);
+  // DateFormat.yMEd().add_jms().format(DateTime.now());
+  DateFormat.yMMMMd().add_jm().format(timeDate);
+
+  return time;
+  }
 
   static String latestNewsCacheKey ="latest";
   static String featuredNewsCacheKey ="featured";
