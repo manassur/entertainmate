@@ -179,15 +179,26 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
-  Future<GenericResponse> postComment( String comment, String postId) async {
-    var body = jsonEncode(<String, String>{
+  // Future<GenericResponse> postComment( String comment, String postId) async {
+  //   var body = jsonEncode(<String, String>{
+  //     'postId': postId,
+  //     'comment': comment
+  //   });
+  //   final response = await _apiClient.post(Constants.POST_COMMENT, body);
+  //   var data = json.decode(response);
+  //   print("comment posted successfully " + response.toString());
+  //   return GenericResponse.fromJson(data);
+  // }
+
+  Future<GenericResponse>postComment(String postId,String comment) async {
+    var body = <String, dynamic>{
       'postId': postId,
-      'comment': comment
-    });
-    final response = await _apiClient.post(Constants.POST_COMMENT, body);
+      'comment': comment,
+    };
+    final response = await _apiClient.postForm("https://apprant.com/entertainmate/api/index.php/"+Constants.POST_COMMENT,body);
     var data = json.decode(response);
-    print("comment posted successfully " + response.toString());
-    return GenericResponse.fromJson(data);
+      print("comment posted successfully " + response.toString());
+    return  GenericResponse.fromJson(data);
   }
 
   SharedPreferences prefs = null;

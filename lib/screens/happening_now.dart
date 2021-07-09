@@ -3,6 +3,7 @@ import 'package:entertainmate/bloc/feed_details/feed_details_event.dart';
 import 'package:entertainmate/bloc/feed_details/feed_details_state.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_state.dart';
@@ -153,7 +154,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                 );
               }
               else if (state is InterestFailureState) {
-                Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text(state.message)));
               }
             },
             child: Container(
