@@ -25,12 +25,12 @@ class ApiClient {
   }
 
   Future<dynamic> post(String url, dynamic body) async {
-    print('Api Post, url $url');
+    print('Api Post, url $_baseUrl$url');
     print('parameters:' + body.toString());
 
     var responseJson;
     try {
-      final response = await http.post(url, body: body);
+      final response = await http.post(_baseUrl + url, body: body, headers: Constants.headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       // print('No net');

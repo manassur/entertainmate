@@ -12,7 +12,7 @@ var headers = <String, String>{
 
 
 
-const String BASE_URL="http://apprant.com/entertainmate/api/index.php/";
+const String BASE_URL="https://apprant.com/entertainmate/api/index.php/";
 
 const String CHECK_USER_EXIST =BASE_URL+"user/check/phone/";
 const String CHECK_HAS_REFERER =BASE_URL+"user/check/referstatus/";
@@ -29,6 +29,8 @@ const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
 const String FETCH_HOME_FEED ="user/feed";
 const String FETCH_FEED_DETAILS ="feed/details/1";
 const String FETCH_USER_COMMENTS="feed/comments/1";
+const String SAVE_INTEREST="post/like?action=0&type=1&postId=1";
+const String POST_COMMENT="feed/comment";
 
 // secure storage keys
 const String CHECK_LOGIN_STATUS = "loginstatus";
@@ -38,14 +40,6 @@ const String LOGGED_IN_USER = "user";
 
 
 class Constants {
- // static String readTimestamp(String timestamp) {
- //   final DateTime date = DateTime.parse(timestamp);
- //   var time = timeago.timeAgo(date);
- //   // print('time : '+time);
- //   return time;
- // }
-
-
  static String formattedTime(String dateTime) {
   final DateTime timeDate = DateTime.parse(dateTime.toString());
   var time =

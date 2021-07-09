@@ -1,3 +1,5 @@
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/screens/create_event.dart';
 import 'package:entertainmate/screens/filter_screen.dart';
 import 'package:entertainmate/screens/happening_now.dart';
@@ -223,12 +225,30 @@ class _MateHomeState extends State<MateHome> {
       child: InkWell(
         onTap: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>
-              BlocProvider<FeedDetailsBloc>(
-              create: (context) => FeedDetailsBloc(feedDetailsRepository: Repository()),
-              child: HappeningNowScreen(postId: mateHomeModel.feeds[0].post.postId,)
-          )
-          ));
+              MultiBlocProvider(
+                providers:[
+                  BlocProvider<FeedDetailsBloc>(
+                create: (context) =>
+              FeedDetailsBloc(feedDetailsRepository: Repository()),
+                  ),
+
+                  BlocProvider<SaveInterestBloc>(
+                    create: (context) =>
+                        SaveInterestBloc(saveInterestRepository: Repository()),
+                  ),
+
+                  BlocProvider<PostCommentBloc>(
+                    create: (context) =>
+                        PostCommentBloc(postCommentRepository: Repository()),
+                  ),
+
+               ],
+                child: HappeningNowScreen(postId: mateHomeModel.feeds[0].post.postId,)
+          ),
+              )
+          );
         },
+
         child: Container(
           padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
           decoration: BoxDecoration(

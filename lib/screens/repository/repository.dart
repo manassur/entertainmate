@@ -18,13 +18,6 @@ class Repository {
   ApiClient _apiClient = ApiClient();
   final  httpClient = http.Client() ;
 
-//  Future<LatestNewsResponse>fetchSingleNews(String slug) async {
-//    final response = await _apiClient.get(Constants.SINGLE_NEWS+slug);
-//    var data = json.decode(response);
-//    return  LatestNewsResponse.fromJson(data);
-//  }
-
-
   Future<GenericResponse>checkIfUsernameIsAvailaible(String username) async {
     var body = <String, dynamic>{
       'username': username,
@@ -173,15 +166,31 @@ class Repository {
     return UserCommentModel.fromJson(data);
   }
 
-  // Future<List<UserCommentModel>>fetchUserComment() async {
-  //   final response = await _apiClient.get(Constants.FETCH_USER_COMMENTS);
-  //   final data = json.decode(response);
-  //   print("this is response user comments " + response.toString());
-  //   UserCommentResponse userCommentResponse = UserCommentResponse.fromJson(data);
-  //   return userCommentResponse.userComments;
-  // }
+  Future<GenericResponse>saveInterest(String action, postId,type) async {
+    var body = <String, dynamic>{
+      'action': action,
+      'type': type,
+      'postId': postId,
+    };
+    final response = await _apiClient.post(Constants.SAVE_INTEREST,body);
+    var data = json.decode(response);
+    print("this is response save post  " + response.toString());
 
-  SharedPreferences prefs= null;
+    return  GenericResponse.fromJson(data);
+  }
+
+  Future<GenericResponse> postComment( String comment, String postId) async {
+    var body = jsonEncode(<String, String>{
+      'postId': postId,
+      'comment': comment
+    });
+    final response = await _apiClient.post(Constants.POST_COMMENT, body);
+    var data = json.decode(response);
+    print("comment posted successfully " + response.toString());
+    return GenericResponse.fromJson(data);
+  }
+
+  SharedPreferences prefs = null;
 
   void openCache() async {
     prefs =  await SharedPreferences.getInstance();
