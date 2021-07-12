@@ -18,6 +18,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'model/feed_details_model.dart';
+import 'utility/constants.dart' as Constants;
+
 
 class HappeningNowScreen extends StatefulWidget {
   FeedDetailsModel feedDetailsModel;
@@ -694,7 +696,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                       size: 25, color: Colors.grey,
                                                     ),
                                                     Text(
-                                                      "Going (2 out of 4)",
+                                                      "Going (${feedDetailsModel.feeds[0].post.occupiedSeats} out of ${feedDetailsModel.feeds[0].post.availableSeats})",
                                                       style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
                                                     ),
                                                   ],
@@ -708,9 +710,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                           crossAxisSpacing: 10.0,
                                                           mainAxisSpacing: 10.0),
                                                   shrinkWrap: true,
-                                                  // itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
-                                                  itemCount: 7,
-                                                  itemBuilder: (ctx, pos) {
+                                                  itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
+                                                  //itemCount:7 ,
+                                                  itemBuilder: (ctx, goingPos) {
                                                     return Expanded(
                                                       child: Container(
                                                         child: GestureDetector(
@@ -733,7 +735,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                                     borderRadius: BorderRadius.circular(35.0),
                                                                     image: DecorationImage(
                                                                       image: NetworkImage(
-                                                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUmNfQXFzD5vLQlTtEkXH8hMKw2OzKjAkEog&usqp=CAU'),
+                                                                          Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto),
 
                                                                       // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
                                                                       fit: BoxFit.cover,
@@ -742,7 +744,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                "Adri",
+                                                                feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
                                                                 style: TextStyle(
                                                                     color: Colors.grey[800],
                                                                     fontWeight: FontWeight.bold, fontSize: 16),
@@ -781,7 +783,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                     color: Colors.grey,
                                                   ),
                                                   Text(
-                                                    "Interested (5)",
+                                                    "Interested (${feedDetailsModel.feeds[0].post.interestedUsers})",
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: Colors.grey,
@@ -798,9 +800,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                         crossAxisSpacing: 10.0,
                                                         mainAxisSpacing: 10.0),
                                                 shrinkWrap: true,
-                                                // itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
-                                                itemCount: 14,
-                                                itemBuilder: (ctx, pos) {
+                                                 itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
+                                                itemBuilder: (ctx, interestedPos) {
                                                   return Expanded(
                                                     child: Column(
                                                       children: [
@@ -813,8 +814,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                                     .circular(25.0),
                                                             image: DecorationImage(
                                                               image: NetworkImage(
-                                                                  // '${feedDetailsModel.feeds[0].post.interestedUsers[0].profilePhoto}'
-                                                                  'https://miro.medium.com/max/1500/1*obNLhNFoyq7hncg1c6HZTg.jpeg'),
+                                                                   Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
+                                                             ),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -824,7 +825,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                               const EdgeInsets.only(
                                                                   top: 1.0),
                                                           child: Text(
-                                                            "Micheal",
+                                                            '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}'
+                                                            ,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .grey[800],
@@ -866,7 +868,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                     color: Colors.grey,
                                                   ),
                                                   Text(
-                                                    "Comments (10)",
+                                                    "Comments (${feedDetailsModel.feeds[0].post.comments})",
                                                     style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
                                                   ),
                                                 ],
@@ -879,8 +881,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                         crossAxisSpacing: 10.0,
                                                         mainAxisSpacing: 10.0),
                                                 shrinkWrap: true,
-                                                itemCount: 13,
-                                                itemBuilder: (ctx, pos) {
+                                                itemCount:  feedDetailsModel.feeds[0].post.commenters.length,
+                                                itemBuilder: (ctx, commentPos) {
                                                   return Expanded(
                                                     child: Column(
                                                       children: [
@@ -892,8 +894,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                                 BorderRadius.circular(25.0),
                                                             image: DecorationImage(
                                                               image: NetworkImage(
-                                                                  // '${feedDetailsModel.feeds[0].post.commenters[0].profilePhoto}'
-                                                                  'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210526195007-john-benjamin-thornton.jpg'),
+                                                                  Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.commenters[commentPos].profilePhoto}'),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -909,8 +910,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                               ),
                                                             ),
                                                             Text(
-                                                              "Shamim",
-                                                              style: TextStyle(
+                                                            '${feedDetailsModel.feeds[0].post.commenters[commentPos].name}',
+
+                                                  style: TextStyle(
                                                                   color: Colors.grey[800],
                                                                   fontWeight: FontWeight.bold,
                                                                   fontSize: 16),

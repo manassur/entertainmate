@@ -1,6 +1,13 @@
+import 'package:entertainmate/screens/description_screen.dart';
+import 'package:entertainmate/screens/location_screen.dart';
 import 'package:entertainmate/screens/new_in_person_event.dart';
 import 'package:entertainmate/screens/photo_screen.dart';
+import 'package:entertainmate/screens/target_audience.dart';
+import 'package:entertainmate/screens/title_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'utility/create_event_provider.dart';
 
 
 class InPersonEventScreen extends StatefulWidget {
@@ -9,12 +16,12 @@ class InPersonEventScreen extends StatefulWidget {
 }
 
 class _InPersonEventScreenState extends State<InPersonEventScreen> {
-  bool locationAudience = false;
-  bool interested = true;
-
+  bool _flutter = false;
 
   @override
   Widget build(BuildContext context) {
+  return  Consumer<CreateEventProvider>(
+        builder: (context, data, child) {
     return Scaffold (
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[300],
@@ -178,12 +185,12 @@ class _InPersonEventScreenState extends State<InPersonEventScreen> {
               SwitchListTile(
                 title: Text('Show location to the audience',
                   style: TextStyle(fontSize: 16),),
-                value: locationAudience,
+                value: data.isLocationShown,
                 activeColor: Colors.blue,
                 inactiveTrackColor: Colors.grey,
                 onChanged: (bool value) {
                   setState(() {
-                    locationAudience = value;
+                    data.isLocationShown = value;
                   });
                 },
               ),
@@ -191,12 +198,12 @@ class _InPersonEventScreenState extends State<InPersonEventScreen> {
                 title: Text('First interested first added to DM ROOM',
                   style: TextStyle(fontSize: 16),
                 ),
-                value: interested,
+                value: data.isFirstInterestedAdded,
                 activeColor: Colors.blue,
                 inactiveTrackColor: Colors.grey,
                 onChanged: (bool value) {
                   setState(() {
-                    interested = value;
+                    data.isFirstInterestedAdded = value;
                   });
                 },
               ),
@@ -226,5 +233,6 @@ class _InPersonEventScreenState extends State<InPersonEventScreen> {
           ),
         )
     );
+        });
   }
 }

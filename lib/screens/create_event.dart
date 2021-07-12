@@ -1,6 +1,10 @@
 
-import 'package:entertainmate/screens/in_person_event.dart';
+import 'package:entertainmate/bloc/publish_event/publish_event_bloc.dart';
+import 'package:entertainmate/screens/new_in_person_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'repository/repository.dart';
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -38,7 +42,11 @@ class _CreateEventState extends State<CreateEvent> {
 
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => InPersonEventScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
+                          create: (context) =>
+                              PublishEventBloc(repository: Repository(),context:context),
+                          child: NewInPersonEventScreen(),
+                        ),));
 
                       },
                       child: Card(

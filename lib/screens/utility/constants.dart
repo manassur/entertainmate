@@ -32,6 +32,7 @@ const String FETCH_FEED_DETAILS ="feed/details/";
 const String FETCH_USER_COMMENTS="feed/comments/1";
 const String SAVE_INTEREST="post/like?action=0&type=1&postId=1";
 const String POST_COMMENT="feed/comment";
+const String CREATE_EVENT=BASE_URL+"user/add_event";
 
 // secure storage keys
 const String CHECK_LOGIN_STATUS = "loginstatus";

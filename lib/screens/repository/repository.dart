@@ -197,10 +197,30 @@ class Repository {
     };
     final response = await _apiClient.postForm("https://apprant.com/entertainmate/api/index.php/"+Constants.POST_COMMENT,body);
     var data = json.decode(response);
-      print("comment posted successfully " + response.toString());
+    print("comment posted successfully " + response.toString());
     return  GenericResponse.fromJson(data);
   }
 
+
+  Future<GenericResponse>publishEvent(eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded) async {
+    var body = <String, dynamic>{
+      'type':eventType.toString() ,
+      'category_id': categoryId.toString(),
+      'people_count':peopleCount.toString() ,
+      'title': title,
+      'description': description,
+      'location':location ,
+      'start_date': startDate,
+      'end_date':endDate ,
+      'audience':audience ,
+      'isLocationShown': isLocationShown==true?"1":"0 ",
+      'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0"
+    };
+    final response = await _apiClient.postForm(Constants.CREATE_EVENT,body);
+    var data = json.decode(response);
+    print("event created successfully " + response.toString());
+    return  GenericResponse.fromJson(data);
+  }
   SharedPreferences prefs = null;
 
   void openCache() async {

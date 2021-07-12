@@ -1,4 +1,5 @@
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/publish_event/publish_event_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/screens/create_event.dart';
 import 'package:entertainmate/screens/filter_screen.dart';
@@ -81,12 +82,17 @@ class _MateHomeState extends State<MateHome> {
           Row(
             children: [
               IconButton(
+
                 icon: Icon(
                   Icons.add,
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreateEvent()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
+                    create: (context) =>
+                        PublishEventBloc(repository: Repository(),context:context),
+                    child: CreateEvent(),
+                  ),));
                 },
               ),
               IconButton(
