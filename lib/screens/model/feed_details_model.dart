@@ -88,7 +88,7 @@ class Post {
   List<GoingUsers> goingUsers;
   List<Commenters> commenters;
   List<InterestedUsers> interestedUsers;
-
+  List<Images> images;
   Post(
       {this.postId,
         this.type,
@@ -109,7 +109,8 @@ class Post {
         this.endDate,
         this.goingUsers,
         this.commenters,
-        this.interestedUsers});
+        this.interestedUsers,
+        this.images});
 
   Post.fromJson(Map<String, dynamic> json) {
     postId = json['post_id'];
@@ -147,6 +148,13 @@ class Post {
         interestedUsers.add(new InterestedUsers.fromJson(v));
       });
     }
+
+    if (json['images'] != null) {
+      images = new List<Images>();
+      json['images'].forEach((v) {
+        images.add(new Images.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -177,6 +185,9 @@ class Post {
     if (this.interestedUsers != null) {
       data['interested_users'] =
           this.interestedUsers.map((v) => v.toJson()).toList();
+    }
+    if (this.images != null) {
+      data['images'] = this.images.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -244,3 +255,26 @@ class InterestedUsers {
     return data;
   }
 }
+class Images {
+  String id;
+  String postId;
+  String image;
+
+  Images({this.id, this.postId, this.image});
+
+  Images.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    postId = json['post_id'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['post_id'] = this.postId;
+    data['image'] = this.image;
+    return data;
+  }
+}
+
+

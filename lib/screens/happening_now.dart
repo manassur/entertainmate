@@ -38,7 +38,6 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
   FeedDetailsBloc feedDetailsBloc;
   SaveInterestBloc saveInterestBloc;
   Repository repository;
-  FeedDetailsModel feedDetailsModel = FeedDetailsModel();
   bool isSaved=false;
   PostCommentBloc postCommentBloc;
   TextEditingController commentController = TextEditingController();
@@ -195,6 +194,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     ],
                   ),
 
+
+
+                  // show invite Users modal
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -205,13 +207,14 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           borderRadius: BorderRadius.circular(30.0),
                           color: Colors.grey[300],
                         ),
-                        child: Icon(Icons.add_outlined),
+                        child:Icon(Icons.add),
                       ),
                       SizedBox(height: 5),
                       Text("Invite")
                     ],
                   ),
 
+                  // show add comment modal
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -290,6 +293,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                       Text("Comment")
                     ],
                   ),
+
+
+
 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -936,7 +942,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
 
                             //PHOTOS TAB
                             Container(
-                              child: PhotosWidget(),
+                              child: PhotosWidget(images:feedDetailsModel.feeds[0].post.images),
                             ),
 
                             //DETAILS TAB

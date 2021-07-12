@@ -202,7 +202,19 @@ class Repository {
   }
 
 
-  Future<GenericResponse>publishEvent(eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded) async {
+  Future<GenericResponse>publishEvent(eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded,List<File> images) async {
+   // we have to convert each image to base64, and then convert the list to a json
+    List<String> imagesInBase64 = List();
+    for(var f in images){
+      String fileInBase64;
+      if(f!=null){
+        List<int> fileInByte = f.readAsBytesSync();
+        fileInBase64 = base64Encode(fileInByte);
+      }else{ fileInBase64 = 'null';}
+      imagesInBase64.add(fileInBase64);
+    }
+
+
     var body = <String, dynamic>{
       'type':eventType.toString() ,
       'category_id': categoryId.toString(),
@@ -214,7 +226,8 @@ class Repository {
       'end_date':endDate ,
       'audience':audience ,
       'isLocationShown': isLocationShown==true?"1":"0 ",
-      'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0"
+      'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0",
+      'images':jsonEncode(imagesInBase64).toString(),
     };
     final response = await _apiClient.postForm(Constants.CREATE_EVENT,body);
     var data = json.decode(response);

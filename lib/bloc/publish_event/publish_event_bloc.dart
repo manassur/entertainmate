@@ -37,7 +37,8 @@ class PublishEventBloc extends Bloc<PublishEventEvent, PublishEventState> {
             _provider.endDate,
             _provider.audience,
             _provider.isLocationShown,
-            _provider.isFirstInterestedAdded
+            _provider.isFirstInterestedAdded,
+               _provider.images
     );
         if(response.error!=true){
           yield PostedEventState(postId: response.code.toString() ); // in this case the code is the id of the event that was just created

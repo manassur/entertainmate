@@ -1,7 +1,11 @@
+import 'package:entertainmate/screens/model/feed_details_model.dart';
+import 'package:entertainmate/screens/utility/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 
 
 class PhotosWidget extends StatefulWidget {
+  List<Images> images;
+  PhotosWidget({this.images});
   @override
   _PhotosWidgetState createState() => _PhotosWidgetState();
 }
@@ -50,7 +54,7 @@ class _PhotosWidgetState extends State<PhotosWidget> {
                 mainAxisSpacing: 0.0
             ),
             shrinkWrap: true,
-            itemCount: 19,
+            itemCount: widget.images.length,
             scrollDirection: Axis.vertical,
             itemBuilder: (ctx, pos){
               return Container(
@@ -65,7 +69,7 @@ class _PhotosWidgetState extends State<PhotosWidget> {
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         image:  DecorationImage(
-                          image: NetworkImage('https://encryted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUmNfQXFzD5vLQlTtEkXH8hMKw2OzKjAkEog&usqp=CAU'),
+                          image: NetworkImage(Constants.IMAGE_BASE_URL+widget.images[pos].image),
                           fit: BoxFit.cover,
                         ),
                       ),

@@ -20,6 +20,7 @@ class CreateEventProvider extends ChangeNotifier {
   int eventType=0,categoryId=0,peopleCount=0;
   String title='',description='',location='',startDate='',endDate='',audience='',categoryName='',peopleCountText='';
   bool isLocationShown=false,isFirstInterestedAdded=false;
+  List<File> images = List();
 
   void setEventType(value) {
     eventType = value;
@@ -77,6 +78,16 @@ class CreateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addImage(value) {
+    images.add(value);
+    notifyListeners();
+  }
+
+// value in this case is the index
+  void removeImage(value) {
+    images.removeAt(value);
+    notifyListeners();
+  }
 
 //  bool isLoading() {
 //    return loading;
