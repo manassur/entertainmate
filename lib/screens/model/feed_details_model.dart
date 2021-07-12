@@ -184,18 +184,20 @@ class Post {
 
 class GoingUsers {
   String id;
-  String profilePhoto;
+  String profilePhoto,name;
 
-  GoingUsers({this.id, this.profilePhoto});
+  GoingUsers({this.id, this.profilePhoto,this.name});
 
   GoingUsers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    name = json['name'];
     profilePhoto = json['profilePhoto'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['name'] = this.name;
     data['profilePhoto'] = this.profilePhoto;
     return data;
   }
@@ -203,18 +205,20 @@ class GoingUsers {
 
 class Commenters {
   String id;
-  String profilePhoto;
+  String profilePhoto,name;
 
-  Commenters({this.id, this.profilePhoto});
+  Commenters({this.id, this.profilePhoto,this.name});
 
   Commenters.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    name = json['name'];
     profilePhoto = json['profilePhoto'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['name'] = this.name;
     data['profilePhoto'] = this.profilePhoto;
     return data;
   }
@@ -222,18 +226,20 @@ class Commenters {
 
 class InterestedUsers {
   String id;
-  String profilePhoto;
+  String profilePhoto,name;
 
-  InterestedUsers({this.id, this.profilePhoto});
+  InterestedUsers({this.id, this.profilePhoto,this.name});
 
   InterestedUsers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    name = json['name'];
     profilePhoto = json['profilePhoto'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['name'] = this.name;
     data['profilePhoto'] = this.profilePhoto;
     return data;
   }

@@ -22,7 +22,7 @@ class FeedDetailsBloc extends Bloc<FeedDetailsEvent, FeedDetailsState>{
     if (event is FetchFeedDetailsEvent) {
       yield FeedDetailsLoadingState();
       try{
-        FeedDetailsModel  feedDetails = await feedDetailsRepository.fetchFeedDetails();
+        FeedDetailsModel  feedDetails = await feedDetailsRepository.fetchFeedDetails(event.postId);
         if(feedDetails.feeds.isNotEmpty) {
           yield FeedDetailsLoadedState(
               feedDetails: feedDetails, message: "Feed Details Updated");

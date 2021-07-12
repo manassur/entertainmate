@@ -14,6 +14,7 @@ import 'bloc/feed_details/feed_details_bloc.dart';
 import 'bloc/feed_home/mate_home_bloc.dart';
 import 'bloc/feed_home/mate_home_event.dart';
 import 'bloc/feed_home/mate_home_state.dart';
+import 'screens/utility/constants.dart' as Constants;
 
 class MateHome extends StatefulWidget {
   @override
@@ -220,283 +221,297 @@ class _MateHomeState extends State<MateHome> {
   }
 
   Widget buildHomeFeedList (MateHomeModel mateHomeModel){
-    return  Padding (
-      padding: EdgeInsets.symmetric (vertical: 10 ),
-      child: InkWell(
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>
-              MultiBlocProvider(
-                providers:[
-                  BlocProvider<FeedDetailsBloc>(
-                create: (context) =>
-              FeedDetailsBloc(feedDetailsRepository: Repository()),
-                  ),
+   return Expanded(
+     child: ListView.builder(
+        itemCount: mateHomeModel.feeds.length,
+        itemBuilder: (context,pos){
+          return  Padding (
+            padding: EdgeInsets.symmetric (vertical: 10 ),
+            child: InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                    MultiBlocProvider(
+                        providers:[
+                          BlocProvider<FeedDetailsBloc>(
+                            create: (context) =>
+                                FeedDetailsBloc(feedDetailsRepository: Repository()),
+                          ),
 
-                  BlocProvider<SaveInterestBloc>(
-                    create: (context) =>
-                        SaveInterestBloc(saveInterestRepository: Repository()),
-                  ),
+                          BlocProvider<SaveInterestBloc>(
+                            create: (context) =>
+                                SaveInterestBloc(saveInterestRepository: Repository()),
+                          ),
 
-                  BlocProvider<PostCommentBloc>(
-                    create: (context) =>
-                        PostCommentBloc(postCommentRepository: Repository()),
-                  ),
+                          BlocProvider<PostCommentBloc>(
+                            create: (context) =>
+                                PostCommentBloc(postCommentRepository: Repository()),
+                          ),
 
-               ],
-                child: HappeningNowScreen(postId: mateHomeModel.feeds[0].post.postId,)
-          ),
-              )
-          );
-        },
-
-        child: Container(
-          padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17.0),
-                      image:  DecorationImage(
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
-                        // image: NetworkImage('${mateHomeModel.feeds[0].profilePhoto}'),
-                        fit: BoxFit.cover,
-                      ),
+                        ],
+                        child: HappeningNowScreen(postId: mateHomeModel.feeds[pos].post.postId,)
                     ),
+                )
+                );
+              },
+
+              child: Container(
+                padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
-
-                  SizedBox( width: 20),
-
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          // ${latestNewsModel[pos].xFeaturedMedia},
-                            '${mateHomeModel.feeds[0].username}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 4.5, 0.0, 0.0),
-                          child: Text(
-                              '${mateHomeModel.feeds[0].description}',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),),
+                        Container(
+                          height: 48,
+                          width: 48,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(17.0),
+                            image:  DecorationImage(
+                              image: NetworkImage(
+                                  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].profilePhoto}'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Text("5hr ", style: TextStyle(color: Colors.grey),),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                  height: 16,
-                                  width: 16,
-                                  child: Image.network(
-                                      "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png"
-                                  )),
-                            )
-                          ],
+
+                        SizedBox( width: 20),
+
+                        Flexible(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                // ${latestNewsModel[pos].xFeaturedMedia},
+                                  '${mateHomeModel.feeds[pos].username}',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0, 4.5, 0.0, 0.0),
+                                child: Text(
+                                  '${mateHomeModel.feeds[pos].description}',
+                                  style: TextStyle(fontSize: 16, color: Colors.grey),),
+                              ),
+                              Row(
+                                children: [
+                                  Text("5hr ", style: TextStyle(color: Colors.grey),),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                                    child: Container(
+                                        height: 16,
+                                        width: 16,
+                                        child: Image.network(
+                                            "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png"
+                                        )),
+                                  )
+                                ],
+                              ),
+
+                            ],
+                          ),
                         ),
+                        Text("Interested ", style: TextStyle(fontSize: 16, color: Colors.black87),),
 
                       ],
                     ),
-                  ),
-                  Text("Interested ", style: TextStyle(fontSize: 16, color: Colors.black87),),
 
-                ],
-              ),
-
-              SizedBox(height: 18,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-
-                    ),
-                  ),
-
-                  SizedBox( width: 20),
-
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    SizedBox(height: 18,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Row(
-                          children: [
-                            Text("7:00 ", style: TextStyle(fontSize: 16),),
-                            Text("pm", style: TextStyle(fontSize: 16),),
-                            Text(" until ", style: TextStyle(fontSize: 16),),
-                            Text("9:00 ", style: TextStyle(fontSize: 16),),
-                            Text("pm", style: TextStyle(fontSize: 16),),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
-                          child: Text(
-                            "${mateHomeModel.feeds[0].post.content}",
-                            style:(TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),),
-                        ),
-                        Column(
-                          children: [
-                            ReadMoreText(
-                              // "Lorem ipsum dolor sit amet, something for lorem Lorem ipsum dolor sit amet, something Lorem ipsum dolor sit amet, something lorem ipsum dolor omething lorem ipsum dolor omething lorem ipsum dolor",
-                              "${mateHomeModel.feeds[0].post.description}",
-                              trimLines: 3,
-                              colorClickableText: Colors.grey.withOpacity(0.9),
-                              trimMode: TrimMode.Line,
-                              trimCollapsedText: '...See More',
-                              trimExpandedText: ' See Less',
+                        Container(
+                          height: 48,
+                          width: 48,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
 
-                              style: TextStyle(fontSize: 17, color: Colors.black87),
-                            ),
-                          ],
+                          ),
                         ),
 
-                        Divider(color: Colors.grey),
-                        SizedBox(height: 10,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: <Widget>[
-                                new Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    image:  DecorationImage(
-                                      image: NetworkImage('https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
-                                      fit: BoxFit.cover,
-                                    ),
+                        SizedBox( width: 20),
+
+                        Flexible(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Text("7:00 ", style: TextStyle(fontSize: 16),),
+                                  Text("pm", style: TextStyle(fontSize: 16),),
+                                  Text(" until ", style: TextStyle(fontSize: 16),),
+                                  Text("9:00 ", style: TextStyle(fontSize: 16),),
+                                  Text("pm", style: TextStyle(fontSize: 16),),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
+                                child: Text(
+                                  "${mateHomeModel.feeds[pos].post.content}",
+                                  style:(TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),),
+                              ),
+                              Column(
+                                children: [
+                                  ReadMoreText(
+                                    // "Lorem ipsum dolor sit amet, something for lorem Lorem ipsum dolor sit amet, something Lorem ipsum dolor sit amet, something lorem ipsum dolor omething lorem ipsum dolor omething lorem ipsum dolor",
+                                    "${mateHomeModel.feeds[pos].post.description}",
+                                    trimLines: 3,
+                                    colorClickableText: Colors.grey.withOpacity(0.9),
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: '...See More',
+                                    trimExpandedText: ' See Less',
+
+                                    style: TextStyle(fontSize: 17, color: Colors.black87),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
-                                  child: Container(
-                                    height: 45,
-                                    width: 45,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      image:  DecorationImage(
-                                        image: NetworkImage('https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?size=626&ext=jpg'),
-                                        fit: BoxFit.cover,
+                                ],
+                              ),
+
+                              Divider(color: Colors.grey),
+                              SizedBox(height: 10,),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: <Widget>[
+                                      new Container(
+                                        height: 45,
+                                        width: 45,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          image:  DecorationImage(
+                                            image: NetworkImage(
+                                                mateHomeModel.feeds[pos].post.goingUsers.length>0?  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].post.goingUsers[0].profilePhoto}':''),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
+                                        child: Container(
+                                          height: 45,
+                                          width: 45,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            image:  DecorationImage(
 
-                              ],
-                            ),
+                                              image: NetworkImage(
+                                                  mateHomeModel.feeds[pos].post.goingUsers.length>1?  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].post.goingUsers[0].profilePhoto}':''),
+                                              fit: BoxFit.cover,
 
-                            SizedBox(width: 20),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text("Open to the ", style: TextStyle(fontSize: 17, color: Colors.black87),),
-                                    Text(
-                                      "${mateHomeModel.feeds[0].post.audience}",
-                                      style: TextStyle(fontSize: 17, color: Colors.black87),),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-                                  child: Row(
-                                    children: [
-                                      Text("Occupied seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                      Text(
-                                        "${mateHomeModel.feeds[0].post.occupiedSeats}",
-                                        style: TextStyle(color: Colors.grey, fontSize: 17),)
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
                                     ],
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text("Available seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                    Text(
-                                      "${mateHomeModel.feeds[0].post.availableSeats}",
-                                      style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 10),
 
-                        Divider(color: Colors.grey),
+                                  SizedBox(width: 20),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("Open to the ", style: TextStyle(fontSize: 17, color: Colors.black87),),
+                                          Text(
+                                            "${mateHomeModel.feeds[pos].post.audience}",
+                                            style: TextStyle(fontSize: 17, color: Colors.black87),),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+                                        child: Row(
+                                          children: [
+                                            Text("Occupied seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
+                                            Text(
+                                              "${mateHomeModel.feeds[pos].post.occupiedSeats}",
+                                              style: TextStyle(color: Colors.grey, fontSize: 17),)
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text("Available seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
+                                          Text(
+                                            "${mateHomeModel.feeds[pos].post.availableSeats}",
+                                            style: TextStyle(color: Colors.grey, fontSize: 17),),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 10),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.save_alt_rounded),
-                                Text(
-                                    "${mateHomeModel.feeds[0].post.saves}",
-                                    style: TextStyle(fontSize: 17, color: Colors.black87)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.add_outlined),
-                                Text(
-                                    "${mateHomeModel.feeds[0].post.going}",
-                                    style: TextStyle(fontSize: 17, color: Colors.black87)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.mode_comment_outlined),
-                                Text(
-                                    "${mateHomeModel.feeds[0].post.comments}",
-                                    style: TextStyle(fontSize: 17, color: Colors.black87)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.thumb_up_alt_outlined),
-                                Text(
-                                    "${mateHomeModel.feeds[0].post.interests}",
-                                    style: TextStyle(fontSize: 17, color: Colors.black87)),
-                              ],
-                            ),
-                          ],
+                              Divider(color: Colors.grey),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.save_alt_rounded),
+                                      Text(
+                                          "${mateHomeModel.feeds[pos].post.saves}",
+                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.add_outlined),
+                                      Text(
+                                          "${mateHomeModel.feeds[pos].post.going}",
+                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.mode_comment_outlined),
+                                      Text(
+                                          "${mateHomeModel.feeds[pos].post.comments}",
+                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.thumb_up_alt_outlined),
+                                      Text(
+                                          "${mateHomeModel.feeds[pos].post.interests}",
+                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+
+                            ],
+                          ),
                         ),
 
                       ],
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
-
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
-    );
+   );
+
 
   }
 

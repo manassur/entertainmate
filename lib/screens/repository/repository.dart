@@ -152,8 +152,8 @@ class Repository {
     return MateHomeModel.fromJson(data);
   }
 
-  Future<FeedDetailsModel>fetchFeedDetails() async {
-    final response = await _apiClient.get(Constants.FETCH_FEED_DETAILS);
+  Future<FeedDetailsModel>fetchFeedDetails(postId) async {
+    final response = await _apiClient.get(Constants.FETCH_FEED_DETAILS+postId);
     final data = json.decode(response);
     print("this is response feed details " + response.toString());
     return FeedDetailsModel.fromJson(data);

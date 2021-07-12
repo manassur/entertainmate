@@ -47,6 +47,10 @@ dependencies:
   bloc: ^6.1.3
   flutter_bloc: ^6.1.3
   flutter_html: ^0.10.0
+  flutter_datetime_picker:
+  google_place:
+  ffi: ^1.0.0
+  equatable: ^1.0.2
   intl: ^0.16.1
   modal_bottom_sheet: ^1.0.0
 
