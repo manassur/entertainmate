@@ -9,6 +9,7 @@ import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_state.dart';
 import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
 import 'package:entertainmate/screens/model/post_comment_model.dart';
+import 'package:entertainmate/screens/post_comment_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
 import 'package:entertainmate/widgets/people_dialog_info.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'utility/constants.dart' as Constants;
 
@@ -197,21 +199,31 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
 
 
                   // show invite Users modal
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Colors.grey[300],
+                  InkWell(
+                    // onTap: ()showDialog<String>{
+                    //   Navigator.push(context, MaterialPageRoute(
+                    //       builder: (context)=>InviteScreen()));
+                    // },
+                    onTap: () => showDialog<String>(context: context,
+                      builder: ( context) => InviteScreen()
+                    ),
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Colors.grey[300],
+                          ),
+                          child:Icon(Icons.add),
                         ),
-                        child:Icon(Icons.add),
-                      ),
-                      SizedBox(height: 5),
-                      Text("Invite")
-                    ],
+                        SizedBox(height: 5),
+                        Text("Invite")
+                      ],
+                    ),
                   ),
 
                   // show add comment modal
@@ -219,66 +231,70 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: (){
-                          showMaterialModalBottomSheet(
-                            context: context,
-                            builder: (context) => SingleChildScrollView(
-                              controller: ModalScrollController.of(context),
-                              child: Container(
-                                  height: 250,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Container(
-                                          height:45,
-                                          child: Center(
-                                            child: TextField(
-                                              keyboardType: TextInputType.text,
-                                              decoration:InputDecoration(
-                                                  counterText: "",
-                                                  // border:InputBorder.none,
-                                               border: OutlineInputBorder(
-                                                   borderSide: BorderSide(color: Colors.grey[300]),
-                                                   borderRadius: BorderRadius.circular(15.0)
-                                               ),
-                                                  hintText: 'Write your comment...'
-                                              ),
-                                              onChanged:(value) {
-                                                setState(() { });
-                                              },
-                                              controller: commentController,
+                        onTap: () => showDialog<String>(context: context,
+                            builder: ( context) => PostCommentScreen()
+                        ),
 
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Padding(padding: const EdgeInsets.all(10.0),
-                                        child: InkWell(
-                                          onTap: (){
-                                            postCommentBloc.add(PostingCommentEvent(postId: "1", comment: commentController.text));
-                                            print( "checking posting comment status status");
-
-                                          },
-                                          child: Container(
-                                            height: 45,
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue,
-                                              borderRadius: BorderRadius.circular(15.0)
-                                            ),
-                                            child: Center(child: Text("Post Comment",
-                                              style: TextStyle(color: Colors.white,),)),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          );
-                        },
+                        // onTap: (){
+                        //   showMaterialModalBottomSheet(
+                        //     context: context,
+                        //     builder: (context) => SingleChildScrollView(
+                        //       controller: ModalScrollController.of(context),
+                        //       child: Container(
+                        //           height: 250,
+                        //           child: Column(
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             crossAxisAlignment: CrossAxisAlignment.center,
+                        //             children: [
+                        //               Padding(
+                        //                 padding: const EdgeInsets.all(10.0),
+                        //                 child: Container(
+                        //                   height:45,
+                        //                   child: Center(
+                        //                     child: TextField(
+                        //                       keyboardType: TextInputType.text,
+                        //                       decoration:InputDecoration(
+                        //                           counterText: "",
+                        //                           // border:InputBorder.none,
+                        //                        border: OutlineInputBorder(
+                        //                            borderSide: BorderSide(color: Colors.grey[300]),
+                        //                            borderRadius: BorderRadius.circular(15.0)
+                        //                        ),
+                        //                           hintText: 'Write your comment...'
+                        //                       ),
+                        //                       onChanged:(value) {
+                        //                         setState(() { });
+                        //                       },
+                        //                       controller: commentController,
+                        //
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //               SizedBox(height: 20),
+                        //               Padding(padding: const EdgeInsets.all(10.0),
+                        //                 child: InkWell(
+                        //                   onTap: (){
+                        //                     postCommentBloc.add(PostingCommentEvent(postId: "1", comment: commentController.text));
+                        //                     print( "checking posting comment status status");
+                        //
+                        //                   },
+                        //                   child: Container(
+                        //                     height: 45,
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.blue,
+                        //                       borderRadius: BorderRadius.circular(15.0)
+                        //                     ),
+                        //                     child: Center(child: Text("Post Comment",
+                        //                       style: TextStyle(color: Colors.white,),)),
+                        //                   ),
+                        //                 ),
+                        //               )
+                        //             ],
+                        //           )),
+                        //     ),
+                        //   );
+                        // },
                         child: Container(
                             height: 40,
                             width: 40,
@@ -293,9 +309,6 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                       Text("Comment")
                     ],
                   ),
-
-
-
 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

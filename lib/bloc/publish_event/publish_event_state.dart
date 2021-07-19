@@ -19,7 +19,8 @@ class PublishEventLoadingState extends PublishEventState {
 
 class PostedEventState extends PublishEventState {
   String postId;
-  PostedEventState({@required this.postId});
+  String message;
+  PostedEventState({@required this.postId, this.message});
   @override
   List<Object> get props => [];
 }

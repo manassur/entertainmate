@@ -1,5 +1,6 @@
 import 'package:entertainmate/bloc/publish_event/publish_event_bloc.dart';
 import 'package:entertainmate/bloc/publish_event/publish_event_event.dart';
+import 'package:entertainmate/bloc/publish_event/publish_event_state.dart';
 import 'package:entertainmate/screens/description_screen.dart';
 import 'package:entertainmate/screens/happening_now.dart';
 import 'package:entertainmate/screens/location_screen.dart';
@@ -10,6 +11,7 @@ import 'package:entertainmate/screens/utility/create_event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class NewInPersonEventScreen extends StatefulWidget {
@@ -398,43 +400,60 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                     ),
                   ),
 
-                  Padding (
-                    padding: const EdgeInsets.fromLTRB( 10.0, 0.0, 10.0, 0.0 ),
-                    child: Container (
-                      height: 40,
-                      width: MediaQuery
-                          .of ( context )
-                          .size
-                          .width,
-                      child: (data.title.isNotEmpty && data.startDate.isNotEmpty && data.endDate.isNotEmpty && data.categoryId.toString().isNotEmpty)?
-                      MaterialButton (
-                        onPressed: (
-                            ) {
-                          publishEventBloc.add(PostingEventEvent());
-                        },
-                        color: Colors.blueAccent,
-                        // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                        child: Text ( 'Publish',
-                          style: TextStyle ( color: Colors.white ), ),
-                        shape: RoundedRectangleBorder (
-                          borderRadius: BorderRadius.circular ( 10.0 ),
-                        ),
-                      ):  MaterialButton (
-                        onPressed: (
-                            ) {
 
-                        },
-                        color: Colors.lightBlueAccent.shade100.withOpacity (
-                            0.9 ),
-                        // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                        child: Text ( 'Publish',
-                          style: TextStyle ( color: Colors.grey ), ),
-                        shape: RoundedRectangleBorder (
-                          borderRadius: BorderRadius.circular ( 10.0 ),
-                        ),
-                      )
+                     Padding (
+                      padding: const EdgeInsets.fromLTRB( 10.0, 0.0, 10.0, 0.0 ),
+                      child: Container (
+                        height: 40,
+                        width: MediaQuery.of ( context ).size.width,
+                        child: (data.title.isNotEmpty && data.startDate.isNotEmpty && data.endDate.isNotEmpty && data.categoryId.toString().isNotEmpty)?
+                        BlocBuilder<PublishEventBloc, PublishEventState>(
+                          builder:(context, state) {
+                            return MaterialButton(
+                              onPressed: () {
+                                publishEventBloc.add(PostingEventEvent());
+                              },
+                              color: Colors.blueAccent,
+                              // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text('Publish',
+                                    style: TextStyle(color: Colors.white),),
+                                  Padding (padding: const EdgeInsets.only( left: 10.0 ) ,
+                                      child: (() {
+                                        // your code here
+                                        if ( state is PostedEventState ){
+                                         Text("success");
+                                        }
+                                        else {
+                                          return Container (
+
+                                          );
+                                        }
+                                      } ( ))
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        ):
+
+                        MaterialButton (
+                          onPressed: () {},
+                          color: Colors.lightBlueAccent.shade100.withOpacity (0.9 ),
+                          // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                          child: Text ( 'Publish',
+                            style: TextStyle ( color: Colors.grey ), ),
+                          shape: RoundedRectangleBorder (
+                            borderRadius: BorderRadius.circular ( 10.0 ),
+                          ),
+                        )
+                      ),
                     ),
-                  ),
+
 
                 ],
               ),
