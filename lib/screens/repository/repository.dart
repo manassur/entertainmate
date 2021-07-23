@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:entertainmate/screens/model/InterestedUserModel.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/generic_response.dart';
+import 'package:entertainmate/screens/model/invite_user_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/model/phone_check_response.dart';
 import 'package:entertainmate/screens/model/save_profile_response.dart';
@@ -107,7 +109,6 @@ class Repository {
     return  SaveProfileResponse.fromJson(data);
   }
 
-
   Future<PhoneCheckResponse>checkIfUserIsFirstTimeUser(String phone) async {
     var body = <String, dynamic>{
       'phone': phone,
@@ -135,15 +136,6 @@ class Repository {
     return  PhoneCheckResponse.fromJson(data);
   }
 
-
-  // Future<List<MateHomeModel>>fetchHomeFeed() async {
-  //   final response = await _apiClient.get(Constants.FETCH_HOME_FEED);
-  //   var data = json.decode(response);
-  //   print("this is response " + response.toString());
-  //   MateHomeResponse  mateHomeResponse = MateHomeResponse.fromJson(data);
-  //   return mateHomeResponse.mateHomes;
-  // }
-
   Future<MateHomeModel>fetchHomeFeed() async {
     final response = await _apiClient.get(Constants.FETCH_HOME_FEED);
     final data = json.decode(response);
@@ -166,6 +158,13 @@ class Repository {
     return UserCommentModel.fromJson(data);
   }
 
+  Future<InterestedUserModel>fetchInterestedUser() async {
+    final response = await _apiClient.get(Constants.FETCH_INTERESTED_USER);
+    final data = json.decode(response);
+    print("this is response interested user  " + response.toString());
+    return InterestedUserModel.fromJson(data);
+  }
+
   Future<GenericResponse>saveInterest(String action, postId,type) async {
     var body = <String, dynamic>{
       'action': action,
@@ -178,17 +177,6 @@ class Repository {
 
     return  GenericResponse.fromJson(data);
   }
-
-  // Future<GenericResponse> postComment( String comment, String postId) async {
-  //   var body = jsonEncode(<String, String>{
-  //     'postId': postId,
-  //     'comment': comment
-  //   });
-  //   final response = await _apiClient.post(Constants.POST_COMMENT, body);
-  //   var data = json.decode(response);
-  //   print("comment posted successfully " + response.toString());
-  //   return GenericResponse.fromJson(data);
-  // }
 
   Future<GenericResponse>postComment(String postId,String comment) async {
     var body = <String, dynamic>{
@@ -214,7 +202,6 @@ class Repository {
       imagesInBase64.add(fileInBase64);
     }
 
-
     var body = <String, dynamic>{
       'type':eventType.toString() ,
       'category_id': categoryId.toString(),
@@ -234,6 +221,15 @@ class Repository {
     print("event created successfully " + response.toString());
     return  GenericResponse.fromJson(data);
   }
+
+  Future<InviteUserModel>fetchUserFollowings() async {
+    final response = await _apiClient.get(Constants.FETCH_USER_FOLLOWING);
+    final data = json.decode(response);
+    print("this is response user following  " + response.toString());
+
+    return InviteUserModel.fromJson(data);
+  }
+
   SharedPreferences prefs = null;
 
   void openCache() async {

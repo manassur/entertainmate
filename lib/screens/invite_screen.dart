@@ -1,16 +1,16 @@
 import 'dart:ui';
-import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_event.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_state.dart';
+import 'package:entertainmate/bloc/invite_user/invite_user_event.dart';
+import 'package:entertainmate/bloc/invite_user/invite_user_state.dart';
+import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
-import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
-import 'package:entertainmate/screens/utility/constants.dart';
-import 'package:entertainmate/widgets/people_dialog_info.dart';
+import 'package:entertainmate/screens/utility/constants.dart' as Constant;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'model/invite_user_model.dart';
 
 class InviteScreen extends StatefulWidget {
 
@@ -21,10 +21,14 @@ class InviteScreen extends StatefulWidget {
 class _InviteScreenState extends State<InviteScreen> {
   TextEditingController _inviterUserController= TextEditingController();
 
+  InviteUserBloc inviteUserBloc;
+
   @override
   void initState() {
     super.initState();
 
+    inviteUserBloc = BlocProvider.of<InviteUserBloc>(context);
+    inviteUserBloc.add(FetchInviteUserEvent());
   }
 
   @override
@@ -85,52 +89,46 @@ class _InviteScreenState extends State<InviteScreen> {
               ),
             ),
 
-            Container(
-              height: 350,
-              child: GridView.builder(
-                gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0),
-                    shrinkWrap: true,
-                // itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
-                itemCount:26 ,
-                itemBuilder: (ctx, goingPos) {
-                  return Container(
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration:
-                            BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  'https://jooinn.com/images/girl-174.jpg',
-                                ),
-                                    // Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto
-                                  fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Noshat',
-                            // feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
-                            style: TextStyle(
-                                color: Colors.grey[800],
-                                fontWeight: FontWeight.bold, fontSize: 13),
-                          )
-                        ],
-                      ),
-                    ),
+            BlocListener <InviteUserBloc, InviteUserState>(
+              listener: (context, state){
+                if ( state is InviteUserInitialState ) {
+
+                } else if ( state is InviteUserLoadedState ) {
+
+                }
+
+                else if ( state is InviteUserFailureState ) {
+                  Fluttertoast.showToast(
+                      msg: "Could not load users",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0
                   );
+                }
+              },
+
+              child: BlocBuilder<InviteUserBloc, InviteUserState>(
+                builder: (context, state) {
+                  if ( state is InviteUserInitialState ) {
+                    return buildLoading ( );
+                  } else if ( state is InviteUserLoadingState ) {
+                    return buildLoading ( );
+                  } else if ( state is InviteUserLoadedState ) {
+                    return buildUserFollowingList ( state.inviteUser);
+                  } else if ( state is InviteUserFailureState ) {
+                    return buildErrorUi ( state.error );
+                  }
+                  else {
+                    return buildErrorUi ( "Something went wrong!" );
+                  }
                 },
               ),
+
             ),
+
 
             Padding (
               padding: const EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 0.0 ),
@@ -139,6 +137,7 @@ class _InviteScreenState extends State<InviteScreen> {
                   width: MediaQuery.of ( context ).size.width,
                   child: (
                   MaterialButton (
+                    elevation: 0,
                     onPressed: () {},
                     color: Colors.lightBlueAccent.shade100,
                     // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -156,22 +155,57 @@ class _InviteScreenState extends State<InviteScreen> {
       ),
     );
 
-    // return BlocBuilder<UserCommentBloc, UserCommentState>(
-    //   builder: (context, state) {
-    //     if (state is UserCommentInitialState) {
-    //       return buildLoading();
-    //     } else if (state is UserCommentLoadingState) {
-    //       return buildLoading();
-    //     } else if (state is UserCommentLoadedState) {
-    //       return dialogBox(state.userComment);
-    //     } else if (state is UserCommentFailureState) {
-    //       return buildErrorUi(state.error);
-    //     }
-    //     else {
-    //       return buildErrorUi("Something went wrong!");
-    //     }
-    //   },
-    // );
+  }
+
+  Widget buildUserFollowingList(InviteUserModel inviteUserModel){
+   return Container(
+      height: 350,
+      child: GridView.builder(
+        gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0),
+        shrinkWrap: true,
+        // itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
+        itemCount: inviteUserModel.followers.length,
+        itemBuilder: (ctx, userPos) {
+          return Container(
+            child: GestureDetector(
+              onTap: () {},
+              child: Column(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration:
+                    BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15.0),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          // 'https://jooinn.com/images/girl-174.jpg',
+                            Constant.IMAGE_BASE_URL+ '${inviteUserModel.followers[userPos].icon}',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    // 'Noshat',
+                    '${inviteUserModel.followers[userPos].name}',
+                    style: TextStyle(
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.bold, fontSize: 13),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
   }
 
   Widget dialogBox (UserCommentModel userCommentModel){

@@ -1,13 +1,14 @@
 import 'package:entertainmate/bloc/feed_details/feed_details_bloc.dart';
 import 'package:entertainmate/bloc/feed_details/feed_details_event.dart';
 import 'package:entertainmate/bloc/feed_details/feed_details_state.dart';
+import 'package:entertainmate/bloc/interested_user/interested_user_bloc.dart';
+import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
-import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
-import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_state.dart';
 import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
+import 'package:entertainmate/screens/interested_user_screen.dart';
 import 'package:entertainmate/screens/model/post_comment_model.dart';
 import 'package:entertainmate/screens/post_comment_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
@@ -17,7 +18,6 @@ import 'package:entertainmate/widgets/photos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'utility/constants.dart' as Constants;
@@ -196,16 +196,13 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     ],
                   ),
 
-
-
                   // show invite Users modal
                   InkWell(
-                    // onTap: ()showDialog<String>{
-                    //   Navigator.push(context, MaterialPageRoute(
-                    //       builder: (context)=>InviteScreen()));
-                    // },
                     onTap: () => showDialog<String>(context: context,
-                      builder: ( context) => InviteScreen()
+                      builder: (BuildContext context) => BlocProvider<InviteUserBloc>(
+                          create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
+                          child: InviteScreen()
+                      ),
                     ),
 
                     child: Column(
@@ -822,39 +819,44 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                  itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
                                                 itemBuilder: (ctx, interestedPos) {
                                                   return Expanded(
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          height: 65,
-                                                          width: 65,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(25.0),
-                                                            image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                   Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
-                                                             ),
-                                                              fit: BoxFit.cover,
+                                                    child: GestureDetector(
+                                                      onTap: () => showDialog<String>(context: context,
+                                                        builder: (BuildContext context) => BlocProvider<InterestedUserBloc>(
+                                                            create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                            child: InterestedUserScreen()
+                                                        ),
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            height: 65,
+                                                            width: 65,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(25.0),
+                                                              image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                     Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
+                                                               ),
+                                                                fit: BoxFit.cover,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                  top: 1.0),
-                                                          child: Text(
-                                                            '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}'
-                                                            ,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .grey[800],
-                                                                fontWeight:
-                                                                    FontWeight.bold,
-                                                                fontSize: 16),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets.only(top: 1.0),
+                                                            child: Text(
+                                                              '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .grey[800],
+                                                                  fontWeight:
+                                                                      FontWeight.bold,
+                                                                  fontSize: 16),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -977,8 +979,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                           child: Row(
                                             children: [
                                               Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_outlined,
+                                                Icons.keyboard_arrow_down_outlined,
                                                 size: 25,
                                                 color: Colors.grey,
                                               ),

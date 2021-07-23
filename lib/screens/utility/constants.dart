@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 var headers = <String, String>{
   "Accept": "application/x-www-form-urlencoded",
   'Content-Type': 'application/x-www-form-urlencoded',
-  'Authorization' : '522a37cb490e3b01f686294647d77476JumieJumie'
+  'Authorization' : '342b86b7248d791b858b878e57c9aef3hjkkkhhuuu'
 };
 
 
@@ -33,6 +33,8 @@ const String FETCH_USER_COMMENTS="feed/comments/1";
 const String SAVE_INTEREST="post/like?action=0&type=1&postId=1";
 const String POST_COMMENT="feed/comment";
 const String CREATE_EVENT=BASE_URL+"user/add_event";
+const String FETCH_USER_FOLLOWING="user/followings";
+const String FETCH_INTERESTED_USER="user/info/68";
 
 // secure storage keys
 const String CHECK_LOGIN_STATUS = "loginstatus";

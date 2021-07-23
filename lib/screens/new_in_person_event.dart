@@ -2,7 +2,6 @@ import 'package:entertainmate/bloc/publish_event/publish_event_bloc.dart';
 import 'package:entertainmate/bloc/publish_event/publish_event_event.dart';
 import 'package:entertainmate/bloc/publish_event/publish_event_state.dart';
 import 'package:entertainmate/screens/description_screen.dart';
-import 'package:entertainmate/screens/happening_now.dart';
 import 'package:entertainmate/screens/location_screen.dart';
 import 'package:entertainmate/screens/photo_screen.dart';
 import 'package:entertainmate/screens/target_audience.dart';
@@ -401,58 +400,87 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                   ),
 
 
-                     Padding (
-                      padding: const EdgeInsets.fromLTRB( 10.0, 0.0, 10.0, 0.0 ),
-                      child: Container (
-                        height: 40,
-                        width: MediaQuery.of ( context ).size.width,
-                        child: (data.title.isNotEmpty && data.startDate.isNotEmpty && data.endDate.isNotEmpty && data.categoryId.toString().isNotEmpty)?
-                        BlocBuilder<PublishEventBloc, PublishEventState>(
-                          builder:(context, state) {
-                            return MaterialButton(
-                              onPressed: () {
-                                publishEventBloc.add(PostingEventEvent());
-                              },
-                              color: Colors.blueAccent,
-                              // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text('Publish',
-                                    style: TextStyle(color: Colors.white),),
-                                  Padding (padding: const EdgeInsets.only( left: 10.0 ) ,
-                                      child: (() {
-                                        // your code here
-                                        if ( state is PostedEventState ){
-                                         Text("success");
-                                        }
-                                        else {
-                                          return Container (
+                  BlocListener<PublishEventBloc, PublishEventState>(
+                    listener: (context, state) {
+                      if (state is PublishEventInitialState) {
+                        Fluttertoast.showToast(
+                            msg: "Posting your event...",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      } else if (state is PublishEventLoadingState){
+                        Fluttertoast.showToast(
+                            msg: "Posting your event...",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      } else if (state is PostedEventState) {
+                        Fluttertoast.showToast(
+                            msg: "Your event has been posted",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      } else if (state is PublishEventFailureState) {
+                        Fluttertoast.showToast(
+                            msg: "Event failed to post, please try again",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    },
+                    child: Padding (
+                        padding: const EdgeInsets.fromLTRB( 10.0, 0.0, 10.0, 0.0 ),
+                        child: Container (
+                          height: 40,
+                          width: MediaQuery.of ( context ).size.width,
+                          child: (data.title.isNotEmpty && data.startDate.isNotEmpty && data.endDate.isNotEmpty && data.categoryId.toString().isNotEmpty)?
+                          BlocBuilder<PublishEventBloc, PublishEventState>(
+                            builder:(context, state) {
+                              return MaterialButton(
+                                onPressed: () {
+                                  publishEventBloc.add(PostingEventEvent());
+                                },
+                                color: Colors.blueAccent,
+                                // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text('Publish',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }
+                          ):
 
-                                          );
-                                        }
-                                      } ( ))
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                        ):
-
-                        MaterialButton (
-                          onPressed: () {},
-                          color: Colors.lightBlueAccent.shade100.withOpacity (0.9 ),
-                          // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                          child: Text ( 'Publish',
-                            style: TextStyle ( color: Colors.grey ), ),
-                          shape: RoundedRectangleBorder (
-                            borderRadius: BorderRadius.circular ( 10.0 ),
-                          ),
-                        )
-                      ),
+                          MaterialButton (
+                            onPressed: () {},
+                            color: Colors.lightBlueAccent.shade100.withOpacity (0.9 ),
+                            // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                            child: Text ( 'Publish',
+                              style: TextStyle ( color: Colors.grey ), ),
+                            shape: RoundedRectangleBorder (
+                              borderRadius: BorderRadius.circular ( 10.0 ),
+                            ),
+                          )
+                        ),
                     ),
+                     ),
 
 
                 ],

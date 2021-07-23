@@ -15,6 +15,7 @@ import 'bloc/feed_details/feed_details_bloc.dart';
 import 'bloc/feed_home/mate_home_bloc.dart';
 import 'bloc/feed_home/mate_home_event.dart';
 import 'bloc/feed_home/mate_home_state.dart';
+import 'bloc/invite_user/inviter_user_bloc.dart';
 import 'screens/utility/constants.dart' as Constants;
 
 class MateHome extends StatefulWidget {
@@ -251,6 +252,11 @@ class _MateHomeState extends State<MateHome> {
                           BlocProvider<PostCommentBloc>(
                             create: (context) =>
                                 PostCommentBloc(postCommentRepository: Repository()),
+                          ),
+
+                          BlocProvider<InviteUserBloc>(
+                            create: (context) =>
+                                InviteUserBloc(inviteUserRepository: Repository()),
                           ),
 
                         ],

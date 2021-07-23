@@ -1,16 +1,9 @@
 import 'dart:ui';
-import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_event.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_state.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
-import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
-import 'package:entertainmate/widgets/people_dialog_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class PostCommentScreen extends StatefulWidget {
 
@@ -49,7 +42,7 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
           children: <Widget>[
             SizedBox(height: 10),
             Center(
-              child: Text("Invite a friend to this event",
+              child: Text("Write a public comment",
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 textAlign: TextAlign.center,),
             ),
@@ -60,26 +53,29 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
             Padding (
               padding: const EdgeInsets.fromLTRB( 0.0, 0.0, 0.0, 20.0 ),
               child: Container (
-                  height: 35,
+                  // height: 50,
                   decoration: BoxDecoration (
                     borderRadius: BorderRadius.circular ( 5.0 ),
                     color: Colors.grey[100],
                   ),
                   width: MediaQuery.of ( context ).size.width,
-                  child: TextField (
-                    controller: _inviterUserController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration (
-                        counterText: "",
-                        border: InputBorder.none,
-                        prefixIcon: Icon ( Icons.search ),
-                        hintText: 'Search here',
-                        hintStyle: TextStyle (
-                            color: Colors.grey, fontSize: 15 )
+                  child: Padding(
+                    padding: const EdgeInsets.only(left : 10.0, right: 5.0),
+                    child: TextField (
+                      controller: _inviterUserController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration (
+                          counterText: "",
+                          border: InputBorder.none,
+                          hintText: 'Leave your comment here',
+                          hintStyle: TextStyle (
+                              color: Colors.grey, fontSize: 15 )
+                      ),
+                      onChanged: ( value ) {
+                        // data.setDescription(value);
+                      },
                     ),
-                    onChanged: ( value ) {
-                      // data.setDescription(value);
-                    },
                   )
               ),
             ),
