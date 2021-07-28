@@ -1,11 +1,13 @@
 class InviteUserModel {
   bool error;
+  bool isSelected;
   List<Followers> followers;
 
   InviteUserModel({this.error, this.followers});
 
   InviteUserModel.fromJson(Map<String, dynamic> json) {
     error = json['error'];
+    isSelected = false;
     if (json['followers'] != null) {
       followers = new List<Followers>();
       json['followers'].forEach((v) {
@@ -31,6 +33,7 @@ class Followers {
   String creation;
   String location;
   String isVerified;
+  bool isSelected;
 
   Followers(
       {this.id,
@@ -38,7 +41,8 @@ class Followers {
         this.icon,
         this.creation,
         this.location,
-        this.isVerified});
+        this.isVerified,
+      this.isSelected});
 
   Followers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -47,6 +51,7 @@ class Followers {
     creation = json['creation'];
     location = json['location'];
     isVerified = json['isVerified'];
+    isSelected = false;
   }
 
   Map<String, dynamic> toJson() {
