@@ -17,8 +17,8 @@ import 'dart:io';
 
 
 class Repository {
+
   ApiClient _apiClient = ApiClient();
-  final  httpClient = http.Client() ;
 
   Future<GenericResponse>checkIfUsernameIsAvailaible(String username) async {
     var body = <String, dynamic>{
@@ -137,7 +137,7 @@ class Repository {
   }
 
   Future<MateHomeModel>fetchHomeFeed() async {
-    final response = await _apiClient.get(Constants.FETCH_HOME_FEED);
+    final response = await _apiClient.getWithHeader(Constants.FETCH_HOME_FEED);
     final data = json.decode(response);
       print("this is response feeds " + response.toString());
 
@@ -145,21 +145,21 @@ class Repository {
   }
 
   Future<FeedDetailsModel>fetchFeedDetails(postId) async {
-    final response = await _apiClient.get(Constants.FETCH_FEED_DETAILS+postId);
+    final response = await _apiClient.getWithHeader(Constants.FETCH_FEED_DETAILS+postId);
     final data = json.decode(response);
     print("this is response feed details " + response.toString());
     return FeedDetailsModel.fromJson(data);
   }
 
   Future<UserCommentModel>fetchUserComments() async {
-    final response = await _apiClient.get(Constants.FETCH_USER_COMMENTS);
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_COMMENTS);
     final data = json.decode(response);
     print("this is response user details  " + response.toString());
     return UserCommentModel.fromJson(data);
   }
 
   Future<InterestedUserModel>fetchInterestedUser() async {
-    final response = await _apiClient.get(Constants.FETCH_INTERESTED_USER);
+    final response = await _apiClient.getWithHeader(Constants.FETCH_INTERESTED_USER);
     final data = json.decode(response);
     print("this is response interested user  " + response.toString());
     return InterestedUserModel.fromJson(data);
@@ -171,7 +171,7 @@ class Repository {
       'type': type,
       'postId': postId,
     };
-    final response = await _apiClient.post(Constants.SAVE_INTEREST,body);
+    final response = await _apiClient.postFormWithHeader(Constants.SAVE_INTEREST,body);
     var data = json.decode(response);
     print("this is response save post  " + response.toString());
 
@@ -183,7 +183,7 @@ class Repository {
       'postId': postId,
       'comment': comment,
     };
-    final response = await _apiClient.postForm("https://apprant.com/entertainmate/api/index.php/"+Constants.POST_COMMENT,body);
+    final response = await _apiClient.postFormWithHeader(Constants.POST_COMMENT,body);
     var data = json.decode(response);
     print("comment posted successfully " + response.toString());
     return  GenericResponse.fromJson(data);
@@ -216,14 +216,14 @@ class Repository {
       'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0",
       'images':jsonEncode(imagesInBase64).toString(),
     };
-    final response = await _apiClient.postForm(Constants.CREATE_EVENT,body);
+    final response = await _apiClient.postFormWithHeader(Constants.CREATE_EVENT,body);
     var data = json.decode(response);
     print("event created successfully " + response.toString());
     return  GenericResponse.fromJson(data);
   }
 
   Future<InviteUserModel>fetchUserFollowings() async {
-    final response = await _apiClient.get(Constants.FETCH_USER_FOLLOWING);
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_FOLLOWING);
     final data = json.decode(response);
     print("this is response user following  " + response.toString());
 

@@ -27,14 +27,14 @@ const String SEND_SMS_INVITE =BASE_URL+"user/sms/invite";
 const String SEND_EMAIL_INVITE =BASE_URL+"user/email/invite";
 const String UPDATE_USER_DETAILS =BASE_URL+"user/profile/edit";
 const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
-const String FETCH_HOME_FEED ="user/feed";
-const String FETCH_FEED_DETAILS ="feed/details/";
-const String FETCH_USER_COMMENTS="feed/comments/1";
-const String SAVE_INTEREST="post/like?action=0&type=1&postId=1";
-const String POST_COMMENT="feed/comment";
+const String FETCH_HOME_FEED =BASE_URL+"user/feed";
+const String FETCH_FEED_DETAILS =BASE_URL+"feed/details/";
+const String FETCH_USER_COMMENTS=BASE_URL+"feed/comments/1";
+const String SAVE_INTEREST=BASE_URL+"post/like?action=0&type=1&postId=1";
+const String POST_COMMENT=BASE_URL+"feed/comment";
 const String CREATE_EVENT=BASE_URL+"user/add_event";
-const String FETCH_USER_FOLLOWING="user/followings";
-const String FETCH_INTERESTED_USER="user/info/68";
+const String FETCH_USER_FOLLOWING=BASE_URL+"user/followings";
+const String FETCH_INTERESTED_USER=BASE_URL+"user/info/68";
 
 // secure storage keys
 const String CHECK_LOGIN_STATUS = "loginstatus";

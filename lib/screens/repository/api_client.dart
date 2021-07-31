@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:entertainmate/screens/model/user.dart';
+import 'package:entertainmate/screens/repository/cache_repository.dart';
+import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:http/http.dart' as http;
 import '../utility/constants.dart' as Constants;
 
@@ -8,13 +11,14 @@ class ApiClient {
 
   final  httpClient = http.Client() ;
   final String _baseUrl = Constants.BASE_URL;
+  CacheRepository rep = CacheRepository();
 
   Future<dynamic> get(String url) async {
-    print('Api Get, url $_baseUrl$url');
+    print('Api Get, url $url');
 
     var responseJson;
     try {
-      final response = await http.get(_baseUrl + url,  headers: Constants.headers);
+      final response = await http.get( url);
       responseJson = _returnResponse(response);
     } on SocketException {
       // print('No net');
@@ -24,21 +28,7 @@ class ApiClient {
     return responseJson;
   }
 
-  Future<dynamic> post(String url, dynamic body) async {
-    print('Api Post, url $_baseUrl$url');
-    print('parameters:' + body.toString());
 
-    var responseJson;
-    try {
-      final response = await http.post(_baseUrl + url, body: body, headers: Constants.headers);
-      responseJson = _returnResponse(response);
-    } on SocketException {
-      // print('No net');
-      throw FetchDataException('No Internet connection');
-    }
-    print('api post.');
-    return responseJson;
-  }
 
   Future<dynamic> postForm(String url, Map body) async {
     print('Api Post, url :' + url);
@@ -46,8 +36,56 @@ class ApiClient {
 
     var responseJson;
     try {
-      final response =
-      await http.post(url, body: body, headers: Constants.headers);
+      final response = await http.post(url, body: body);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+    print('api post.');
+    print("responsejson" + responseJson.toString());
+
+    return responseJson;
+  }
+
+  Future<dynamic> getWithHeader(String url) async {
+    print('Api Get, url $url');
+    User user =await rep.getCurrentUser();
+
+    var headers = <String, String>{
+      "Accept": "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization' : user.api
+    };
+
+    var responseJson;
+    try {
+      final response = await http.get(url,  headers: headers);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      // print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+    print('api get recieved!');
+    return responseJson;
+  }
+
+
+  Future<dynamic> postFormWithHeader(String url, Map body) async {
+    print('Api Post, url :' + url);
+    print('parameters:' + body.toString());
+
+    User user =await rep.getCurrentUser();
+
+    var headers = <String, String>{
+      "Accept": "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization' : user.api
+    };
+
+    var responseJson;
+    try {
+      final response = await http.post(url, body: body, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');

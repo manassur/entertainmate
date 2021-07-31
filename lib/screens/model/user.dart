@@ -29,6 +29,7 @@ class User {
     profilePhoto = json['profilePhoto'];
     isVerified = json['isVerified'];
     invites = json['invites'];
+    api = json['api'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +50,7 @@ class User {
     data['isVerified'] = this.isVerified ;
     data['profilePhoto'] = this.profilePhoto ;
     data['invites'] = this.invites ;
+    data['api'] = this.api;
 
 
 //    data['isVerified'] =this.isVerified ;

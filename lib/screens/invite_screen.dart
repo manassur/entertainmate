@@ -199,8 +199,8 @@ class _InviteScreenState extends State<InviteScreen> {
                         borderRadius: BorderRadius.circular(15.0),
                         image: DecorationImage(
                           image: NetworkImage(
-                            'https://jooinn.com/images/girl-174.jpg',
-                            //   Constant.IMAGE_BASE_URL+ '${inviteUserModel.followers[userPos].icon}',
+                            // 'https://jooinn.com/images/girl-174.jpg',
+                              Constant.IMAGE_BASE_URL+ '${inviteUserModel.followers[userPos].icon}',
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -221,8 +221,8 @@ class _InviteScreenState extends State<InviteScreen> {
 
                   Center(
                     child: Text(
-                      'Noshat',
-                      // '${inviteUserModel.followers[userPos].name}',
+                      // 'Noshat',
+                      '${inviteUserModel.followers[userPos].name}',
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontWeight: FontWeight.bold, fontSize: 13),
