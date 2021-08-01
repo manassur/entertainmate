@@ -15,3 +15,11 @@ class PostingCommentEvent extends PostCommentEvent {
   @override
   List<Object> get props => [];
 }
+
+class FollowEvent extends PostCommentEvent {
+  String userId;
+  int action;
+  FollowEvent({ this.userId,this.action});
+  @override
+  List<Object> get props => [];
+}

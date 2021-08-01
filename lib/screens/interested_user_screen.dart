@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:entertainmate/bloc/interested_user/interested_user_bloc.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_event.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_state.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_state.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constant;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'model/InterestedUserModel.dart';
 
 class InterestedUserScreen extends StatefulWidget {
-
+String userId;
+InterestedUserScreen({@required this.userId});
   @override
   _InterestedUserScreenState createState() => _InterestedUserScreenState();
 }
@@ -24,7 +24,7 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
   void initState() {
     super.initState();
     interestedUserBloc = BlocProvider.of<InterestedUserBloc>(context);
-    interestedUserBloc.add(FetchInterestedUserEvent());
+    interestedUserBloc.add(FetchInterestedUserEvent(userId: widget.userId));
   }
 
   @override
@@ -34,10 +34,10 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
         if (state is InterestedUserLoadedState) {
           // a message will only come when it is updating the feed.
         }
-        else if (state is UserCommentFailureState) {
+        else if (state is InterestedUserFailureState) {
           Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
-                "Could not load comments  at this time"),));
+                "Could not load users  at this time"),));
         }
       },
       child: BlocBuilder<InterestedUserBloc, InterestedUserState>(
@@ -106,8 +106,8 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
             ),
             Center(
               child: Text(
-                "Description is empty",
-                // '${interestedUserModel.description}',
+                // "Description is empty",
+                '${interestedUserModel.description}',
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 textAlign: TextAlign.center,),
             ),

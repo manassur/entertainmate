@@ -538,12 +538,10 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
-                              create: (context) =>
-                                  PublishEventBloc(repository: Repository(),context:context),
-                              child: CreateEvent(),
-                            ),));
+                        Navigator.pop(context);
+                        closeScreen();
+
+
                       },
                       color: Colors.white,
                     ),
@@ -573,5 +571,9 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
       ),
     );
   }
+  closeScreen(){
+    Navigator.of(context).pop();
+  }
+
 
 }

@@ -41,3 +41,11 @@ class InviteUserFailureState extends InviteUserState {
   @override
   List<Object> get props => [error];
 }
+
+class InviteUserEmptyState extends InviteUserState{
+  final String message;
+  InviteUserEmptyState({@required this.message});
+
+  @override
+  List<Object> get props => [];
+}

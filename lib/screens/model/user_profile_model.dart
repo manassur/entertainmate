@@ -1,5 +1,6 @@
-class InterestedUserModel {
+class UserProfileModel {
   String id;
+  String api;
   String username;
   String name;
   String email;
@@ -15,9 +16,13 @@ class InterestedUserModel {
   Link link;
   Relation relation;
   bool error;
+  int following;
+  int followers;
 
-  InterestedUserModel(
+
+  UserProfileModel(
       {this.id,
+        this.api,
         this.username,
         this.name,
         this.email,
@@ -32,10 +37,13 @@ class InterestedUserModel {
         this.createdAt,
         this.link,
         this.relation,
-        this.error});
+        this.error,
+        this.followers,
+        this.following});
 
-  InterestedUserModel.fromJson(Map<String, dynamic> json) {
+  UserProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    api = json['api'];
     username = json['username'];
     name = json['name'];
     email = json['email'];
@@ -53,11 +61,14 @@ class InterestedUserModel {
         ? new Relation.fromJson(json['relation'])
         : null;
     error = json['error'];
+    following = json['following'];
+    followers = json['followers'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['api'] = this.api;
     data['username'] = this.username;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -69,6 +80,8 @@ class InterestedUserModel {
     data['location'] = this.location;
     data['profilePhoto'] = this.profilePhoto;
     data['description'] = this.description;
+    data['following'] = this.following;
+    data['followers'] = this.followers;
     data['created_At'] = this.createdAt;
     if (this.link != null) {
       data['link'] = this.link.toJson();
@@ -128,4 +141,3 @@ class Relation {
     return data;
   }
 }
-

@@ -41,3 +41,12 @@ class UserCommentFailureState extends UserCommentState {
   @override
   List<Object> get props => [error];
 }
+
+
+class UserCommentEmptyState extends UserCommentState{
+  final String message;
+  UserCommentEmptyState({@required this.message});
+
+  @override
+  List<Object> get props => [];
+}

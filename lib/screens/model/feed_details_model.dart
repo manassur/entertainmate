@@ -83,7 +83,7 @@ class Post {
   int interests;
   int going;
   int comments;
-  String startDate;
+  String startDate,location;
   String endDate;
   List<GoingUsers> goingUsers;
   List<Commenters> commenters;
@@ -94,7 +94,7 @@ class Post {
         this.type,
         this.content,
         this.description,
-        this.creation,
+        this.creation,this.location,
         this.categoryId,
         this.categoryName,
         this.status,
@@ -118,6 +118,7 @@ class Post {
     content = json['content'];
     description = json['description'];
     creation = json['creation'];
+    location = json['location'];
     categoryId = json['category_id'];
     categoryName = json['category_name'];
     status = json['status'];

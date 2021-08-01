@@ -8,6 +8,7 @@ import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/neighborhood_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
+import 'package:entertainmate/screens/user_profile.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import 'bloc/feed_home/mate_home_bloc.dart';
 import 'bloc/feed_home/mate_home_event.dart';
 import 'bloc/feed_home/mate_home_state.dart';
 import 'bloc/invite_user/inviter_user_bloc.dart';
+import 'bloc/user_profile/user_profile_bloc.dart';
 import 'screens/utility/constants.dart' as Constants;
 
 class MateHome extends StatefulWidget {
@@ -281,15 +283,28 @@ class _MateHomeState extends State<MateHome> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                          height: 48,
-                          width: 48,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17.0),
-                            image:  DecorationImage(
-                              image: NetworkImage(
-                                  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].profilePhoto}'),
-                              fit: BoxFit.cover,
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<UserProfileBloc>(
+                              create: (context) =>
+                                  UserProfileBloc(userProfileRepository: Repository()),
+                              child: BlocProvider<PostCommentBloc>(
+                                create: (context) =>
+                                    PostCommentBloc(postCommentRepository: Repository()),
+                                child: UserProfile(userId: mateHomeModel.feeds[pos].userId),
+                              ),) ,
+                            ),);
+                          },
+                          child: Container(
+                            height: 48,
+                            width: 48,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17.0),
+                              image:  DecorationImage(
+                                image: NetworkImage(
+                                    Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].profilePhoto}'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

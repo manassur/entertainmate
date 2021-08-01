@@ -23,9 +23,11 @@ class UserCommentBloc extends Bloc<UserCommentEvent, UserCommentState>{
     if (event is FetchUserCommentEvent) {
       yield UserCommentLoadingState();
       try{
-        UserCommentModel  userComment = await userCommentRepository.fetchUserComments();
+        UserCommentModel  userComment = await userCommentRepository.fetchUserComments(event.postId);
         if(userComment.comments.isNotEmpty) {
-          yield UserCommentLoadedState(userComment: userComment, message: "Feed Details Updated");
+          yield UserCommentLoadedState(userComment: userComment, message: "user comment Updated");
+        } else{
+          yield UserCommentEmptyState(message: "this user has no comments");
         }
         }catch(e){
         yield UserCommentFailureState(error: e.toString());

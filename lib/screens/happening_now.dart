@@ -13,7 +13,7 @@ import 'package:entertainmate/screens/model/post_comment_model.dart';
 import 'package:entertainmate/screens/post_comment_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
-import 'package:entertainmate/widgets/people_dialog_info.dart';
+import 'package:entertainmate/widgets/commenters_info_dialog.dart';
 import 'package:entertainmate/widgets/photos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +21,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'utility/constants.dart' as Constants;
+import 'utility/constants.dart' as Constant;
+
 
 
 class HappeningNowScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class HappeningNowScreen extends StatefulWidget {
 class _HappeningNowScreenState extends State<HappeningNowScreen> {
   FeedDetailsBloc feedDetailsBloc;
   SaveInterestBloc saveInterestBloc;
+  FeedDetailsModel feedDetailsModel;
   Repository repository;
   bool isSaved=false;
   PostCommentBloc postCommentBloc;
@@ -100,6 +103,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                   ));
                 } else if (state is FeedDetailsLoadedState &&
                     state.message != null) {
+                  setState(() {
+                    feedDetailsModel = state.feedDetails;
+                  });
                 } else if (state is FeedDetailsFailureState) {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("Could not load Feeds at this time"),
@@ -229,69 +235,14 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     children: [
                       InkWell(
                         onTap: () => showDialog<String>(context: context,
-                            builder: ( context) => PostCommentScreen()
-                        ),
+                            builder: ( context) =>  BlocProvider<PostCommentBloc>(
+                                  create: (context) =>
+                                 PostCommentBloc(postCommentRepository: Repository()),
+                              child: PostCommentScreen(postId: feedDetailsModel.feeds[0].post.postId,)
 
-                        // onTap: (){
-                        //   showMaterialModalBottomSheet(
-                        //     context: context,
-                        //     builder: (context) => SingleChildScrollView(
-                        //       controller: ModalScrollController.of(context),
-                        //       child: Container(
-                        //           height: 250,
-                        //           child: Column(
-                        //             mainAxisAlignment: MainAxisAlignment.center,
-                        //             crossAxisAlignment: CrossAxisAlignment.center,
-                        //             children: [
-                        //               Padding(
-                        //                 padding: const EdgeInsets.all(10.0),
-                        //                 child: Container(
-                        //                   height:45,
-                        //                   child: Center(
-                        //                     child: TextField(
-                        //                       keyboardType: TextInputType.text,
-                        //                       decoration:InputDecoration(
-                        //                           counterText: "",
-                        //                           // border:InputBorder.none,
-                        //                        border: OutlineInputBorder(
-                        //                            borderSide: BorderSide(color: Colors.grey[300]),
-                        //                            borderRadius: BorderRadius.circular(15.0)
-                        //                        ),
-                        //                           hintText: 'Write your comment...'
-                        //                       ),
-                        //                       onChanged:(value) {
-                        //                         setState(() { });
-                        //                       },
-                        //                       controller: commentController,
-                        //
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //               ),
-                        //               SizedBox(height: 20),
-                        //               Padding(padding: const EdgeInsets.all(10.0),
-                        //                 child: InkWell(
-                        //                   onTap: (){
-                        //                     postCommentBloc.add(PostingCommentEvent(postId: "1", comment: commentController.text));
-                        //                     print( "checking posting comment status status");
-                        //
-                        //                   },
-                        //                   child: Container(
-                        //                     height: 45,
-                        //                     decoration: BoxDecoration(
-                        //                       color: Colors.blue,
-                        //                       borderRadius: BorderRadius.circular(15.0)
-                        //                     ),
-                        //                     child: Center(child: Text("Post Comment",
-                        //                       style: TextStyle(color: Colors.white,),)),
-                        //                   ),
-                        //                 ),
-                        //               )
-                        //             ],
-                        //           )),
-                        //     ),
-                        //   );
-                        // },
+                               ),),
+
+
                         child: Container(
                             height: 40,
                             width: 40,
@@ -350,7 +301,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                     child: Text(
-                  "Indoor soccer",
+                  feedDetailsModel.feeds[0].post.categoryName,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                 ))),
           ),
@@ -382,50 +333,38 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           Row(
                             children: [
                               Text(
-                                "Today ",
+                                " ",
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),
+                              ),
+                              Text(
+                                feedDetailsModel.feeds[0].post.startDate,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800]),
+                              ),
+
+                              Text(
+                                " until ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[800]),
                               ),
                               Text(
-                                "7.00 ",
+                                feedDetailsModel.feeds[0].post.endDate,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[800]),
                               ),
-                              Text(
-                                "pm ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                              Text(
-                                "until ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                              Text(
-                                "9.00 ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                              Text(
-                                "pm",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
+
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
-                              "Thursday, June 4",
-                              style: TextStyle(color: Colors.grey[500]),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 2.0),
+                          //   child: Text(
+                          //     "Thursday, June 4",
+                          //     style: TextStyle(color: Colors.grey[500]),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],
@@ -443,7 +382,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Ping Rec Center ",
+                            feedDetailsModel.feeds[0].post.location,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[800]),
@@ -451,7 +390,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
-                              "82 S Green Dr. Athens.OH",
+                              "",
                               style: TextStyle(
                                   color: Colors.grey[800],
                                   fontSize: 15,
@@ -461,7 +400,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
-                              "In-person event",
+                              feedDetailsModel.feeds[0].post.audience,
                               style: TextStyle(color: Colors.grey[500]),
                             ),
                           ),
@@ -500,7 +439,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
-                              "Looking for 4 people",
+                              "Looking for ${feedDetailsModel.feeds[0].post.availableSeats}  people",
                               style: TextStyle(color: Colors.grey[500]),
                             ),
                           ),
@@ -524,7 +463,10 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                               borderRadius: BorderRadius.circular(17.0),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
+                                    Constant.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
+
+                                    // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
+                                ),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -557,7 +499,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 4.5, 0.0, 0.0),
                                   child: Text(
-                                    "Physical education, M.Sc",
+                                    feedDetailsModel.feeds[0].description,
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.grey),
                                   ),
@@ -565,7 +507,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      "5hr ",
+                                      "${feedDetailsModel.feeds[0].post.creation}",
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                     Padding(
@@ -727,7 +669,6 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                           mainAxisSpacing: 10.0),
                                                   shrinkWrap: true,
                                                   itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
-                                                  //itemCount:7 ,
                                                   itemBuilder: (ctx, goingPos) {
                                                     return Expanded(
                                                       child: Container(
@@ -735,7 +676,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                           onTap: () => showDialog<String>(context: context,
                                                               builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
                                                                   create: (context) => UserCommentBloc(userCommentRepository: Repository()),
-                                                                  child: CustomDialogBox()
+                                                                  child: CommentersInfo()
                                                               ),
                                                           ),
                                                           child: Column(
@@ -799,7 +740,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                     color: Colors.grey,
                                                   ),
                                                   Text(
-                                                    "Interested (${feedDetailsModel.feeds[0].post.interestedUsers})",
+                                                    "Interested (${feedDetailsModel.feeds[0].post.interestedUsers.length})",
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: Colors.grey,
@@ -823,7 +764,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                       onTap: () => showDialog<String>(context: context,
                                                         builder: (BuildContext context) => BlocProvider<InterestedUserBloc>(
                                                             create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
-                                                            child: InterestedUserScreen()
+                                                            child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].id,)
                                                         ),
                                                       ),
                                                       child: Column(
@@ -848,10 +789,8 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                             child: Text(
                                                               '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}',
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .grey[800],
-                                                                  fontWeight:
-                                                                      FontWeight.bold,
+                                                                  color: Colors.grey[800],
+                                                                  fontWeight: FontWeight.bold,
                                                                   fontSize: 16),
                                                             ),
                                                           )
@@ -898,49 +837,44 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                             Expanded(
                                               child: GridView.builder(
                                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                        crossAxisCount: 4,
+                                                        crossAxisCount: 3,
                                                         crossAxisSpacing: 10.0,
                                                         mainAxisSpacing: 10.0),
                                                 shrinkWrap: true,
                                                 itemCount:  feedDetailsModel.feeds[0].post.commenters.length,
                                                 itemBuilder: (ctx, commentPos) {
                                                   return Expanded(
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          height: 65,
-                                                          width: 65,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.circular(25.0),
-                                                            image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.commenters[commentPos].profilePhoto}'),
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
+                                                    child: GestureDetector(
+                                                      onTap: () => showDialog<String>(context: context,
+                                                        builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
+                                                            create: (context) => UserCommentBloc(userCommentRepository: Repository()),
+                                                            child: CommentersInfo(postId: feedDetailsModel.feeds[0].post.commenters[commentPos].id))
                                                         ),
-                                                        Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 5.0),
-                                                              child: Icon(
-                                                                Icons.stars,
-                                                                color: Colors.blue,
-                                                                size: 17,
+
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            height: 65,
+                                                            width: 65,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(25.0),
+                                                              image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                    Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.commenters[commentPos].profilePhoto}'),
+                                                                fit: BoxFit.cover,
                                                               ),
                                                             ),
-                                                            Text(
-                                                            '${feedDetailsModel.feeds[0].post.commenters[commentPos].name}',
-
-                                                  style: TextStyle(
-                                                                  color: Colors.grey[800],
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 16),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ],
+                                                          ),
+                                                          Text(
+                                                          '${feedDetailsModel.feeds[0].post.commenters[commentPos].name}',
+                                                                 style: TextStyle(
+                                                                color: Colors.grey[800],
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 16),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   );
                                                 },

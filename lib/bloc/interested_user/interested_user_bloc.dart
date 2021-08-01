@@ -22,7 +22,7 @@ class InterestedUserBloc extends Bloc<InterestedUserEvent, InterestedUserState>{
     if (event is FetchInterestedUserEvent) {
       yield InterestedUserLoadingState();
       try{
-        InterestedUserModel  interestedUser = await interestedUserRepository.fetchInterestedUser();
+        InterestedUserModel  interestedUser = await interestedUserRepository.fetchInterestedUser(event.userId);
         // if(userComment.comments.isNotEmpty) {
           yield InterestedUserLoadedState(interestedUser: interestedUser, message: "Feed Details Updated");
         // }

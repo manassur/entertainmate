@@ -1,11 +1,17 @@
 import 'dart:ui';
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
-import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PostCommentScreen extends StatefulWidget {
+  String postId;
+  PostCommentScreen({this.postId});
 
   @override
   _PostCommentScreenState createState() => _PostCommentScreenState();
@@ -13,94 +19,132 @@ class PostCommentScreen extends StatefulWidget {
 
 class _PostCommentScreenState extends State<PostCommentScreen> {
   TextEditingController _inviterUserController= TextEditingController();
-
+  PostCommentBloc postCommentBloc;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
+    postCommentBloc = BlocProvider.of<PostCommentBloc>(context);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
+    return BlocListener<PostCommentBloc,PostCommentState>(
+      listener: (context,state){
+        if(state is PostCommentLoadingState){
+          setState(() {
+            isLoading=true;
+          });
+        }else if(state is PostedCommentState){
+          setState(() {
+            isLoading=false;
+          });
 
-      child: Container(
-        padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
+          _inviterUserController.clear();
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+              msg: 'Comment posted succesfully',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
+
+        else {
+          setState(() {
+            isLoading=false;
+          });
+        }
+      },
+      child: Dialog(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 10),
-            Center(
-              child: Text("Write a public comment",
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                textAlign: TextAlign.center,),
-            ),
-            SizedBox(height: 2,),
-            Divider(color: Colors.grey[300],),
-            SizedBox(height: 10,),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
 
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0.0, 0.0, 0.0, 20.0 ),
-              child: Container (
-                  // height: 50,
-                  decoration: BoxDecoration (
-                    borderRadius: BorderRadius.circular ( 5.0 ),
-                    color: Colors.grey[100],
-                  ),
-                  width: MediaQuery.of ( context ).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left : 10.0, right: 5.0),
-                    child: TextField (
-                      controller: _inviterUserController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration (
-                          counterText: "",
-                          border: InputBorder.none,
-                          hintText: 'Leave your comment here',
-                          hintStyle: TextStyle (
-                              color: Colors.grey, fontSize: 15 )
-                      ),
-                      onChanged: ( value ) {
-                        // data.setDescription(value);
-                      },
-                    ),
-                  )
+        child: Container(
+          padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 10),
+              Center(
+                child: Text("Write a public comment",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  textAlign: TextAlign.center,),
               ),
-            ),
+              SizedBox(height: 2,),
+              Divider(color: Colors.grey[300],),
+              SizedBox(height: 10,),
 
-
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 0.0 ),
-              child: Container (
-                  height: 35,
-                  width: MediaQuery.of ( context ).size.width,
-                  child: (
-                  MaterialButton (
-                    onPressed: () {},
-                    color: Colors.lightBlueAccent.shade100,
-                    // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                    child: Text ( 'Send',
-                      style: TextStyle ( color: Colors.grey ), ),
-                    shape: RoundedRectangleBorder (
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0.0, 0.0, 0.0, 20.0 ),
+                child: Container (
+                    // height: 50,
+                    decoration: BoxDecoration (
                       borderRadius: BorderRadius.circular ( 5.0 ),
+                      color: Colors.grey[100],
                     ),
-                  )
+                    width: MediaQuery.of ( context ).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left : 10.0, right: 5.0),
+                      child: TextField (
+                        controller: _inviterUserController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration (
+                            counterText: "",
+                            border: InputBorder.none,
+                            hintText: 'Leave your comment here',
+                            hintStyle: TextStyle (
+                                color: Colors.grey, fontSize: 15 )
+                        ),
+                        onChanged: ( value ) {
+                          // data.setDescription(value);
+                        },
+                      ),
+                    )
+                ),
               ),
-            ),
-            ),
-          ],
+
+
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 0.0 ),
+                child: Container (
+                    height: 35,
+                    width: MediaQuery.of ( context ).size.width,
+                    child: (
+                    MaterialButton (
+                      onPressed: () {
+                        postCommentBloc.add(PostingCommentEvent(postId: widget.postId, comment: _inviterUserController.text));
+                        //                     print( "checking posting comment status status");
+                        //
+                      },
+                      color: Colors.lightBlueAccent.shade100,
+                      // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                      child:isLoading==false? Text ( 'Send',
+                        style: TextStyle ( color: Colors.grey ), ):SizedBox(height:20,width:20,child: CircularProgressIndicator()),
+                      shape: RoundedRectangleBorder (
+                        borderRadius: BorderRadius.circular ( 5.0 ),
+                      ),
+                    )
+                ),
+              ),
+              ),
+            ],
+          ),
         ),
       ),
     );

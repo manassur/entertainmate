@@ -97,6 +97,8 @@ class _InviteScreenState extends State<InviteScreen> {
 
                 } else if ( state is InviteUserLoadedState ) {
 
+                } else if (state is InviteUserEmptyState){
+                  Text('');
                 }
 
                 else if ( state is InviteUserFailureState ) {
@@ -122,6 +124,11 @@ class _InviteScreenState extends State<InviteScreen> {
                     return buildUserFollowingList ( state.inviteUser);
                   } else if ( state is InviteUserFailureState ) {
                     return buildErrorUi ( state.error );
+                  } else if (state is InviteUserEmptyState){
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 60.0),
+                      child: Center(child: Text(state.message)),
+                    );
                   }
                   else {
                     return buildErrorUi ( "Something went wrong!" );
@@ -451,7 +458,10 @@ class _InviteScreenState extends State<InviteScreen> {
 
   Widget buildLoading ( ) {
     return Center (
-      child: CircularProgressIndicator ( ) ,
+      child: Padding(
+        padding: const EdgeInsets.all(60.0),
+        child: CircularProgressIndicator ( ),
+      ) ,
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:entertainmate/screens/model/phone_check_response.dart';
 import 'package:entertainmate/screens/model/save_profile_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
+import 'package:entertainmate/screens/model/user_profile_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utility/constants.dart' as Constants;
@@ -151,15 +152,22 @@ class Repository {
     return FeedDetailsModel.fromJson(data);
   }
 
-  Future<UserCommentModel>fetchUserComments() async {
-    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_COMMENTS);
+  Future<UserProfileModel>fetchUserProfile(userId) async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_PROFILE+userId);
     final data = json.decode(response);
-    print("this is response user details  " + response.toString());
+    print("this is response user profile " + response.toString());
+    return UserProfileModel.fromJson(data);
+  }
+
+  Future<UserCommentModel>fetchUserComments(String postId) async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_COMMENTS+postId);
+    final data = json.decode(response);
+    print("this is response user comment  " + response.toString());
     return UserCommentModel.fromJson(data);
   }
 
-  Future<InterestedUserModel>fetchInterestedUser() async {
-    final response = await _apiClient.getWithHeader(Constants.FETCH_INTERESTED_USER);
+  Future<InterestedUserModel>fetchInterestedUser(String userId) async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_INTERESTED_USER+userId);
     final data = json.decode(response);
     print("this is response interested user  " + response.toString());
     return InterestedUserModel.fromJson(data);
@@ -177,6 +185,22 @@ class Repository {
 
     return  GenericResponse.fromJson(data);
   }
+
+
+
+  Future<GenericResponse>followUser(String userId,int action)async{
+    String endPoint = action == 1? Constants.UNFOLLOW_USER : Constants.FOLLOW_USER;
+      var body = <String, dynamic>{
+        'user_id' : userId,
+      };
+      final response = await _apiClient.postFormWithHeader(endPoint, body);
+      var data = json.decode(response);
+      print("follow users  " + response.toString());
+
+    return GenericResponse.fromJson(data);
+  }
+
+
 
   Future<GenericResponse>postComment(String postId,String comment) async {
     var body = <String, dynamic>{

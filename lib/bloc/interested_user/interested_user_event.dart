@@ -1,5 +1,6 @@
 import 'package:entertainmate/screens/model/InterestedUserModel.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class InterestedUserEvent extends Equatable {
   @override
@@ -8,8 +9,8 @@ abstract class InterestedUserEvent extends Equatable {
 
 class FetchInterestedUserEvent extends InterestedUserEvent {
   List<InterestedUserModel> interestedUser;
-  // final String postId;
-  // FetchInterestedUserEvent({ @required this.postId});
+  final String userId;
+  FetchInterestedUserEvent({@required this.userId});
 
   @override
   List<Object> get props => [];
