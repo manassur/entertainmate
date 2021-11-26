@@ -24,8 +24,7 @@ void main() async {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: SplashScreen (),
-          // home: Mate(),
+          home: SplashScreen (),     // home: Mate(),
         ),
       ),
    );
