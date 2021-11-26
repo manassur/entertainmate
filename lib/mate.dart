@@ -24,8 +24,7 @@ class _MateState extends State<Mate> {
         child: MateHome()
     ),
     MateDeals(),
-    MateNotification(),
-    ProfileMain(),
+
 
   ];
 
@@ -55,16 +54,9 @@ class _MateState extends State<Mate> {
           ),
           BottomNavigationBarItem(
             label: 'Deals',
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.store_mall_directory_rounded),
           ),
-          BottomNavigationBarItem(
-            label: 'Notification',
-            icon: Icon(Icons.notifications),
-          ),
-          BottomNavigationBarItem(
-            label: 'Profile',
-            icon: Icon(Icons.person),
-          ),
+
         ],
       ),
      body: _widgetOptions[_selectedIndex],

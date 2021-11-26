@@ -12,127 +12,204 @@ class CreateEvent extends StatefulWidget {
 }
 
 class _CreateEventState extends State<CreateEvent> {
+
+  int selectedEventType=0;
+  int selectedEventClass=0;
   @override
   Widget build(BuildContext context) {
           return Scaffold (
-            backgroundColor: Colors.grey[300],
+            backgroundColor: Colors.white,
             appBar:  AppBar(
               backgroundColor: Colors.white,
-              elevation: 0,
+              elevation: 1,
               centerTitle: true,
               title: Text("Create new event",
-                  style: TextStyle( fontSize: 18, color: Colors.black87,  fontWeight: FontWeight.bold)),
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Text("Cancel", style: TextStyle(color: Colors.grey[900]),),
-                ),
-              ),
+                  style: TextStyle( fontSize: 15, color: Colors.black38,  )),
+
             ),
             body: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(25.0),
               child: Container (
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text("Event type?",
+                        style: TextStyle( fontSize: 17, color: Colors.blueAccent,fontWeight: FontWeight.w500  )),
+                    SizedBox(height: 15),
 
-                    InkWell(
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedEventType=0;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("In-person",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                              Text("Social / Sports / Arts / Nature",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                            ],
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                            backgroundColor: Colors.black87,
+                            radius: 14,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 13,
+                               child: CircleAvatar(
+                                  backgroundColor:   selectedEventType==0?Colors.blueAccent:Colors.white,
+                                  radius: 10,
+
+                                )
+                            ),
+
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedEventType=1;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Online",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                              Text("Gaming / Open discussion / Arts / Nature",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                            ],
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                            backgroundColor: Colors.black87,
+                            radius: 14,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 13,
+                                child: CircleAvatar(
+                                  backgroundColor: selectedEventType==1?Colors.blueAccent:Colors.white,
+                                  radius: 10,
+
+                                )
+                            ),
+
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Divider(),
+                    SizedBox(height: 15),
+
+                    Text("Event class?",
+                        style: TextStyle( fontSize: 17, color: Colors.blueAccent,fontWeight: FontWeight.w500  )),
+                    SizedBox(height: 15),
+
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedEventClass=0;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Non-nonymous",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                              Text("People's name and photo are visible",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                            ],
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                            backgroundColor: Colors.black87,
+                            radius: 14,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 13,
+                                child: CircleAvatar(
+                                  backgroundColor: selectedEventClass==0?Colors.blueAccent:Colors.white,
+                                  radius: 10,
+
+                                )
+                            ),
+
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedEventClass=1;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Anonymous",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                              Text("People's name and photo are hidden",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                            ],
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                            backgroundColor: Colors.black87,
+                            radius: 14,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 13,
+                                child: CircleAvatar(
+                                  backgroundColor: selectedEventClass==1?Colors.blueAccent:Colors.white,
+                                  radius: 10,
+
+                                )
+                            ),
+
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 30),
+
+
+                    GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
                           create: (context) =>
                               PublishEventBloc(repository: Repository(),context:context),
                           child: NewInPersonEventScreen(),
                         ),));
-
                       },
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all( Radius.circular(15), ),),
-                               elevation: 4,
-                          child: Container(
-                      child: Stack(
-                         alignment: Alignment.bottomCenter,
-                           children: [
-                           ClipRRect(
-                             borderRadius: BorderRadius.circular(15),
-                            child: Container(
-                             color: Colors.white,
-                              height: 200,
-                ),
-              ),
-              ClipRRect(
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft:Radius.circular(10)),
-                  child: Container(
-                      color: Colors.grey[100],
-                      height: 35,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0,5,0,5),
-                        child: Row(
-                          children: [
-                            Icon(Icons.person_outline_outlined, color: Colors.black87,),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("In-person",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
-                            ),
-                          ],
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(8)
                         ),
-                      ),
-                  )
-              ),
-
-            ],
-          ),
-    )
+                        child: Center(
+                          child: Text("Continue",
+                              style: TextStyle( fontSize: 17, color: Colors.white,fontWeight: FontWeight.w500  )),
+                        ),
 
                       ),
                     ),
-
                     SizedBox(height: 15),
 
-                    Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all( Radius.circular(15), ),),
-                        elevation: 4,
-                        child: Container(
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Container(
-                                  color: Colors.white,
-                                  height: 200,
-                                ),
-                              ),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft:Radius.circular(10)),
-                                  child: Container(
-                                    color: Colors.grey[100],
-                                    height: 35,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(20.0,5,0,5),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.ac_unit_sharp, color: Colors.black87,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: Text("Online",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                              ),
-
-                            ],
-                          ),
-                        )
-
-                    ),
 
 
                   ],

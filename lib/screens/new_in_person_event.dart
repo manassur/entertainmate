@@ -11,6 +11,7 @@ import 'package:entertainmate/screens/target_audience.dart';
 import 'package:entertainmate/screens/title_screen.dart';
 import 'package:entertainmate/screens/utility/create_event_provider.dart';
 import 'package:entertainmate/widgets/exit_alert_dialog.dart';
+import 'package:entertainmate/widgets/rounded_container_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -34,7 +35,15 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
   TextEditingController _locationController= TextEditingController();
   TextEditingController _descriptionController= TextEditingController();
  // String _categoryController='';
-
+  String dropdownValue ='Category';
+  var dropDownItems=<String>[
+    'Category',
+    'Social',
+    'Sports',
+    'Arts',
+    'Nature'
+  ];
+  CreateEventProvider _provider;
   PublishEventBloc publishEventBloc;
   @override
   void initState() {
@@ -71,6 +80,9 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
     }
     if(_createEventProvider.location.isNotEmpty){
       _locationController.text = _createEventProvider.location;
+    }
+    if(_provider.categoryName.isNotEmpty){
+      dropdownValue = _provider.categoryName;
     }
   }
 
@@ -122,22 +134,24 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                     loadValues()
                                   });
                                 },
-                                child: Padding (
-                                  padding: const EdgeInsets.only(
-                                      top: 8, bottom: 8 ),
-                                  child: TextField (
-                                    controller: _titleController,
-                                    readOnly: true,
-                                    style: TextStyle (
-                                        fontSize: 16, color: Colors.black ),
-                                    decoration:InputDecoration(
-                                        hintStyle:TextStyle (
-                                            fontSize: 16, color: Colors.grey ) ,
-                                        enabled: false,
-                                        border:InputBorder.none,
-                                        hintText: 'Title'
-                                    ),
-                                  )
+                                child: RoundedContainerBg(
+                                  child: Padding (
+                                    padding: const EdgeInsets.all(
+                                        8 ),
+                                    child: TextField (
+                                      controller: _titleController,
+                                      readOnly: true,
+                                      style: TextStyle (
+                                          fontSize: 16, color: Colors.black ),
+                                      decoration:InputDecoration(
+                                          hintStyle:TextStyle (
+                                              fontSize: 16, color: Colors.grey ) ,
+                                          enabled: false,
+                                          border:InputBorder.none,
+                                          hintText: 'Title'
+                                      ),
+                                    )
+                                  ),
                                 ) ),
 //                          Divider ( color: Colors.grey, ),
 //                          Row (
@@ -161,6 +175,33 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
 //                              ),
 //                            ],
 //                          ),
+                          SizedBox(height: 10),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: RoundedContainerBg(
+                                child: Padding (
+                                    padding: const EdgeInsets.all(
+                                        10),
+                                    child:   Text("In-person",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                Expanded(
+                  child: RoundedContainerBg(
+                    child: Padding (
+                      padding: const EdgeInsets.all(
+                          10),
+                      child:   Text("Non-anonymous",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+
+                    ),
+                  ),
+                ),
+                          ],
+                        ),
                             Padding(
                               padding: const EdgeInsets.only(left:45.0,bottom:8),
                               child: Text (
