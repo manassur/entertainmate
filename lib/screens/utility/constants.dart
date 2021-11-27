@@ -33,6 +33,8 @@ const String FETCH_USER_COMMENTS=BASE_URL+"feed/comments/";
 const String SAVE_INTEREST=BASE_URL+"post/like?action=0&type=1&postId=1";
 const String POST_COMMENT=BASE_URL+"feed/comment";
 const String CREATE_EVENT=BASE_URL+"user/add_event";
+const String CREATE_POST_IMAGE=BASE_URL+"event/add_photo";
+
 const String FETCH_USER_FOLLOWING=BASE_URL+"user/followings";
 const String FETCH_INTERESTED_USER=BASE_URL+"user/info/";
 const String FETCH_USER_PROFILE=BASE_URL+"user/info/";

@@ -31,6 +31,20 @@ class PostCommentBloc extends Bloc<PostCommentEvent, PostCommentState> {
       }
     }
 
+    if (event is PostImageEvent) {
+      yield PostCommentLoadingState();
+      try {
+        GenericResponse postCommentResponse = await postCommentRepository.postImage(event.postId,event.images);
+        if(postCommentResponse.error!=true){
+          yield PostedCommentState(postId: postCommentResponse.code );
+        }else{
+          yield  PostCommentFailureState(message: postCommentResponse.message );
+        }
+      } catch (e) {
+        yield PostCommentFailureState(message: e.toString());
+      }
+    }
+
     if (event is FollowEvent) {
       yield PostCommentLoadingState();
       try {

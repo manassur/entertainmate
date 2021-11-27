@@ -255,6 +255,29 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
+  Future<GenericResponse>postImage(postId,List<File> images) async {
+    // we have to convert each image to base64, and then convert the list to a json
+    List<String> imagesInBase64 = List();
+    for(var f in images){
+      String fileInBase64;
+      if(f!=null){
+        List<int> fileInByte = f.readAsBytesSync();
+        fileInBase64 = base64Encode(fileInByte);
+      }else{ fileInBase64 = 'null';}
+      imagesInBase64.add(fileInBase64);
+    }
+
+    var body = <String, dynamic>{
+      'post_id': postId,
+      'images':jsonEncode(imagesInBase64).toString(),
+    };
+    final response = await _apiClient.postFormWithHeader(Constants.CREATE_POST_IMAGE,body);
+    var data = json.decode(response);
+    print("event created successfully " + response.toString());
+    return  GenericResponse.fromJson(data);
+  }
+
+
   Future<InviteUserModel>fetchUserFollowings() async {
     final response = await _apiClient.getWithHeader(Constants.FETCH_USER_FOLLOWING);
     final data = json.decode(response);

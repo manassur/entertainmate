@@ -35,61 +35,21 @@ class _InviteScreenState extends State<InviteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text("Invite a friend to this event",
+          style: TextStyle(fontSize: 16, color: Colors.black87),
+          textAlign: TextAlign.center,),
+        elevation: 1,
       ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-
-      child: Container(
-        padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
-        ),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10),
-            Center(
-              child: Text("Invite a friend to this event",
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                textAlign: TextAlign.center,),
-            ),
-            SizedBox(height: 2,),
-            Divider(color: Colors.grey[300],),
-            SizedBox(height: 10,),
 
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0.0, 0.0, 0.0, 20.0 ),
-              child: Container (
-                  height: 35,
-                  decoration: BoxDecoration (
-                    borderRadius: BorderRadius.circular ( 5.0 ),
-                    color: Colors.grey[100],
-                  ),
-                  width: MediaQuery.of ( context ).size.width,
-                  child: TextField (
-                    controller: _inviterUserController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration (
-                        counterText: "",
-                        border: InputBorder.none,
-                        prefixIcon: Icon ( Icons.search ),
-                        hintText: 'Search here',
-                        hintStyle: TextStyle (
-                            color: Colors.grey, fontSize: 15 )
-                    ),
-                    onChanged: ( value ) {
-                      // data.setDescription(value);
-                    },
-                  )
-              ),
-            ),
 
             BlocListener <InviteUserBloc, InviteUserState>(
               listener: (context, state){
@@ -121,7 +81,63 @@ class _InviteScreenState extends State<InviteScreen> {
                   } else if ( state is InviteUserLoadingState ) {
                     return buildLoading ( );
                   } else if ( state is InviteUserLoadedState ) {
-                    return buildUserFollowingList ( state.inviteUser);
+                    return Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Container (
+                            padding: const EdgeInsets.all( 10),
+                            margin: const EdgeInsets.all( 10),
+                            height: 50,
+                            decoration: BoxDecoration (
+                              borderRadius: BorderRadius.circular ( 5.0 ),
+                              color: Colors.grey[100],
+                            ),
+                            width: MediaQuery.of ( context ).size.width,
+                            child: TextField (
+                              controller: _inviterUserController,
+                              onSubmitted: (value){
+
+                              },
+                              keyboardType: TextInputType.emailAddress,
+
+                              decoration: InputDecoration (
+                                  counterText: "",
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon ( Icons.search ),
+                                  hintText: 'Search here',
+                                  hintStyle: TextStyle (
+                                      color: Colors.grey, fontSize: 15 )
+                              ),
+                              onChanged: ( value ) {
+                                // data.setDescription(value);
+                              },
+                            )
+                        ),
+                        buildUserFollowingList ( state.inviteUser),
+                        Padding (
+                          padding: const EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 0.0 ),
+                          child: Container (
+                            height: 50,
+                            width: MediaQuery.of ( context ).size.width,
+                            child: (
+                                MaterialButton (
+                                  elevation: 0,
+                                  onPressed: () {
+
+                                  },
+                                  color: Colors.blueAccent,
+                                  // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                                  child: Text ( 'Invite',
+                                    style: TextStyle ( color: Colors.white ), ),
+                                  shape: RoundedRectangleBorder (
+                                    borderRadius: BorderRadius.circular ( 5.0 ),
+                                  ),
+                                )
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   } else if ( state is InviteUserFailureState ) {
                     return buildErrorUi ( state.error );
                   } else if (state is InviteUserEmptyState){
@@ -139,26 +155,7 @@ class _InviteScreenState extends State<InviteScreen> {
             ),
 
 
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 0.0 ),
-              child: Container (
-                  height: 35,
-                  width: MediaQuery.of ( context ).size.width,
-                  child: (
-                  MaterialButton (
-                    elevation: 0,
-                    onPressed: () {},
-                    color: Colors.lightBlueAccent.shade100,
-                    // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                    child: Text ( 'Invite',
-                      style: TextStyle ( color: Colors.grey ), ),
-                    shape: RoundedRectangleBorder (
-                      borderRadius: BorderRadius.circular ( 5.0 ),
-                    ),
-                  )
-              ),
-            ),
-            ),
+
           ],
         ),
       ),
@@ -168,14 +165,15 @@ class _InviteScreenState extends State<InviteScreen> {
 
   Widget buildUserFollowingList(InviteUserModel inviteUserModel){
    return Container(
-      height: 350,
+     height: 400,
       child: GridView.builder(
         gridDelegate:
         SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
             crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0),
+            mainAxisSpacing: 5.0),
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: inviteUserModel.followers.length,
         // itemCount:  10,
         itemBuilder: (ctx, userPos) {
@@ -196,6 +194,7 @@ class _InviteScreenState extends State<InviteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Stack(
+                    alignment: Alignment.center,
                     children: <Widget>[
                     Container(
                       height: 50,
@@ -223,9 +222,12 @@ class _InviteScreenState extends State<InviteScreen> {
                         ),
                       ),
 
+                      Icon(Icons.done,color: inviteUserModel.followers[userPos].isSelected ? Colors.white:Colors.transparent)
+
                 ]
                   ),
 
+                  SizedBox(height: 10,),
                   Center(
                     child: Text(
                       // 'Noshat',
@@ -246,213 +248,6 @@ class _InviteScreenState extends State<InviteScreen> {
 
   }
 
-  // Widget dialogBox (UserCommentModel userCommentModel){
-  //
-  //   // return Container(height: 50, color: Colors.green,);
-  //   return Dialog(
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.circular(15.0),
-  //     ),
-  //     elevation: 0,
-  //     backgroundColor: Colors.transparent,
-  //     child: Container(
-  //       padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
-  //       decoration: BoxDecoration(
-  //         shape: BoxShape.rectangle,
-  //         color: Colors.white,
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ),
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: <Widget>[
-  //           SizedBox(height: 10,),
-  //           Center(
-  //             child: Container(
-  //               height: 80,
-  //               width: 90,
-  //               decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(35.0),
-  //                 image: DecorationImage(
-  //                   image: NetworkImage(
-  //                       'https://i.pinimg.com/originals/97/ed/6b/97ed6b370803649addbf66144c18c194.png'),
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(height: 10,),
-  //           Center(
-  //             child: Text(
-  //               "Fei Lu",
-  //               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-  //           ),
-  //           SizedBox(height: 5,),
-  //           Center(
-  //             child: Text("Postdoc at the university of Texas",
-  //               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-  //               textAlign: TextAlign.center,),
-  //           ),
-  //           SizedBox(height: 10,),
-  //           Divider(color: Colors.grey[300],),
-  //           SizedBox(height: 10,),
-  //
-  //           Container(
-  //             width: MediaQuery.of(context).size.width,
-  //             padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
-  //             decoration: BoxDecoration(
-  //                 shape: BoxShape.rectangle,
-  //                 color: Colors.lightBlueAccent.withOpacity(0.1),
-  //                 borderRadius: BorderRadius.circular(10.0),
-  //                 border: Border.all(
-  //                     color: Colors.lightBlueAccent.withOpacity(0.15))
-  //
-  //             ),
-  //             child: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: <Widget>[
-  //                 Row(
-  //                   children: [
-  //                     Text(
-  //                       '${userCommentModel.comments[0].username}',
-  //                       style: TextStyle(color: Colors.grey[700],
-  //                           fontSize: 17,
-  //                           fontWeight: FontWeight.w700),),
-  //                     Spacer(),
-  //                     Icon(Icons.more_horiz, color: Colors.grey[800])
-  //                   ],
-  //                 ),
-  //                 Text(
-  //                   Constants.formattedTime(userCommentModel.comments[0].creation),
-  //                   style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-  //                   textAlign: TextAlign.center,),
-  //                 SizedBox(height: 15,),
-  //
-  //                 Text(
-  //                   '${userCommentModel.comments[0].content}',
-  //                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15,color: Colors.grey[600]),
-  //                 ),
-  //                 SizedBox(height: 10,),
-  //                 Row(
-  //                   children: [
-  //                     Icon(Icons.thumb_up_alt_outlined, color: Colors.grey[500],),
-  //                     Padding(
-  //                       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-  //                       child: Text("12",
-  //                         style: TextStyle(color: Colors.grey[500]),),
-  //                     ),
-  //                     Icon(Icons.thumb_down_alt_outlined, color: Colors
-  //                         .grey[500],),
-  //                     Padding(
-  //                       padding: const EdgeInsets.only(left: 5.0),
-  //                       child: Text("3",
-  //                           style: TextStyle(color: Colors.grey[500])),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //
-  //           SizedBox(height: 20,),
-  //           Text("Show 2 more replies",
-  //             style: TextStyle(fontSize: 14, color: Colors.grey[600]),),
-  //           SizedBox(height: 13,),
-  //
-  //           Row(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Container(
-  //                 height: 35,
-  //                 width: 35,
-  //                 decoration: BoxDecoration(
-  //                   borderRadius: BorderRadius.circular(10.0),
-  //                   image: DecorationImage(
-  //                     image: NetworkImage(
-  //                         'https://i.pinimg.com/originals/97/ed/6b/97ed6b370803649addbf66144c18c194.png'),
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 10.0,),
-  //               Expanded(
-  //                 child: Container(
-  //                   width: MediaQuery.of(context).size.width,
-  //                   padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
-  //                   decoration: BoxDecoration(
-  //                       shape: BoxShape.rectangle,
-  //                       color: Colors.grey.withOpacity(0.1),
-  //                       borderRadius: BorderRadius.circular(10.0),
-  //                       border: Border.all(color: Colors.grey.withOpacity(0.15))
-  //                   ),
-  //                   child: Column(
-  //                     mainAxisSize: MainAxisSize.min,
-  //                     mainAxisAlignment: MainAxisAlignment.start,
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: <Widget>[
-  //                       Row(
-  //                         children: [
-  //                           Text(
-  //                             '${userCommentModel.comments[0].replies[0].username}',
-  //                             // "Ehsan Doostdar",
-  //                             style: TextStyle(color: Colors.grey[700],
-  //                                 fontSize: 17,
-  //                                 fontWeight: FontWeight.w700),),
-  //                           Spacer(),
-  //                           Icon(
-  //                               Icons.more_horiz, color: Colors.grey[700])
-  //                         ],
-  //                       ),
-  //                       Text(
-  //                         Constants.formattedTime(userCommentModel.comments[0].replies[0].creation),
-  //                         // "June 3, 2021  1:30 PM",
-  //                         style: TextStyle(
-  //                             fontSize: 12, color: Colors.grey[500]),
-  //                         textAlign: TextAlign.center,),
-  //                       SizedBox(height: 15,),
-  //
-  //                       Text(
-  //                         '${userCommentModel.comments[0].replies[0].content}',
-  //                         // "Postdoc at the Texas of some Postdoc at the university of Texas Postdoc at the Texas university of Texas.",
-  //                         style: TextStyle(fontWeight: FontWeight.w500,
-  //                             fontSize: 15,
-  //                             color: Colors.grey[600]),
-  //                       ),
-  //                       SizedBox(height: 10,),
-  //                       Row(
-  //                         children: [
-  //                           Icon(Icons.thumb_up_alt_outlined,
-  //                             color: Colors.grey[500],),
-  //                           Padding(
-  //                             padding: const EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-  //                             child: Text("2", style: TextStyle(
-  //                                 color: Colors.grey[500]),),
-  //                           ),
-  //                           Icon(Icons.thumb_down_alt_outlined,
-  //                             color: Colors.grey[500],),
-  //                           Padding(
-  //                             padding: const EdgeInsets.only(left: 5.0),
-  //                             child: Text(" ", style: TextStyle(
-  //                                 color: Colors.grey[500])),
-  //                           ),
-  //                         ],
-  //                       )
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  //
-  // }
 
 
 

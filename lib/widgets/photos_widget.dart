@@ -1,21 +1,33 @@
 import 'dart:io';
 
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constants;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 
 class PhotosWidget extends StatefulWidget {
   List<Images> images;
-  PhotosWidget({this.images});
+  String postId;
+  PhotosWidget({this.images,this.postId});
   @override
   _PhotosWidgetState createState() => _PhotosWidgetState();
 }
 
 class _PhotosWidgetState extends State<PhotosWidget> {
-  List<File> _images=List();
+  PostCommentBloc postImageBloc;
+  bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    postImageBloc = BlocProvider.of<PostCommentBloc>(context);
 
+  }
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -51,6 +63,12 @@ class _PhotosWidgetState extends State<PhotosWidget> {
     File image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50
     );
+
+    if(image!=null){
+      List<File> images = List();
+      images.add(image);
+    postImageBloc.add(PostImageEvent(postId:widget.postId,images:images ));
+    }
   }
 
 
@@ -58,43 +76,92 @@ class _PhotosWidgetState extends State<PhotosWidget> {
    _imgFromGallery() async {
     File image = await  ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50
-    );}
+    );
+    if(image!=null){
+      List<File> images = List();
+      images.add(image);
+      postImageBloc.add(PostImageEvent(postId:widget.postId,images:images ));
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: Icon(Icons.add_a_photo_outlined,color:Colors.black87),
-        onPressed: (){
-          _showPicker(context);
+    return BlocListener<PostCommentBloc,PostCommentState>(
+      listener: (context,state){
+        if(state is PostCommentLoadingState){
+          setState(() {
+            isLoading=true;
+          });
+        }else if(state is PostedCommentState){
+          print(' getting to posted stats o');
+          setState(() {
+            isLoading=false;
+          });
+          // Flushbar(
+          //   title:  "Hey Ninja",
+          //   message:  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+          //   duration:  Duration(seconds: 3),
+          // )..show(context);
+          Fluttertoast.showToast(
+              msg: 'Image added to event',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
 
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.keyboard_arrow_down_outlined, size: 25, color: Colors.grey,),
-                    Text("Photos added by the moderators",
-                      style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),),
-                  ],
-                ),
-              ),
+          setState(() {
+            // where state.postId is the image that was just posted
+            widget.images.add(new Images(id: '',postId: widget.postId,image: state.postId));
+          });
+        }
+        else if(state is PostCommentFailureState){
+          Fluttertoast.showToast(
+              msg: state.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+          setState(() {
+            isLoading=false;
+          });
+        }
 
-               photoGridList(),
+        else {
+          setState(() {
+            isLoading=false;
+          });
+        }
+      },
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: Icon(Icons.add_a_photo_outlined,color:Colors.black87),
+          onPressed: (){
+            _showPicker(context);
 
-            ],
-          ),
-        ),),
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+            child: Column(
+              children: [
+                isLoading==true?Center(child: CircularProgressIndicator()):Container(),
+                 photoGridList(),
+
+              ],
+            ),
+          ),),
+        ),
       ),
     );
   }
@@ -103,7 +170,6 @@ class _PhotosWidgetState extends State<PhotosWidget> {
   Widget photoGridList(){
     return
       Container(
-        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(3.0, 3.0, 3.0, 0.0),
           child: GridView.builder(

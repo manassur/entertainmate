@@ -83,7 +83,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -202,24 +202,14 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: () => showDialog<String>(context: context,
-                      builder: (BuildContext context) => BlocProvider<InviteUserBloc>(
-                          create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
-                          child: InviteScreen()
-                      ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: Colors.grey[300],
                     ),
-
-
-                    child:  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.grey[300],
-                      ),
-                      child:Icon(Icons.add),
-                    ),
+                    child:Icon(Icons.share),
                   ),
                   SizedBox(width:10),
                   InkWell(
@@ -242,7 +232,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
 
                   InkWell(
                     onTap: (){
-                      saveInterestBloc.add(FetchInterestEvent(postId: "1", type: "1", action: "1"));
+                      saveInterestBloc.add(FetchInterestEvent(postId: feedDetailsModel.feeds[0].post.postId, type: "1", action: "1"));
                     },
                     child: Container(
                         height: 50,
@@ -600,100 +590,15 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                               ),
                             ),
                             //PEOPLE TAB
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  //FOR GOING USERS
-                                  Container(
-                                    child: Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(bottom: 8.0),
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.keyboard_arrow_down_outlined,
-                                                      size: 25, color: Colors.grey,
-                                                    ),
-                                                    Text(
-                                                      "Going (${feedDetailsModel.feeds[0].post.occupiedSeats} out of ${feedDetailsModel.feeds[0].post.availableSeats})",
-                                                      style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: GridView.builder(
-                                                  gridDelegate:
-                                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                                          crossAxisCount: 3,
-                                                          crossAxisSpacing: 10.0,
-                                                          mainAxisSpacing: 10.0),
-                                                  shrinkWrap: true,
-                                                  itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
-                                                  itemBuilder: (ctx, goingPos) {
-                                                    return Expanded(
-                                                      child: Container(
-                                                        child: GestureDetector(
-                                                          onTap: () => showDialog<String>(context: context,
-                                                              builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
-                                                                  create: (context) => UserCommentBloc(userCommentRepository: Repository()),
-                                                                  child: CommentersInfo()
-                                                              ),
-                                                          ),
-                                                          child: Column(
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                                child: Container(
-                                                                  height: 90,
-                                                                  width: 90,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(35.0),
-                                                                    image: DecorationImage(
-                                                                      image: NetworkImage(
-                                                                          Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto),
-
-                                                                      // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
-                                                                      fit: BoxFit.cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
-                                                                style: TextStyle(
-                                                                    color: Colors.grey[800],
-                                                                    fontWeight: FontWeight.bold, fontSize: 16),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ),
-
-                                  SizedBox(height: 15),
-
-                                  //FOR INTERESTED USERS
-                                  Container(
-                                    child: Expanded(
+                            Scaffold(
+                              body: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    //FOR GOING USERS
+                                    Container(
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                                        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -702,11 +607,83 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                               padding: const EdgeInsets.only(bottom: 8.0),
                                               child: Row(
                                                 children: [
-                                                  Icon(
-                                                    Icons.keyboard_arrow_down_outlined,
-                                                    size: 25,
-                                                    color: Colors.grey,
+                                                 Divider(),
+                                                  Text(
+                                                    "Going (${feedDetailsModel.feeds[0].post.occupiedSeats})",
+                                                    style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
                                                   ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(),
+                                            ListView.separated(
+                                              separatorBuilder: (ctx, interestedPos) {
+                                                return Divider(indent: 15,);
+                                              },
+                                              shrinkWrap: true,
+                                              physics: NeverScrollableScrollPhysics(),
+                                              itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
+                                              itemBuilder: (ctx, goingPos) {
+                                                return Container(
+                                                  child: GestureDetector(
+                                                    onTap: () => showDialog<String>(context: context,
+                                                        builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
+                                                            create: (context) => UserCommentBloc(userCommentRepository: Repository()),
+                                                            child: CommentersInfo()
+                                                        ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                          child: Container(
+                                                            height: 40,
+                                                            width: 40,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(15.0),
+                                                              image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                    Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto),
+
+                                                                // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
+                                                          style: TextStyle(
+                                                              color: Colors.grey[800],
+                                                              fontWeight: FontWeight.bold, fontSize: 16),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+
+                                    //FOR INTERESTED USERS
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Row(
+                                                children: [
+
                                                   Text(
                                                     "Interested (${feedDetailsModel.feeds[0].post.interestedUsers.length})",
                                                     style: TextStyle(
@@ -717,143 +694,96 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                 ],
                                               ),
                                             ),
-                                            Expanded(
-                                              child: GridView.builder(
-                                                gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                        crossAxisCount: 4,
-                                                        crossAxisSpacing: 10.0,
-                                                        mainAxisSpacing: 10.0),
-                                                shrinkWrap: true,
-                                                 itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
-                                                itemBuilder: (ctx, interestedPos) {
-                                                  return Expanded(
-                                                    child: GestureDetector(
-                                                      onTap: () => showDialog<String>(context: context,
-                                                        builder: (BuildContext context) => BlocProvider<InterestedUserBloc>(
-                                                            create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
-                                                            child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].id,)
-                                                        ),
-                                                      ),
-                                                      child: Column(
-                                                        children: [
-                                                          Container(
-                                                            height: 65,
-                                                            width: 65,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(25.0),
-                                                              image: DecorationImage(
-                                                                image: NetworkImage(
-                                                                     Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
-                                                               ),
-                                                                fit: BoxFit.cover,
-                                                              ),
+                                            Divider(),
+
+                                            ListView.separated(
+                                            separatorBuilder: (ctx, interestedPos) {
+                                            return Divider(indent: 15,);
+                                            },
+                                              physics: NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                               itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
+                                              itemBuilder: (ctx, interestedPos) {
+                                                return GestureDetector(
+                                                  onTap: () => showDialog<String>(context: context,
+                                                    builder: (BuildContext context) => BlocProvider<InterestedUserBloc>(
+                                                        create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                        child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].id,)
+                                                    ),
+                                                  ),
+                                                  child: Row(
+
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                        const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                        child: Container(
+                                                          height: 40,
+                                                          width: 40,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius.circular(15.0),
+                                                            image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                   Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
+                                                             ),
+                                                              fit: BoxFit.cover,
                                                             ),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 1.0),
-                                                            child: Text(
-                                                              '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}',
-                                                              style: TextStyle(
-                                                                  color: Colors.grey[800],
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 16),
-                                                            ),
-                                                          )
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(top: 1.0),
+                                                        child: Text(
+                                                          '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}',
+                                                          style: TextStyle(
+                                                              color: Colors.grey[800],
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 16),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                  ),
 
-                                  SizedBox(height: 15),
+                                    SizedBox(height: 15),
 
-                                  //COMMENTS BY USERS
-                                  Container(
-                                    child: Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(bottom: 8.0),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.keyboard_arrow_down_outlined,
-                                                    size: 25,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  Text(
-                                                    "Comments (${feedDetailsModel.feeds[0].post.comments})",
-                                                    style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: GridView.builder(
-                                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                        crossAxisCount: 3,
-                                                        crossAxisSpacing: 10.0,
-                                                        mainAxisSpacing: 10.0),
-                                                shrinkWrap: true,
-                                                itemCount:  feedDetailsModel.feeds[0].post.commenters.length,
-                                                itemBuilder: (ctx, commentPos) {
-                                                  return Expanded(
-                                                    child: GestureDetector(
-                                                      onTap: () => showDialog<String>(context: context,
-                                                        builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
-                                                            create: (context) => UserCommentBloc(userCommentRepository: Repository()),
-                                                            child: CommentersInfo(postId: feedDetailsModel.feeds[0].post.commenters[commentPos].id))
-                                                        ),
-
-                                                      child: Column(
-                                                        children: [
-                                                          Container(
-                                                            height: 65,
-                                                            width: 65,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(25.0),
-                                                              image: DecorationImage(
-                                                                image: NetworkImage(
-                                                                    Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.commenters[commentPos].profilePhoto}'),
-                                                                fit: BoxFit.cover,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                          '${feedDetailsModel.feeds[0].post.commenters[commentPos].name}',
-                                                                 style: TextStyle(
-                                                                color: Colors.grey[800],
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 16),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                  ],
+                                ),
+                              ),
+                              floatingActionButton: FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.group_add,color:Colors.black87),
+                                onPressed: (){
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                  ),
-                                ],
+                                    builder: (context) {
+                                      return StatefulBuilder(
+                                          builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
+                                            return FractionallySizedBox(
+                                                heightFactor: 0.80,
+                                                child: BlocProvider<InviteUserBloc>(
+                                                    create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
+                                                    child: InviteScreen()
+                                                ),);
+                                          });
+                                    },
+                                  );
+
+
+                                },
                               ),
                             ),
                             //PUBLIC COMMENTS TAB
@@ -872,7 +802,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                         children: [
                                           CircleAvatar(
                                             radius: 20,
-                                            backgroundImage:NetworkImage(feedDetailsModel.feeds[0].post.commenters[pos].profilePhoto) ,
+                                            backgroundImage:NetworkImage(Constants.IMAGE_BASE_URL+feedDetailsModel.feeds[0].post.commenters[pos].profilePhoto) ,
                                           ),
                                           SizedBox(width:20),
                                           Expanded(
@@ -915,8 +845,13 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                             ),
                             //PHOTOS TAB
                             Container(
-                              child: PhotosWidget(images:feedDetailsModel.feeds[0].post.images),
-                            ),
+                              child:BlocProvider<PostCommentBloc>(
+                                  create: (context) =>
+                                      PostCommentBloc(postCommentRepository: Repository()),
+                                  child:   PhotosWidget(images:feedDetailsModel.feeds[0].post.images,postId:feedDetailsModel.feeds[0].post.postId),
+
+                              ),)
+
 
                             //DETAILS TAB
 

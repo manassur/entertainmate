@@ -23,3 +23,10 @@ class FollowEvent extends PostCommentEvent {
   @override
   List<Object> get props => [];
 }
+class PostImageEvent extends PostCommentEvent {
+  String postId;
+  List<File> images;
+  PostImageEvent({ this.postId,this.images});
+  @override
+  List<Object> get props => [];
+}

@@ -43,11 +43,11 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
             isLoading=false;
           });
           _inviterUserController.clear();
-          // Flushbar(
-          //   title:  "Hey Ninja",
-          //   message:  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-          //   duration:  Duration(seconds: 3),
-          // )..show(context);
+          Flushbar(
+            title:  "Hey Ninja",
+            message:  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+            duration:  Duration(seconds: 3),
+          ).show(context);
           Fluttertoast.showToast(
               msg: 'Comment posted succesfully',
               toastLength: Toast.LENGTH_SHORT,
