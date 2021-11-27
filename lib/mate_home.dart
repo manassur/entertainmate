@@ -7,6 +7,7 @@ import 'package:entertainmate/screens/happening_now.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/neighborhood_screen.dart';
+import 'package:entertainmate/screens/private_room_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/user_profile.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
@@ -207,11 +208,8 @@ class _MateHomeState extends State<MateHome> {
                       ),
                       onPressed: () {
                         // do something
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
-                          create: (context) =>
-                              PublishEventBloc(repository: Repository(),context:context),
-                          child: CreateEvent(),
-                        ),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            PrivateRoomScreen(),));
                       },
                     ),
                     IconButton(
@@ -565,12 +563,12 @@ class _MateHomeState extends State<MateHome> {
                                           backgroundColor: Colors.transparent,
                                           builder: (context) {
                                             return FractionallySizedBox(
-                                                heightFactor: 0.9,
-                                                child:   BlocProvider<OldEventBloc>(
-                                                    create: (context) => OldEventBloc(repository: Repository()),
-                                                    child:RenewOldEventScreen()
+                                              heightFactor: 0.9,
+                                              child:   BlocProvider<OldEventBloc>(
+                                                  create: (context) => OldEventBloc(repository: Repository()),
+                                                  child:RenewOldEventScreen()
 
-                                                ),
+                                              ),
                                             );
                                           },
                                         );
@@ -581,9 +579,9 @@ class _MateHomeState extends State<MateHome> {
                                   ),
                                 ],
                               ),
-                              ),
                             ),
                           ),
+                        ),
 
                         SizedBox(height:5),
                         GestureDetector(
