@@ -128,7 +128,9 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
                     child: (
                     MaterialButton (
                       onPressed: () {
-                        postCommentBloc.add(PostingCommentEvent(postId: widget.postId, comment: _inviterUserController.text));
+                        postCommentBloc.add(
+                            PostingCommentEvent(
+                                postId: widget.postId, comment: _inviterUserController.text));
                         //                     print( "checking posting comment status status");
                         //
                       },

@@ -5,6 +5,7 @@ import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/generic_response.dart';
 import 'package:entertainmate/screens/model/invite_user_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
+import 'package:entertainmate/screens/model/old_event_model.dart';
 import 'package:entertainmate/screens/model/phone_check_response.dart';
 import 'package:entertainmate/screens/model/save_profile_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
@@ -135,6 +136,14 @@ class Repository {
     final response = await _apiClient.postForm(Constants.CHECK_EMAIL_AVAILABLE,body);
     var data = json.decode(response);
     return  PhoneCheckResponse.fromJson(data);
+  }
+
+  Future<OldEventModel>fetchOldEvent() async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_HOME_FEED);
+    final data = json.decode(response);
+    print("this is response feeds " + response.toString());
+
+    return OldEventModel.fromJson(data);
   }
 
   Future<MateHomeModel>fetchHomeFeed() async {

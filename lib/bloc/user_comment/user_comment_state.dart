@@ -30,7 +30,7 @@ class UserCommentLoadedState extends UserCommentState {
 
   @override
   List<Object> get props => [];
-}
+} 
 
 
 class UserCommentFailureState extends UserCommentState {

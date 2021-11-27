@@ -21,9 +21,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'utility/constants.dart' as Constants;
-import 'utility/constants.dart' as Constant;
-
-
 
 class HappeningNowScreen extends StatefulWidget {
   FeedDetailsModel feedDetailsModel;
@@ -463,7 +460,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                               borderRadius: BorderRadius.circular(17.0),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    Constant.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
+                                    Constants.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
 
                                     // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
                                 ),

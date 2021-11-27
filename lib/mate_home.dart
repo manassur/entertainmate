@@ -1,3 +1,4 @@
+import 'package:entertainmate/bloc/old_event/old_event_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/publish_event/publish_event_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:entertainmate/screens/happening_now.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/mate_home_model.dart';
 import 'package:entertainmate/screens/neighborhood_screen.dart';
+import 'package:entertainmate/screens/renew_old_event.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/user_profile.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
@@ -33,6 +35,7 @@ class _MateHomeState extends State<MateHome> {
   MateHomeBloc mateHomeBloc;
   Repository homeMateRepository;
   Repository feedDetailsRepository;
+  Repository repository;
   MateHomeModel homeMateModel;
   FeedDetailsModel feedDetailsModel;
   // RefreshController refreshController;
@@ -148,7 +151,6 @@ class _MateHomeState extends State<MateHome> {
           children: [
             Container(
               padding: EdgeInsets.only(bottom:10,top:10),
-
               color: Colors.white,
               child: Container(
                 height: 50,
@@ -332,7 +334,20 @@ class _MateHomeState extends State<MateHome> {
                                     ],
                                   ))),
                               Divider(),
-                              Text("Renew an old event", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
+                              InkWell(
+                                  onTap:(){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context)=>
+
+                                            BlocProvider<OldEventBloc>(
+                                            create: (context) => OldEventBloc(repository: Repository()),
+                                            child:RenewOldEventScreen()
+
+                                            ),
+
+                                        ));
+                                  } ,
+                                  child: Text("Renew an old event", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500))),
                             ],
                           ),
                         ),
@@ -387,7 +402,7 @@ class _MateHomeState extends State<MateHome> {
         itemCount: mateHomeModel.feeds.length,
         itemBuilder: (context,pos){
           return  Padding (
-            padding: EdgeInsets.symmetric (vertical: 10 ),
+            padding: EdgeInsets.symmetric (vertical: 5 ),
             child: InkWell(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>
@@ -422,13 +437,7 @@ class _MateHomeState extends State<MateHome> {
 
               child: Container(
                 padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-                ),
+                color: Colors.white,
                 child: Column(
                   children: [
                     Row(
@@ -461,7 +470,7 @@ class _MateHomeState extends State<MateHome> {
                           ),
                         ),
 
-                        SizedBox( width: 20),
+                        SizedBox( width: 15),
 
                         Flexible(
                           child: Column(
@@ -470,25 +479,25 @@ class _MateHomeState extends State<MateHome> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                // ${latestNewsModel[pos].xFeaturedMedia},
                                   '${mateHomeModel.feeds[pos].username}',
                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0.0, 4.5, 0.0, 0.0),
                                 child: Text(
                                   '${mateHomeModel.feeds[pos].description}',
-                                  style: TextStyle(fontSize: 16, color: Colors.grey),),
+                                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),),
                               ),
                               Row(
                                 children: [
-                                  Text("5hr ", style: TextStyle(color: Colors.grey),),
+                                  Text("5hr ", style: TextStyle(color: Colors.grey.shade600),),
+
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                                     child: Container(
                                         height: 16,
                                         width: 16,
                                         child: Image.network(
-                                            "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png"
+                                            "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png", color: Colors.grey.shade500,
                                         )),
                                   )
                                 ],
@@ -497,12 +506,11 @@ class _MateHomeState extends State<MateHome> {
                             ],
                           ),
                         ),
-                        Text("Interested ", style: TextStyle(fontSize: 16, color: Colors.black87),),
 
                       ],
                     ),
 
-                    SizedBox(height: 18,),
+                    SizedBox(height: 15,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,11 +520,10 @@ class _MateHomeState extends State<MateHome> {
                           width: 48,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.0),
-
                           ),
                         ),
 
-                        SizedBox( width: 20),
+                        SizedBox( width: 15),
 
                         Flexible(
                           child: Column(
@@ -526,9 +533,10 @@ class _MateHomeState extends State<MateHome> {
                             children: <Widget>[
                               Row(
                                 children: [
+                                  Text("Today, ", style: TextStyle(fontSize: 16),),
                                   Text("7:00 ", style: TextStyle(fontSize: 16),),
                                   Text("pm", style: TextStyle(fontSize: 16),),
-                                  Text(" until ", style: TextStyle(fontSize: 16),),
+                                  Text(" - ", style: TextStyle(fontSize: 16),),
                                   Text("9:00 ", style: TextStyle(fontSize: 16),),
                                   Text("pm", style: TextStyle(fontSize: 16),),
                                 ],
@@ -554,85 +562,20 @@ class _MateHomeState extends State<MateHome> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 15),
 
-                              Divider(color: Colors.grey),
-                              SizedBox(height: 10,),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: <Widget>[
-                                      new Container(
-                                        height: 45,
-                                        width: 45,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-
-                                          borderRadius: BorderRadius.circular(15.0),
-                                          image:  DecorationImage(
-                                            image: NetworkImage(
-                                                mateHomeModel.feeds[pos].post.goingUsers.length>0?  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].post.goingUsers[0].profilePhoto}':''),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius: BorderRadius.circular(15.0),
-                                            image:  DecorationImage(
-
-                                              image: NetworkImage(
-                                                  mateHomeModel.feeds[pos].post.goingUsers.length>1?  Constants.IMAGE_BASE_URL+'${ mateHomeModel.feeds[pos].post.goingUsers[0].profilePhoto}':''),
-                                              fit: BoxFit.cover,
-
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-
-                                  SizedBox(width: 20),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Open to the ", style: TextStyle(fontSize: 17, color: Colors.black87),),
-                                          Text(
-                                            "${mateHomeModel.feeds[pos].post.audience}",
-                                            style: TextStyle(fontSize: 17, color: Colors.black87),),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-                                        child: Row(
-                                          children: [
-                                            Text("Occupied seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                            Text(
-                                              "${mateHomeModel.feeds[pos].post.occupiedSeats}",
-                                              style: TextStyle(color: Colors.grey, fontSize: 17),)
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text("Available seats: ", style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                          Text(
-                                            "${mateHomeModel.feeds[pos].post.availableSeats}",
-                                            style: TextStyle(color: Colors.grey, fontSize: 17),),
-                                        ],
-                                      ),
-                                    ],
+                              Container(
+                                height: 170,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  image: DecorationImage(
+                                    image: AssetImage("images/entertainmate_pics.jpeg"),
+                                    fit: BoxFit.cover,
                                   )
-                                ],
+                                ),
                               ),
+
+
                               SizedBox(height: 10),
 
                               Divider(color: Colors.grey),
@@ -642,34 +585,32 @@ class _MateHomeState extends State<MateHome> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.save_alt_rounded),
-                                      Text(
-                                          "${mateHomeModel.feeds[pos].post.saves}",
-                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                      Text("Reactions ", style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+                                      Text("${mateHomeModel.feeds[pos].post.saves}",
+                                          style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
                                     ],
                                   ),
+                                  Spacer(),
+
                                   Row(
                                     children: [
-                                      Icon(Icons.add_outlined),
-                                      Text(
-                                          "${mateHomeModel.feeds[pos].post.going}",
-                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.mode_comment_outlined),
                                       Text(
                                           "${mateHomeModel.feeds[pos].post.comments}",
-                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
-                                    ],
+                                          style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+
+                                      Text(" Comments", style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+                                       ],
                                   ),
+                                  
+                                  SizedBox(width: 10.0,),
+                                  
                                   Row(
                                     children: [
-                                      Icon(Icons.thumb_up_alt_outlined),
                                       Text(
                                           "${mateHomeModel.feeds[pos].post.interests}",
-                                          style: TextStyle(fontSize: 17, color: Colors.black87)),
+                                          style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+                                      Text(" Shares", style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+
                                     ],
                                   ),
                                 ],

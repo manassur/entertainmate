@@ -79,6 +79,7 @@ flutter:
     - images/004-twitter.svg
     - images/005-instagram.svg
     - images/001-email.svg
+    - images/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
