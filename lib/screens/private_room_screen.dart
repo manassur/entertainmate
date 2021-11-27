@@ -41,7 +41,7 @@ class _PrivateRoomScreenState extends State<PrivateRoomScreen> {
                             unselectedLabelColor: Colors.grey[700],
                             indicatorSize: TabBarIndicatorSize.label,
                             labelColor: Colors.blue,
-
+                            labelPadding: EdgeInsets.all(0),
                             tabs: [
                               Tab(
                                 text: "Members",
@@ -106,8 +106,8 @@ class _PrivateRoomScreenState extends State<PrivateRoomScreen> {
           Spacer(),
 
           Container(
-            color: Colors.grey.shade200,
-            padding: EdgeInsets.fromLTRB( 10.0, 5.0, 10.0, 5.0),
+            color: Colors.grey.shade100,
+            padding: EdgeInsets.fromLTRB( 10.0, 7.0, 10.0, 5.0),
             child: Row(
               children: [
                 Expanded(
@@ -123,25 +123,27 @@ class _PrivateRoomScreenState extends State<PrivateRoomScreen> {
                       contentPadding: EdgeInsets.only(left: 10.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(17.0),
-                        borderSide:  BorderSide(width: 0.7, color: Colors.red),
                       ),
-                      prefixIcon: Container(
-                        width: 37 ,
-                        margin: EdgeInsets.only(left: 5.0, right: 10.0, top: 5.0, bottom: 5.0),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(15.0)
-                        ),
-                      ),
+                      // prefixIcon: Container(
+                      //   height: 30,
+                      //   width: 37 ,
+                      //   margin: EdgeInsets.only(left: 5.0, right: 10.0, top: 5.0, bottom: 5.0),
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(15.0),
+                      //     image: DecorationImage(
+                      //       image: AssetImage("images/entertainmate_pic.jpeg", ), fit: BoxFit.cover
+                      //     )
+                      //   ),
+                      // ),
                     ),
                   ),
                 ),
 
 
-               Padding(
-                 padding: const EdgeInsets.only(left: 8.0),
-                 child: Icon(Icons.send, color: Colors.grey, size: 40,),
-               )
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Icon(Icons.send, color: Colors.grey, size: 35,),
+                )
               ],
             ),
           ),
@@ -153,3 +155,4 @@ class _PrivateRoomScreenState extends State<PrivateRoomScreen> {
     );
   }
 }
+
