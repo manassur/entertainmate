@@ -15,6 +15,7 @@ import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
 import 'package:entertainmate/widgets/commenters_info_dialog.dart';
 import 'package:entertainmate/widgets/photos_widget.dart';
+import 'package:entertainmate/widgets/report_incident_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -108,7 +109,97 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
               Icons.more_horiz,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return Wrap(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top:35.0),
+                          child: Container(
+                            margin: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(20.0),
+                            alignment: Alignment.topCenter,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow (
+                                    color: Colors.black54.withOpacity (
+                                        0.2 ),
+                                    blurRadius: 8.0,
+                                  ),]
+                            ),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                    onTap: (){
+                                      Navigator.pop(context);
+                                      showModalBottomSheet(
+                                        context: context,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                        ),
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return FractionallySizedBox(
+                                              heightFactor: 0.7,
+                                              child: ReportIncidentWidget());
+                                        },
+                                      );
+                                    },
+                                    child: Container(child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text("Report an incident", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
+                                      ],
+                                    ))),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height:5),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          child: Container(
+                            margin: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(20.0),
+                            alignment: Alignment.topCenter,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow (
+                                    color: Colors.black54.withOpacity (0.2 ),
+                                    blurRadius: 8.0,
+                                  ),]
+                            ),
+                            child: Column(
+                              children: [
+                                Text("Cancel", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
