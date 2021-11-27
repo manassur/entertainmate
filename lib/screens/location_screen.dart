@@ -130,9 +130,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       )
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+            
                 Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -181,116 +179,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   margin: EdgeInsets.only(top: 10, bottom: 10),
                   child: Text('powered by Google'),
                 ),
-                Padding (
-                  padding: const EdgeInsets.fromLTRB( 10.0, 40.0, 10.0, 13.0 ),
-                  child: Container (
-                    height: 45,
-                    width: MediaQuery
-                        .of ( context )
-                        .size
-                        .width,
-                    child: RaisedButton (
-                      disabledColor: Colors.lightBlueAccent.withOpacity ( 0.2 ),
-                      child: Text ( 'Next',
-                        style: TextStyle ( color: Colors.grey ), ),
-                      shape: RoundedRectangleBorder (
-                        borderRadius: BorderRadius.circular ( 10.0 ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                Padding (
-                  padding: const EdgeInsets.all( 11.0 ),
-                  child: Divider ( color: Colors.grey, ),
-                ),
-
-                Padding (
-                  padding: const EdgeInsets.only( top: 10.0, bottom: 35 ),
-                  child: Center (
-                    child: Text ( "Locations you have selected before",
-                      style: TextStyle ( color: Colors.grey,
-                          fontSize: 16,
-                          letterSpacing: 1 ), ),
-                  ),
-                ),
-
-                Row (
-                  children: [
-                    Icon ( Icons.warning, size: 20, ),
-                    SizedBox ( width: 20 ),
-                    Container (
-                      width: 230,
-                      child: Column (
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text ( "2 Andover Rd, Athens, OH 45701",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle (
-                                color: Colors.grey[700], fontSize: 15 ), )
-                        ],
-                      ),
-                    ),
-                    Spacer ( ),
-                    Container (
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration (
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular ( 10.0 ),
-                            border: Border.all ( color: Colors.grey )
-                        ),
-                        child: Center ( child: Text (
-                          "Select", style: TextStyle ( fontSize: 12 ), ) )
-                    ),
-                  ],
-                ),
-                Divider ( color: Colors.grey[400] ),
-                Row (
-                  children: [
-                    Icon ( Icons.warning, size: 20, ),
-                    SizedBox ( width: 20 ),
-                    Container (
-                      width: 230,
-                      child: Column (
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text (
-                            "Ping Rec Center",
-                            style: TextStyle ( color: Colors.black87,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500 ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                          Padding (
-                            padding: const EdgeInsets.only( top: 5.0 ),
-                            child: Text ( "82 S Green Dr, Athens, OH 45701",
-                              style: TextStyle ( color: Colors.grey[600] ), ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Spacer ( ),
-                    Container (
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration (
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular ( 10.0 ),
-                            border: Border.all ( color: Colors.grey )
-                        ),
-                        child: Center ( child: Text (
-                          "Select", style: TextStyle ( fontSize: 12 ), ) )
-                    ),
-                  ],
-                ),
-                Divider ( color: Colors.grey[400], height: 40, ),
-
-
+          
               ],
             ),
 

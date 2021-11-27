@@ -188,11 +188,26 @@ class _CreateEventState extends State<CreateEvent> {
 
                     GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider<PublishEventBloc>(
-                          create: (context) =>
-                              PublishEventBloc(repository: Repository(),context:context),
-                          child: NewInPersonEventScreen(),
-                        ),));
+                        Navigator.of(context).pop();
+                        showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                          ),
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+
+                            return FractionallySizedBox(
+                                heightFactor: 0.8,
+                                child: BlocProvider<PublishEventBloc>(
+                                  create: (context) =>
+                                      PublishEventBloc(repository: Repository(),context:context),
+                                  child: NewInPersonEventScreen(type:selectedEventType,clas:selectedEventClass),
+                                ),);
+                          },
+                        );
+
                       },
                       child: Container(
                         height: 50,

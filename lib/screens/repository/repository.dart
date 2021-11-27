@@ -244,7 +244,7 @@ class Repository {
       'location':location ,
       'start_date': startDate,
       'end_date':endDate ,
-      'audience':audience ,
+      'audience':audience.toString() ,
       'isLocationShown': isLocationShown==true?"1":"0 ",
       'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0",
       'images':jsonEncode(imagesInBase64).toString(),

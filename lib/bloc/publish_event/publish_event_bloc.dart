@@ -41,7 +41,7 @@ class PublishEventBloc extends Bloc<PublishEventEvent, PublishEventState> {
                _provider.images
     );
         if(response.error!=true){
-          yield PostedEventState(postId: response.code.toString() ); // in this case the code is the id of the event that was just created
+          yield PostedEventState(postId: response.code ); // in this case the code is the id of the event that was just created
         }else{
           yield  PublishEventFailureState(message: response.message );
         }
