@@ -18,18 +18,22 @@ import 'package:entertainmate/widgets/photos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'utility/constants.dart' as Constants;
+import 'package:timeago/timeago.dart' as timeago;
+
 
 class HappeningNowScreen extends StatefulWidget {
   FeedDetailsModel feedDetailsModel;
   String postId;
   String action;
   String type;
+  String name;
   PostCommentModel postCommentModel;
 
-  HappeningNowScreen({Key key, @required this.postCommentModel, this.feedDetailsModel, this.postId, this.action, this.type});
+  HappeningNowScreen({Key key, this.name, @required this.postCommentModel, this.feedDetailsModel, this.postId, this.action, this.type});
 
   @override
   _HappeningNowScreenState createState() => _HappeningNowScreenState();
@@ -43,7 +47,29 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
   bool isSaved=false;
   PostCommentBloc postCommentBloc;
   TextEditingController commentController = TextEditingController();
+  var audienceList=<String>[
+    'Open to public',
+    'Invited guests only',
 
+  ];
+  var classList=<String>[
+    'Non - anonymous',
+    'Anonymous',
+
+  ];
+  var typeList=<String>[
+    'In-person',
+    'Online',
+
+  ];
+  String dropdownValue ='Category';
+  var categoryList=<String>[
+    'Category',
+    'Social',
+    'Sports',
+    'Arts',
+    'Nature'
+  ];
   @override
   void initState() {
     super.initState();
@@ -57,15 +83,15 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Text("Happening Now",
+        title: Text(widget.name,
             style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey[600],
+                color: Colors.black87,
                 fontWeight: FontWeight.bold)),
         leading: InkWell(
           onTap: () {
@@ -73,10 +99,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
           },
           child: Container(
             alignment: Alignment.center,
-            child: Text(
-              "Back",
-              style: TextStyle(color: Colors.grey[900]),
-            ),
+            child: Icon(Icons.arrow_back_ios,color:Colors.black)
           ),
         ),
         actions: <Widget>[
@@ -165,6 +188,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
               }
             },
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 30),
             width: MediaQuery.of(context).size.width,
               height: 70,
                 decoration: BoxDecoration(
@@ -173,33 +197,11 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
                   ),
+
                 ),
               child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          saveInterestBloc.add(FetchSaveEvent(postId: "1", type: "1", action: "1"));
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                            decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.grey[300],
-                            ),
-                            child: Icon( Icons.save_alt_rounded )
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text("Save")
-                    ],
-                  ),
-
-                  // show invite Users modal
                   InkWell(
                     onTap: () => showDialog<String>(context: context,
                       builder: (BuildContext context) => BlocProvider<InviteUserBloc>(
@@ -208,73 +210,57 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                       ),
                     ),
 
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.grey[300],
-                          ),
-                          child:Icon(Icons.add),
+
+                    child:  Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.grey[300],
+                      ),
+                      child:Icon(Icons.add),
+                    ),
+                  ),
+                  SizedBox(width:10),
+                  InkWell(
+                    onTap: (){
+                      saveInterestBloc.add(FetchSaveEvent(postId: "1", type: "1", action: "1"));
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                        decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.grey[300],
                         ),
-                        SizedBox(height: 5),
-                        Text("Invite")
-                      ],
+                        child: Icon( Icons.save_alt_rounded )
                     ),
                   ),
 
-                  // show add comment modal
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => showDialog<String>(context: context,
-                            builder: ( context) =>  BlocProvider<PostCommentBloc>(
-                                  create: (context) =>
-                                 PostCommentBloc(postCommentRepository: Repository()),
-                              child: PostCommentScreen(postId: feedDetailsModel.feeds[0].post.postId,)
+                  // show invite Users modal
+                  Spacer(),
 
-                               ),),
-
-
-                        child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: Colors.grey[300],
-                            ),
-                            child:Icon(Icons.mode_comment_outlined),
+                  InkWell(
+                    onTap: (){
+                      saveInterestBloc.add(FetchInterestEvent(postId: "1", type: "1", action: "1"));
+                    },
+                    child: Container(
+                        height: 50,
+                        width: 135,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.grey[300],
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      Text("Comment")
-                    ],
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Interested",style:TextStyle(fontWeight:FontWeight.w600)),
+                            SizedBox(width:5),
+                            Icon(Icons.thumb_up_alt_outlined),
+                          ],
+                        ),),
                   ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          saveInterestBloc.add(FetchInterestEvent(postId: "1", type: "1", action: "1"));
-                        },
-                        child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: Colors.grey[300],
-                            ),
-                            child:Icon(Icons.thumb_up_alt_outlined),),
-                      ),
-                      SizedBox(height: 5),
-                      Text("Interested")
-                    ],
-                  ),
+                  SizedBox(height: 5),
                 ],
               )
             ),
@@ -288,346 +274,331 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
     return Container(
       child: SingleChildScrollView(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 0.3),
-            child: Container(
-                color: Colors.white,
-                height: 45,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                    child: Text(
-                  feedDetailsModel.feeds[0].post.categoryName,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                ))),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 0),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+          Container(
+            color:Colors.grey[200],
+            padding: EdgeInsets.only(top:10,bottom:10),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10,left:10),
+                      child: Container(
+                          color: Colors.transparent,
+                          child: Center(
+                              child: Text(
+                            feedDetailsModel.feeds[0].post.categoryName,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                          ))),
+                    ),
+                  ],
                 ),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.access_time,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                " ",
-                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),
-                              ),
-                              Text(
-                                feedDetailsModel.feeds[0].post.startDate,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
+                Row(
 
-                              Text(
-                                " until ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                              Text(
-                                feedDetailsModel.feeds[0].post.endDate,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-
-                            ],
-                          ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 2.0),
-                          //   child: Text(
-                          //     "Thursday, June 4",
-                          //     style: TextStyle(color: Colors.grey[500]),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            feedDetailsModel.feeds[0].post.location,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[800]),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
-                              "",
-                              style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontSize: 15,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
-                              feedDetailsModel.feeds[0].post.audience,
-                              style: TextStyle(color: Colors.grey[500]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.lock_outline,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Open to the ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                              Text(
-                                "${feedDetailsModel.feeds[0].post.audience}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800]),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
-                              "Looking for ${feedDetailsModel.feeds[0].post.availableSeats}  people",
-                              style: TextStyle(color: Colors.grey[500]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Divider(color: Colors.grey[400]),
-                  SizedBox(height: 15),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(17.0),
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    Constants.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
-
-                                    // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Text(
-                                        '${feedDetailsModel.feeds[0].username}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: Icon(
-                                        Icons.stars,
-                                        color: Colors.blue,
-                                        size: 17,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      0.0, 4.5, 0.0, 0.0),
-                                  child: Text(
-                                    feedDetailsModel.feeds[0].description,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.grey),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "${feedDetailsModel.feeds[0].post.creation}",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10.0, 0.0, 0.0, 0.0),
-                                      child: Container(
-                                          height: 16,
-                                          width: 16,
-                                          child: Image.network(
-                                              "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png")),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                ReadMoreText(
-                                  '${feedDetailsModel.feeds[0].post.description}',
-                                  trimLines: 3,
-                                  colorClickableText:
-                                      Colors.grey.withOpacity(0.9),
-                                  trimMode: TrimMode.Line,
-                                  trimCollapsedText: '...See More',
-                                  trimExpandedText: ' See Less',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700]),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0.3,left:10),
+                      child: Container(
+                          color: Colors.transparent,
+                          child: Center(
+                              child: Text(
+                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))} ${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))} - ${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.endDate))}',
+                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15,color: Colors.redAccent),
+                              ))),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+
+
           DefaultTabController(
-              length: 3,
+              length: 4,
               initialIndex: 0,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                       child: SizedBox(
                         height: 50,
                         child: AppBar(
                           elevation: 0,
-                          backgroundColor: Colors.grey[200],
+                          backgroundColor: Colors.white,
                           bottom: TabBar(
                             unselectedLabelColor: Colors.grey[700],
                             indicatorSize: TabBarIndicatorSize.label,
                             labelColor: Colors.blue,
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              // Creates border
-                              color: Colors.lightBlueAccent.shade100
-                                  .withOpacity(0.2),
-                            ),
+
                             tabs: [
-                              Container(
-                                // color: Colors.red,
-                                width: 85,
-                                height: 30,
-                                child: Tab(
-                                  text: "People",
-                                ),
+                              Tab(
+                                text: "Details",
                               ),
-                              Container(
-                                width: 85,
-                                height: 30,
-                                child: Tab(
-                                  text: "Photos",
-                                ),
+                              Tab(
+                                text: "People",
                               ),
-                              Container(
-                                width: 85,
-                                height: 30,
-                                child: Tab(
-                                  text: "Details",
-                                ),
+                              Tab(
+                                text: "Comments",
                               ),
+                              Tab(
+                                text: "Media",
+                              ),
+
                             ],
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                      child: Divider(color: Colors.grey[400]),
-                    ),
-                    SizedBox(height: 10),
+
                     SingleChildScrollView(
                       child: Container(
-                          height: 1000, //height of TabBarView SOEMTHING HAS TO BE DONE
+                          height: 470, //height of TabBarView SOEMTHING HAS TO BE DONE
                           //ABOUT THIS STATIC HEIGHT FOR THE TABBAR
 
                           child: TabBarView(children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 0),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.access_time,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))} - ${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.endDate))}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87),
+                                            ),
+
+                                            Text(
+                                              '${DateFormat('dd-MM-yyyy').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[600]),
+                                            ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(top: 2.0),
+                                            //   child: Text(
+                                            //     "Thursday, June 4",
+                                            //     style: TextStyle(color: Colors.grey[500]),
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              feedDetailsModel.feeds[0].post.location,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[800]),
+                                            ),
+
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 2.0),
+                                              child: Text(
+                                                feedDetailsModel.feeds[0].post.audience,
+                                                style: TextStyle(color: Colors.grey[500]),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.lock_outline,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Open to the ",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.grey[800]),
+                                                ),
+                                                Text(
+                                                  "${feedDetailsModel.feeds[0].post.audience}",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.grey[800]),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 2.0),
+                                              child: Text(
+                                                "${typeList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${classList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${categoryList[ int.parse(feedDetailsModel.feeds[0].post.categoryId)]}",
+                                                style: TextStyle(color: Colors.grey[500]),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 15),
+                                    Divider(color: Colors.grey[400]),
+                                    SizedBox(height: 15),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              height: 40,
+                                              width: 40,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(17.0),
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    Constants.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
+
+                                                    // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                          '${feedDetailsModel.feeds[0].username}',
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 18)),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left: 8.0),
+                                                        child: Icon(
+                                                          Icons.stars,
+                                                          color: Colors.blue,
+                                                          size: 17,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(
+                                                        0.0, 4.5, 0.0, 0.0),
+                                                    child: Text(
+                                                      feedDetailsModel.feeds[0].description,
+                                                      style: TextStyle(
+                                                          fontSize: 16, color: Colors.grey),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "${timeago.format(DateTime.parse(feedDetailsModel.feeds[0].post.creation))}",
+                                                        style: TextStyle(color: Colors.grey),
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.fromLTRB(
+                                                            10.0, 0.0, 0.0, 0.0),
+                                                        child: Container(
+                                                            height: 16,
+                                                            width: 16,
+                                                            child: Image.network(
+                                                                "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png")),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 18,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              height: 40,
+                                              width: 40,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15.0),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  ReadMoreText(
+                                                    '${feedDetailsModel.feeds[0].post.description}',
+                                                    trimLines: 3,
+                                                    colorClickableText:
+                                                    Colors.grey.withOpacity(0.9),
+                                                    trimMode: TrimMode.Line,
+                                                    trimCollapsedText: '...See More',
+                                                    trimExpandedText: ' See Less',
+                                                    style: TextStyle(
+                                                        fontSize: 16, color: Colors.grey[700]),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             //PEOPLE TAB
                             Container(
                               child: Column(
@@ -885,56 +856,70 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                 ],
                               ),
                             ),
+                            //PUBLIC COMMENTS TAB
+                            Scaffold(
+                              body:ListView.builder(
+                                itemCount:feedDetailsModel.feeds[0].post.commenters.length ,
+                                  itemBuilder: (context,pos){
+                                return Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(5),
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage:NetworkImage(feedDetailsModel.feeds[0].post.commenters[pos].profilePhoto) ,
+                                          ),
+                                          SizedBox(width:20),
+                                          Expanded(
+                                            flex: 8,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(feedDetailsModel.feeds[0].post.commenters[pos].name,style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text(feedDetailsModel.feeds[0].post.commenters[pos].content,style: TextStyle(fontWeight: FontWeight.w300,fontSize: 15),),
 
+
+                                                ],
+                                              )),
+                                        ],
+                                      ),
+                                      SizedBox(height:10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text("${timeago.format(DateTime.parse(feedDetailsModel.feeds[0].post.commenters[pos].creation))}",style: TextStyle(color: Colors.grey,fontSize: 13),),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                              floatingActionButton: FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.mode_comment_outlined,color:Colors.black87),
+                                onPressed: (){
+                                  showDialog<String>(context: context,
+                                    builder: ( context) =>  BlocProvider<PostCommentBloc>(
+                                        create: (context) =>
+                                            PostCommentBloc(postCommentRepository: Repository()),
+                                        child: PostCommentScreen(postId: feedDetailsModel.feeds[0].post.postId,)
+
+                                    ),);
+                                },
+                              ),
+                            ),
                             //PHOTOS TAB
                             Container(
                               child: PhotosWidget(images:feedDetailsModel.feeds[0].post.images),
                             ),
 
                             //DETAILS TAB
-                            Container(
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 0.0, 10.0, 0.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.keyboard_arrow_down_outlined,
-                                                size: 25,
-                                                color: Colors.grey,
-                                              ),
-                                              Text(
-                                                "More details about this event",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.grey,
-                                                    letterSpacing: 1),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Text(
-                                          '${feedDetailsModel.feeds[0].post.description}',
-                                          style: TextStyle(
-                                              color: Colors.grey[700]),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+
 
                           ])),
                     )

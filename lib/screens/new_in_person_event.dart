@@ -384,41 +384,30 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                             ),
                           ),
                           SizedBox(height:10),
-                          InkWell (
-                            onTap: (
-                                ) {
-                              Navigator.push ( context, MaterialPageRoute (
-                                  builder: (
-                                      context
-                                      ) => DescriptionScreen ( ) ) ).then((value) => {
-                                loadValues()
-                              });
-                            },
-                            child: RoundedContainerBg(
-                              child: Row (
-                                children: [
-                                  Expanded (
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                        child:TextField (
-                                          controller: _descriptionController,
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration (
-                                              counterText: "",
-                                              border: InputBorder.none,
-                                              hintText: 'More details (optional)',
-                                              hintStyle: TextStyle (
-                                                  color: Colors.grey, fontSize: 15 )
-                                          ),
-                                          onChanged: ( value ) {
-                                            data.setDescription(value);
-                                          },
-
+                          RoundedContainerBg(
+                            child: Row (
+                              children: [
+                                Expanded (
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                      child:TextField (
+                                        controller: _descriptionController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration (
+                                            counterText: "",
+                                            border: InputBorder.none,
+                                            hintText: 'More details (optional)',
+                                            hintStyle: TextStyle (
+                                                color: Colors.grey, fontSize: 15 )
                                         ),
-                                      )
-                                  ),
-                                ],
-                              ),
+                                        onChanged: ( value ) {
+                                          data.setDescription(value);
+                                        },
+
+                                      ),
+                                    )
+                                ),
+                              ],
                             ),
                           ),
 

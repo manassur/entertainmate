@@ -6,6 +6,6 @@ class GenericResponse {
   GenericResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     error = json['error'];
-    code =json['code'];
+    code =json['code'].toString();
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
@@ -37,12 +38,16 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
             isLoading=true;
           });
         }else if(state is PostedCommentState){
+          print(' getting to posted stats o');
           setState(() {
             isLoading=false;
           });
-
           _inviterUserController.clear();
-          Navigator.pop(context);
+          // Flushbar(
+          //   title:  "Hey Ninja",
+          //   message:  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+          //   duration:  Duration(seconds: 3),
+          // )..show(context);
           Fluttertoast.showToast(
               msg: 'Comment posted succesfully',
               toastLength: Toast.LENGTH_SHORT,
@@ -51,7 +56,21 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0
+          ).then((value) => Navigator.pop(context));
+        }
+        else if(state is PostCommentFailureState){
+          Fluttertoast.showToast(
+              msg: state.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
           );
+          setState(() {
+            isLoading=false;
+          });
         }
 
         else {
@@ -82,7 +101,7 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
               SizedBox(height: 10),
               Center(
                 child: Text("Write a public comment",
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 16, color: Colors.black87,fontWeight: FontWeight.w400),
                   textAlign: TextAlign.center,),
               ),
               SizedBox(height: 2,),
@@ -112,7 +131,6 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
                                 color: Colors.grey, fontSize: 15 )
                         ),
                         onChanged: ( value ) {
-                          // data.setDescription(value);
                         },
                       ),
                     )
@@ -128,16 +146,17 @@ class _PostCommentScreenState extends State<PostCommentScreen> {
                     child: (
                     MaterialButton (
                       onPressed: () {
+                        if(_inviterUserController.text.isNotEmpty)
                         postCommentBloc.add(
                             PostingCommentEvent(
                                 postId: widget.postId, comment: _inviterUserController.text));
-                        //                     print( "checking posting comment status status");
-                        //
+                        else
+                          Fluttertoast.showToast(msg: 'field cannot be empty');
                       },
-                      color: Colors.lightBlueAccent.shade100,
+                      color: Colors.blueAccent,
                       // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                       child:isLoading==false? Text ( 'Send',
-                        style: TextStyle ( color: Colors.grey ), ):SizedBox(height:20,width:20,child: CircularProgressIndicator()),
+                        style: TextStyle ( color: Colors.white ), ):SizedBox(height:20,width:20,child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white),)),
                       shape: RoundedRectangleBorder (
                         borderRadius: BorderRadius.circular ( 5.0 ),
                       ),

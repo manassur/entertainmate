@@ -216,15 +216,17 @@ class GoingUsers {
 }
 
 class Commenters {
-  String id;
+  String id,content,creation;
   String profilePhoto,name;
 
-  Commenters({this.id, this.profilePhoto,this.name});
+  Commenters({this.id, this.profilePhoto,this.name,this.content,this.creation});
 
   Commenters.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     profilePhoto = json['profilePhoto'];
+    content = json['content'];
+    creation = json['creation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -232,6 +234,8 @@ class Commenters {
     data['id'] = this.id;
     data['name'] = this.name;
     data['profilePhoto'] = this.profilePhoto;
+    data['content'] = this.content;
+    data['creation'] = this.creation;
     return data;
   }
 }
