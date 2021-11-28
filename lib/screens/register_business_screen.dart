@@ -1,9 +1,12 @@
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
+import 'package:entertainmate/bloc/register_business/register_business_event.dart';
 import 'package:entertainmate/widgets/business_type_widget.dart';
 import 'package:entertainmate/widgets/custom_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBusinessScreen extends StatefulWidget {
 
@@ -22,6 +25,13 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   final websiteController = TextEditingController();
   final moreController = TextEditingController();
 
+  RegisterBusinessBloc registerBusinessBloc;
+
+  @override
+  void initState() {
+    registerBusinessBloc = BlocProvider.of<RegisterBusinessBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -373,7 +383,27 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
               child: (
                   MaterialButton (
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: () async{
+                      if(businessNameController.text.isNotEmpty )
+                        registerBusinessBloc.add(
+                            RegisteringBusinessEvent(
+                              name: businessNameController.text,
+                                description: descriptiveController.text,
+                                slogan: sloganController.text,
+                                phone: phoneController.text,
+                                email: emailController.text,
+                                location: locationController.text,
+                                time: openCloseController.text,
+                                website: websiteController.text,
+                                more: moreController.text,
+                            ));
+
+                      else await Flushbar(
+                            message: 'Fields cannot be empty',
+                            duration: Duration(seconds: 3),
+                      ).show(context);
+                    },
+
                     color: Colors.lightBlue.shade100,
                     // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                     child: Text ( 'Continue',
