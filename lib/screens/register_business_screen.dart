@@ -7,6 +7,7 @@ import 'package:entertainmate/widgets/custom_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterBusinessScreen extends StatefulWidget {
 
@@ -323,12 +324,15 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                         controller: moreController,
                         autofocus: false,
                         style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'More about this business',
                           hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                          contentPadding: EdgeInsets.only(left: 10.0),
+
+                          contentPadding: EdgeInsets.all( 15.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -352,9 +356,45 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("Instagram", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
-                            Text("Facebook", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
-                            Text("LinkedIn", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                            Column(
+                              children: [
+                                SvgPicture.asset (
+                                  'images/005-instagram.svg', height: 30,
+                                  width: 25,
+                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 10),
+                                Text("Instagram", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                SvgPicture.asset (
+                                  'images/003-facebook.svg',  height: 30,
+                                  width: 25,
+                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 10),
+
+                                Text("Facebook", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                SvgPicture.asset (
+                                  'images/002-linkedin-logo.svg',
+                                  height: 30,
+                                  width: 25,
+                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 10),
+
+                                Text("LinkedIn", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                              ],
+                            ),
 
                           ],
                         ),
@@ -394,6 +434,7 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                         registerBusinessBloc.add(
                             RegisteringBusinessEvent(
                               name: businessNameController.text,
+                                type: "",
                                 description: descriptiveController.text,
                                 slogan: sloganController.text,
                                 phone: phoneController.text,

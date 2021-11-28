@@ -222,10 +222,11 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
-  Future<GenericResponse>registerBusiness(String name, String description, String slogan,String phone, String email, String location, String time, String website, String more)
+  Future<GenericResponse>registerBusiness(String name, String type, String description, String slogan,String phone, String email, String location, String time, String website, String more)
    async {
     var body = <String, dynamic>{
       'name': name,
+      'type': type,
       'description': description,
       'slogan': slogan,
       'phone': phone,
