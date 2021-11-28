@@ -222,6 +222,26 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
+  Future<GenericResponse>registerBusiness(String name, String type, String description, String slogan,String phone, String email, String location, String time, String website, String more)
+   async {
+    var body = <String, dynamic>{
+      'name': name,
+      'type': type,
+      'description': description,
+      'slogan': slogan,
+      'phone': phone,
+      'email': email,
+      'location': location,
+      'time': time,
+      'website': website,
+      'more': more,
+    };
+    final response = await _apiClient.postFormWithHeader(Constants.REGISTER_BUSINESS,body);
+    var data = json.decode(response);
+    print("Business registered successfully " + response.toString());
+    return  GenericResponse.fromJson(data);
+  }
+
 
   Future<GenericResponse>publishEvent(eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded,List<File> images) async {
    // we have to convert each image to base64, and then convert the list to a json
