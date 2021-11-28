@@ -1,3 +1,5 @@
+import 'feed_details_model.dart';
+
 class MateHomeModel {
   bool error;
   List<Feeds> feeds;
@@ -86,6 +88,8 @@ class Post {
   String startDate;
   String endDate;
   List<GoingUsers> goingUsers;
+  List<Images> images;
+
 
   Post(
       {this.postId,
@@ -105,6 +109,7 @@ class Post {
         this.comments,
         this.startDate,
         this.endDate,
+        this.images,
         this.goingUsers});
 
   Post.fromJson(Map<String, dynamic> json) {
@@ -131,6 +136,12 @@ class Post {
         goingUsers.add(new GoingUsers.fromJson(v));
       });
     }
+    if (json['images'] != null) {
+      images = new List<Images>();
+      json['images'].forEach((v) {
+        images.add(new Images.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -154,6 +165,9 @@ class Post {
     data['end_date'] = this.endDate;
     if (this.goingUsers != null) {
       data['going_users'] = this.goingUsers.map((v) => v.toJson()).toList();
+    }
+    if (this.images != null) {
+      data['images'] = this.images.map((v) => v.toJson()).toList();
     }
     return data;
   }

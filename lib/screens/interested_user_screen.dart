@@ -6,12 +6,15 @@ import 'package:entertainmate/screens/utility/constants.dart' as Constant;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'model/InterestedUserModel.dart';
 
 class InterestedUserScreen extends StatefulWidget {
 String userId;
-InterestedUserScreen({@required this.userId});
+String action;
+String actor;
+InterestedUserScreen({@required this.userId,this.action,this.actor});
   @override
   _InterestedUserScreenState createState() => _InterestedUserScreenState();
 }
@@ -25,6 +28,8 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
     super.initState();
     interestedUserBloc = BlocProvider.of<InterestedUserBloc>(context);
     interestedUserBloc.add(FetchInterestedUserEvent(userId: widget.userId));
+
+    print(' action :'+ widget.action + ' actor : '+widget.actor);
   }
 
   @override
@@ -61,94 +66,166 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
 
   Widget dialogBox (InterestedUserModel interestedUserModel){
 
-    return Dialog(
-      shape: RoundedRectangleBorder(
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15.0, bottom: 10.0,top: 20),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: Container(
-        padding: EdgeInsets.only(left: 15, right: 15.0, bottom: 10.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 10,),
-            Center(
-              child: Container(
-                height: 75,
-                width: 75,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(25.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        // 'https://i.pinimg.com/originals/97/ed/6b/97ed6b370803649addbf66144c18c194.png'
-                      Constant.IMAGE_BASE_URL+ '${interestedUserModel.profilePhoto}',
-                    ),
-                    fit: BoxFit.cover,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 10,),
+          Center(
+            child: Container(
+              height: 75,
+              width: 75,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(25.0),
+                image: DecorationImage(
+                  image: NetworkImage(
+                      // 'https://i.pinimg.com/originals/97/ed/6b/97ed6b370803649addbf66144c18c194.png'
+                    Constant.IMAGE_BASE_URL+ '${interestedUserModel.profilePhoto}',
                   ),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            SizedBox(height: 10,),
-            Center(
-              child: Text(
-                '${interestedUserModel.name}',
-                // "Fei Lu",
-                style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
-            ),
-            Center(
-              child: Text(
-                // "Description is empty",
-                '${interestedUserModel.description}',
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                textAlign: TextAlign.center,),
-            ),
-            SizedBox(height: 6,),
-            Divider(color: Colors.grey[300],),
-            SizedBox(height: 7,),
+          ),
+          SizedBox(height: 10,),
+          Center(
+            child: Text(
+              '${interestedUserModel.name}',
+              // "Fei Lu",
+              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
+          ),
+          Center(
+            child: Text(
+              // "Description is empty",
+              '${interestedUserModel.description}',
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              textAlign: TextAlign.center,),
+          ),
+          SizedBox(height: 6,),
+          Divider(color: Colors.grey[300],),
+          SizedBox(height: 7,),
 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+             SvgPicture.asset('images/005-instagram.svg',height: 25,width:25),
+              SvgPicture.asset('images/004-twitter.svg',height: 25,width:25),
+              SvgPicture.asset('images/003-facebook.svg',height: 25,width:25),
+              SvgPicture.asset('images/002-linkedin-logo.svg',height: 25,width:25),
+
+            ],
+          ),
+
+          SizedBox(height: 20,),
+
+
+          if(widget.action=='going'&& ( widget.actor=='moderator'))
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.facebook),
-                Icon(Icons.mail),
-                Icon(Icons.settings),
-                Icon(Icons.facebook),
-                Icon(Icons.mail),
+                Container(
+                    height: 50,
+
+                    padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
+                    child: MaterialButton (
+                      elevation: 0,
+                      onPressed: () {},
+                      color: Colors.white,
+                      // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                      child: Text ( 'Remove from going',
+                        style: TextStyle ( color: Colors.redAccent ), ),
+                      shape: RoundedRectangleBorder (
+                        borderRadius: BorderRadius.circular ( 5.0 ),
+                          side: BorderSide(color: Colors.redAccent, width: 2.0)
+
+                      ),
+                    )
+                ),
+                SizedBox(width:10),
+                Container(
+                    height: 50,
+                    padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
+                    child: MaterialButton (
+                      elevation: 0,
+                      onPressed: () {},
+                      color: Colors.blueAccent,
+                      // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                      child: Text ( 'Start moderating',
+                        style: TextStyle ( color: Colors.white ), ),
+                      shape: RoundedRectangleBorder (
+                        borderRadius: BorderRadius.circular ( 5.0 ),
+                      ),
+                    )
+                ),
 
               ],
             ),
-
-            SizedBox(height: 20,),
-
+          if(widget.action=='moderating'&& (widget.actor=='author'))
             Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
-             child: MaterialButton (
-               elevation: 0,
-               onPressed: () {},
-               color: Colors.grey.shade200,
-               // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-               child: Text ( 'Invite',
-                 style: TextStyle ( color: Colors.grey ), ),
-               shape: RoundedRectangleBorder (
-                 borderRadius: BorderRadius.circular ( 5.0 ),
-               ),
-             )
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+
+                padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
+                child: MaterialButton (
+                  elevation: 0,
+                  onPressed: () {},
+                  color: Colors.white,
+
+                  // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  child: Text ( 'Resign moderating',
+                    style: TextStyle ( color: Colors.redAccent ), ),
+                  shape: RoundedRectangleBorder (
+                    borderRadius: BorderRadius.circular ( 5.0 ),
+                      side: BorderSide(color: Colors.redAccent, width: 2.0)
+                  ),
+                )
+            ),
+          if(widget.action=='interested'&& (widget.actor=='moderator'))
+            Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+
+                padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
+                child: MaterialButton (
+                  elevation: 0,
+                  onPressed: () {},
+                  color: Colors.blueAccent,
+                  // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  child: Text ( 'Move to going',
+                    style: TextStyle ( color: Colors.white ), ),
+                  shape: RoundedRectangleBorder (
+                    borderRadius: BorderRadius.circular ( 5.0 ),
+                  ),
+                )
             ),
 
+          SizedBox(height: 10,),
+          Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
+              child: MaterialButton (
+                elevation: 0,
+                onPressed: () {},
+                color: Colors.grey.shade200,
 
-          ],
-        ),
+                // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                child: Text ( 'View full profile',
+                  style: TextStyle ( color: Colors.black ), ),
+                shape: RoundedRectangleBorder (
+                  borderRadius: BorderRadius.circular ( 5.0 ),
+                ),
+              )
+          ),
+        ],
       ),
     );
 

@@ -22,6 +22,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
+import 'model/user.dart';
 import 'utility/constants.dart' as Constants;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -45,8 +46,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
   SaveInterestBloc saveInterestBloc;
   FeedDetailsModel feedDetailsModel;
   Repository repository;
-  bool isSaved=false;
+  bool isSaved=false,isInterested=false,isGoing=false,isModerator=false,isAuthor=false;
   PostCommentBloc postCommentBloc;
+  User currentUser;
   TextEditingController commentController = TextEditingController();
   var audienceList=<String>[
     'Open to public',
@@ -79,6 +81,12 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
 
     saveInterestBloc = BlocProvider.of<SaveInterestBloc>(context);
     postCommentBloc = BlocProvider.of<PostCommentBloc>(context);
+repository = Repository();
+    repository.getCurrentUser().then((valuee) =>   {
+      setState(() {
+        currentUser= valuee;
+      }),
+    },);
   }
 
   @override
@@ -216,6 +224,12 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     state.message != null) {
                   setState(() {
                     feedDetailsModel = state.feedDetails;
+                    isSaved = feedDetailsModel.feeds[0].post.savedUsers.any((element) => element.id==currentUser.id);
+                     isInterested = feedDetailsModel.feeds[0].post.interestedUsers.any((element) => element.id==currentUser.id);
+                     isGoing = feedDetailsModel.feeds[0].post.goingUsers.any((element) => element.id==currentUser.id);
+                     isModerator = feedDetailsModel.feeds[0].post.moderatingUsers.any((element) => element.id==currentUser.id);
+                    isAuthor= feedDetailsModel.feeds[0].userId==currentUser.id;
+
                   });
                 } else if (state is FeedDetailsFailureState) {
                   Scaffold.of(context).showSnackBar(SnackBar(
@@ -278,72 +292,127 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                     SnackBar(content: Text(state.message)));
               }
             },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-            width: MediaQuery.of(context).size.width,
-              height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-
-                ),
-              child:Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.grey[300],
+            child: Visibility(
+              visible: (feedDetailsModel==null)==false,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+              width: MediaQuery.of(context).size.width,
+                height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
                     ),
-                    child:Icon(Icons.share),
+                    boxShadow:[
+                      BoxShadow(
+                        offset: Offset(1,4),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                        color: Colors.grey[500]
+                      )
+                    ]
+
                   ),
-                  SizedBox(width:10),
-                  InkWell(
-                    onTap: (){
-                      saveInterestBloc.add(FetchSaveEvent(postId: "1", type: "1", action: "1"));
-                    },
-                    child: Container(
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
                       height: 40,
                       width: 40,
-                        decoration: BoxDecoration(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         color: Colors.grey[300],
-                        ),
-                        child: Icon( Icons.save_alt_rounded )
+                      ),
+                      child:Icon(Icons.share),
                     ),
-                  ),
+                    SizedBox(width:10),
+                    InkWell(
+                      onTap: (){
+                        setState(() {
+                          isSaved=!isSaved;
+                        });
+                        saveInterestBloc.add(FetchSaveEvent(postId: feedDetailsModel.feeds[0].post.postId, type: "0", action: "1"));
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                          decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color:isSaved==true?Colors.blueAccent: Colors.grey[300],
+                          ),
+                          child: Icon( Icons.save_alt_rounded,color:isSaved==true?Colors.white:Colors.black )
+                      ),
+                    ),
+                    SizedBox(width:10),
 
-                  // show invite Users modal
-                  Spacer(),
+                    isGoing? InkWell(
+                      onTap: (){
+                        saveInterestBloc.add(FetchSaveEvent(postId: feedDetailsModel.feeds[0].post.postId, type: "0", action: "1"));
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Colors.grey[300],
+                          ),
+                          child: Icon( Icons.directions_walk,color:Colors.black )
+                      ),
+                    ):SizedBox(width:2),
 
-                  InkWell(
+                    // show invite Users modal
+                    Spacer(),
+
+                  isAuthor || isModerator || isGoing? InkWell(
                     onTap: (){
-                      saveInterestBloc.add(FetchInterestEvent(postId: feedDetailsModel.feeds[0].post.postId, type: "1", action: "1"));
+                      setState(() {
+                        isInterested=!isInterested;
+                      });
+                      saveInterestBloc.add(FetchInterestEvent(postId: feedDetailsModel.feeds[0].post.postId, type: '1', action: isSaved?'0':'1'));
                     },
                     child: Container(
-                        height: 50,
-                        width: 135,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.grey[300],
-                        ),
-                        child:Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Interested",style:TextStyle(fontWeight:FontWeight.w600)),
-                            SizedBox(width:5),
-                            Icon(Icons.thumb_up_alt_outlined),
-                          ],
-                        ),),
-                  ),
-                  SizedBox(height: 5),
-                ],
-              )
+                      height: 50,
+                      width: 135,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color:Colors.redAccent,
+                      ),
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Private Room",style:TextStyle(fontWeight:FontWeight.w600,color: Colors.white)),
+
+                        ],
+                      ),),
+                  ):
+                     InkWell(
+                      onTap: (){
+                        setState(() {
+                          isInterested=!isInterested;
+                        });
+                        saveInterestBloc.add(FetchInterestEvent(postId: feedDetailsModel.feeds[0].post.postId, type: '1', action: isSaved?'0':'1'));
+                      },
+                      child: Container(
+                          height: 50,
+                          width: 135,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color:isInterested==true?Colors.blueAccent: Colors.grey[300],
+                          ),
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Interested",style:TextStyle(fontWeight:FontWeight.w600,color: isInterested==true?Colors.white:Colors.black)),
+                              SizedBox(width:5),
+                              Icon(Icons.thumb_up_alt_outlined,color: isInterested==true?Colors.white:Colors.black,),
+                            ],
+                          ),),
+                    ),
+                    SizedBox(height: 5),
+                  ],
+                )
+              ),
             ),
           )
         ],
@@ -370,7 +439,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                           color: Colors.transparent,
                           child: Center(
                               child: Text(
-                            feedDetailsModel.feeds[0].post.categoryName,
+                            feedDetailsModel.feeds[0].post.content,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                           ))),
                     ),
@@ -686,6 +755,96 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
+                                    //FOR MODERATING USERS
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Row(
+                                                children: [
+
+                                                  Text(
+                                                    "MODERATING (${feedDetailsModel.feeds[0].post.moderatingUsers.length})",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.grey,
+                                                        letterSpacing: 1),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(),
+
+                                            ListView.separated(
+                                              separatorBuilder: (ctx, interestedPos) {
+                                                return Divider(indent: 15,);
+                                              },
+                                              physics: NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: feedDetailsModel.feeds[0].post.moderatingUsers.length,
+                                              itemBuilder: (ctx, interestedPos) {
+                                                return ListTile(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                                        ),
+                                                        isScrollControlled: true,
+                                                        backgroundColor: Colors.white,
+                                                        builder: (context) {
+
+                                                          return FractionallySizedBox(
+                                                            heightFactor: 0.5,
+                                                            child:  BlocProvider<InterestedUserBloc>(
+                                                                create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                                child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].id,action: "moderating",actor:isAuthor?'author':'')
+                                                            ),);
+                                                        },
+                                                      );
+
+                                                    },
+
+                                                    leading:    Padding(
+                                                      padding:
+                                                      const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].profilePhoto),
+
+                                                            // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    title:Text(
+                                                      feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].name,
+                                                      style: TextStyle(
+                                                          color: Colors.grey[800],
+                                                          fontWeight: FontWeight.bold, fontSize: 16),
+                                                    )
+
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 15),
                                     //FOR GOING USERS
                                     Container(
                                       child: Padding(
@@ -700,7 +859,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                 children: [
                                                  Divider(),
                                                   Text(
-                                                    "Going (${feedDetailsModel.feeds[0].post.occupiedSeats})",
+                                                    "GOING (${feedDetailsModel.feeds[0].post.goingUsers.length})",
                                                     style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
                                                   ),
                                                 ],
@@ -715,51 +874,63 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                               physics: NeverScrollableScrollPhysics(),
                                               itemCount: feedDetailsModel.feeds[0].post.goingUsers.length,
                                               itemBuilder: (ctx, goingPos) {
-                                                return Container(
-                                                  child: GestureDetector(
-                                                    onTap: () => showDialog<String>(context: context,
-                                                        builder: (BuildContext context) => BlocProvider<UserCommentBloc>(
-                                                            create: (context) => UserCommentBloc(userCommentRepository: Repository()),
-                                                            child: CommentersInfo()
-                                                        ),
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
-                                                          child: Container(
-                                                            height: 40,
-                                                            width: 40,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(15.0),
-                                                              image: DecorationImage(
-                                                                image: NetworkImage(
-                                                                    Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto),
+                                                   return ListTile(
+                                                      onTap: () {
+                                                showModalBottomSheet(
+                                                context: context,
+                                                shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                                ),
+                                                isScrollControlled: true,
+                                                backgroundColor: Colors.white,
+                                                builder: (context) {
 
-                                                                // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
-                                                                fit: BoxFit.cover,
-                                                              ),
-                                                            ),
+                                                return FractionallySizedBox(
+                                                heightFactor: 0.5,
+                                                child:  BlocProvider<InterestedUserBloc>(
+                                                create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.goingUsers[goingPos].id,action: 'going',actor: isModerator?'moderator':'',)
+                                                ),);
+                                                },
+                                                );  },
+
+
+                                                    leading:    Padding(
+                                                      padding:
+                                                      const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.goingUsers[goingPos].profilePhoto),
+
+                                                            // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
-                                                        Text(
-                                                          feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
-                                                          style: TextStyle(
-                                                              color: Colors.grey[800],
-                                                              fontWeight: FontWeight.bold, fontSize: 16),
-                                                        )
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
+                                                    title:Text(
+                                                      feedDetailsModel.feeds[0].post.goingUsers[goingPos].name,
+                                                      style: TextStyle(
+                                                          color: Colors.grey[800],
+                                                          fontWeight: FontWeight.bold, fontSize: 16),
+                                                    )
+
                                                 );
+
+
                                               },
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
+
 
 
                                     //FOR INTERESTED USERS
@@ -776,7 +947,7 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                 children: [
 
                                                   Text(
-                                                    "Interested (${feedDetailsModel.feeds[0].post.interestedUsers.length})",
+                                                    "INTERESTED (${feedDetailsModel.feeds[0].post.interestedUsers.length})",
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: Colors.grey,
@@ -795,47 +966,54 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                               shrinkWrap: true,
                                                itemCount: feedDetailsModel.feeds[0].post.interestedUsers.length,
                                               itemBuilder: (ctx, interestedPos) {
-                                                return GestureDetector(
-                                                  onTap: () => showDialog<String>(context: context,
-                                                    builder: (BuildContext context) => BlocProvider<InterestedUserBloc>(
-                                                        create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
-                                                        child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].id,)
-                                                    ),
-                                                  ),
-                                                  child: Row(
+                                                return ListTile(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                                        ),
+                                                        isScrollControlled: true,
+                                                        backgroundColor: Colors.white,
+                                                        builder: (context) {
 
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
-                                                        child: Container(
-                                                          height: 40,
-                                                          width: 40,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.circular(15.0),
-                                                            image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                   Constants.IMAGE_BASE_URL+'${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto}'
-                                                             ),
-                                                              fit: BoxFit.cover,
-                                                            ),
+                                                          return FractionallySizedBox(
+                                                            heightFactor: 0.5,
+                                                            child:  BlocProvider<InterestedUserBloc>(
+                                                                create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                                child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].id,action:"interested",actor:isModerator?"moderator":'')
+                                                            ),);
+                                                        },
+                                                      );
+
+                                                    },
+
+                                                    leading:    Padding(
+                                                      padding:
+                                                      const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].profilePhoto),
+
+                                                            // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.only(top: 1.0),
-                                                        child: Text(
-                                                          '${feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name}',
-                                                          style: TextStyle(
-                                                              color: Colors.grey[800],
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 16),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    title:Text(
+                                                      feedDetailsModel.feeds[0].post.interestedUsers[interestedPos].name,
+                                                      style: TextStyle(
+                                                          color: Colors.grey[800],
+                                                          fontWeight: FontWeight.bold, fontSize: 16),
+                                                    )
+
                                                 );
                                               },
                                             ),
@@ -845,6 +1023,177 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                     ),
 
                                     SizedBox(height: 15),
+                                    //FOR INVITED USERS
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Row(
+                                                children: [
+                                                  Divider(),
+                                                  Text(
+                                                    "INVITED (${feedDetailsModel.feeds[0].post.invitedUsers.length})",
+                                                    style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(),
+                                            ListView.separated(
+                                              separatorBuilder: (ctx, interestedPos) {
+                                                return Divider(indent: 15,);
+                                              },
+                                              physics: NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: feedDetailsModel.feeds[0].post.invitedUsers.length,
+                                              itemBuilder: (ctx, interestedPos) {
+                                                return ListTile(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                                        ),
+                                                        isScrollControlled: true,
+                                                        backgroundColor: Colors.white,
+                                                        builder: (context) {
+
+                                                          return FractionallySizedBox(
+                                                            heightFactor: 0.5,
+                                                            child:  BlocProvider<InterestedUserBloc>(
+                                                                create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                                child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.invitedUsers[interestedPos].id,actor:'',action:'')
+                                                            ),);
+                                                        },
+                                                      );
+
+                                                    },
+
+                                                    leading:    Padding(
+                                                      padding:
+                                                      const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.invitedUsers[interestedPos].profilePhoto),
+
+                                                            // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    title:Text(
+                                                      feedDetailsModel.feeds[0].post.invitedUsers[interestedPos].name,
+                                                      style: TextStyle(
+                                                          color: Colors.grey[800],
+                                                          fontWeight: FontWeight.bold, fontSize: 16),
+                                                    )
+
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    //FOR SAVED USERS
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Row(
+                                                children: [
+                                                  Divider(),
+                                                  Text(
+                                                    "SAVED (${feedDetailsModel.feeds[0].post.savedUsers.length})",
+                                                    style: TextStyle(fontSize: 16, color: Colors.grey, letterSpacing: 1),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(),
+                                            ListView.separated(
+                                              separatorBuilder: (ctx, interestedPos) {
+                                                return Divider(indent: 15,);
+                                              },
+                                              shrinkWrap: true,
+                                              physics: NeverScrollableScrollPhysics(),
+                                              itemCount: feedDetailsModel.feeds[0].post.savedUsers.length,
+                                              itemBuilder: (ctx, goingPos) {
+                                                return ListTile(
+                                                    onTap: () {
+
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                                        ),
+                                                        isScrollControlled: true,
+                                                        backgroundColor: Colors.transparent,
+                                                        builder: (context) {
+
+
+                                                          return FractionallySizedBox(
+                                                            heightFactor: 0.5,
+                                                            child:  BlocProvider<InterestedUserBloc>(
+                                                                create: (context) => InterestedUserBloc(interestedUserRepository: Repository()),
+                                                                child: InterestedUserScreen(userId: feedDetailsModel.feeds[0].post.savedUsers[goingPos].id,actor:'',action:'')
+                                                            ),);
+                                                        },
+                                                      );
+
+                                                    },
+
+                                                    leading:    Padding(
+                                                      padding:
+                                                      const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                Constants.IMAGE_BASE_URL+ feedDetailsModel.feeds[0].post.savedUsers[goingPos].profilePhoto),
+
+                                                            // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    title:Text(
+                                                      feedDetailsModel.feeds[0].post.savedUsers[goingPos].name,
+                                                      style: TextStyle(
+                                                          color: Colors.grey[800],
+                                                          fontWeight: FontWeight.bold, fontSize: 16),
+                                                    )
+
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
 
                                   ],
                                 ),
@@ -930,7 +1279,22 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                             PostCommentBloc(postCommentRepository: Repository()),
                                         child: PostCommentScreen(postId: feedDetailsModel.feeds[0].post.postId,)
 
-                                    ),);
+                                    ),).then((value)  {
+                                      print('the value :'+value);
+                                      if(value.isNotEmpty)
+                                        setState(() {
+                                          feedDetailsModel.feeds[0].post.commenters.add(
+                                             new Commenters(
+                                                  id: currentUser.id,
+                                                  name: currentUser.username,
+                                                  profilePhoto: currentUser.profilePhoto,
+                                                  content: value,
+                                                  creation: DateTime.now().toString()
+                                              )
+                                          );
+                                        });
+
+                                  });
                                 },
                               ),
                             ),

@@ -86,6 +86,9 @@ class Post {
   String startDate,location;
   String endDate;
   List<GoingUsers> goingUsers;
+  List<GoingUsers> invitedUsers;
+  List<GoingUsers> moderatingUsers;
+  List<GoingUsers> savedUsers;
   List<Commenters> commenters;
   List<InterestedUsers> interestedUsers;
   List<Images> images;
@@ -109,6 +112,9 @@ class Post {
         this.endDate,
         this.goingUsers,
         this.commenters,
+        this.invitedUsers,
+        this.moderatingUsers,
+        this.savedUsers,
         this.interestedUsers,
         this.images});
 
@@ -135,6 +141,24 @@ class Post {
       goingUsers = new List<GoingUsers>();
       json['going_users'].forEach((v) {
         goingUsers.add(new GoingUsers.fromJson(v));
+      });
+    }
+    if (json['invited_users'] != null) {
+      invitedUsers = new List<GoingUsers>();
+      json['invited_users'].forEach((v) {
+        invitedUsers.add(new GoingUsers.fromJson(v));
+      });
+    }
+    if (json['moderating_users'] != null) {
+      moderatingUsers = new List<GoingUsers>();
+      json['moderating_users'].forEach((v) {
+        moderatingUsers.add(new GoingUsers.fromJson(v));
+      });
+    }
+    if (json['saved_users'] != null) {
+      savedUsers = new List<GoingUsers>();
+      json['saved_users'].forEach((v) {
+        savedUsers.add(new GoingUsers.fromJson(v));
       });
     }
     if (json['commenters'] != null) {
@@ -186,6 +210,18 @@ class Post {
     if (this.interestedUsers != null) {
       data['interested_users'] =
           this.interestedUsers.map((v) => v.toJson()).toList();
+    }
+    if (this.moderatingUsers != null) {
+      data['moderating_users'] =
+          this.moderatingUsers.map((v) => v.toJson()).toList();
+    }
+    if (this.invitedUsers != null) {
+      data['invited_users'] =
+          this.invitedUsers.map((v) => v.toJson()).toList();
+    }
+    if (this.savedUsers != null) {
+      data['saved_users'] =
+          this.savedUsers.map((v) => v.toJson()).toList();
     }
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();

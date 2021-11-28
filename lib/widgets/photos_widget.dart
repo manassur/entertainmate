@@ -4,6 +4,7 @@ import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_state.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
+import 'package:entertainmate/screens/photo_story_screen.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -184,7 +185,11 @@ class _PhotosWidgetState extends State<PhotosWidget> {
             itemBuilder: (ctx, pos){
               return Container(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    PhotoStoryScreen(images: widget.images,))
+                    );
+                  },
 
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),

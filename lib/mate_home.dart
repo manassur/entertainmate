@@ -13,6 +13,9 @@ import 'package:entertainmate/screens/utility/read_more.dart';
 import 'package:flutter/material.dart';
 import 'package:entertainmate/screens/renew_old_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
+import 'package:flutter_carousel_slider/carousel_slider_transforms.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +30,8 @@ import 'screens/mate_notification.dart';
 import 'screens/profile_main.dart';
 import 'screens/utility/complete_profile_provider.dart';
 import 'screens/utility/constants.dart' as Constants;
+import 'package:timeago/timeago.dart' as timeago;
+
 
 class MateHome extends StatefulWidget {
   @override
@@ -721,7 +726,7 @@ class _MateHomeState extends State<MateHome> {
                               ),
                               Row(
                                 children: [
-                                  Text("5hr ", style: TextStyle(color: Colors.grey.shade600),),
+                                  Text("${timeago.format(DateTime.parse(mateHomeModel.feeds[pos].post.creation))}", style: TextStyle(color: Colors.grey.shade600),),
 
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
@@ -763,16 +768,8 @@ class _MateHomeState extends State<MateHome> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Row(
-                                children: [
-                                  Text("Today, ", style: TextStyle(fontSize: 16),),
-                                  Text("7:00 ", style: TextStyle(fontSize: 16),),
-                                  Text("pm", style: TextStyle(fontSize: 16),),
-                                  Text(" - ", style: TextStyle(fontSize: 16),),
-                                  Text("9:00 ", style: TextStyle(fontSize: 16),),
-                                  Text("pm", style: TextStyle(fontSize: 16),),
-                                ],
-                              ),
+                              Text('${DateFormat('dd-MM-yyyy').format(DateTime.parse(mateHomeModel.feeds[0].post.startDate))} ${DateFormat('HH:mma').format(DateTime.parse(mateHomeModel.feeds[0].post.startDate))} - ${DateFormat('HH:mma').format(DateTime.parse(mateHomeModel.feeds[0].post.endDate))}',
+                                style: TextStyle(fontSize: 16),),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
                                 child: Text(
@@ -796,16 +793,48 @@ class _MateHomeState extends State<MateHome> {
                               ),
                               SizedBox(height: 15),
 
-                              Container(
-                                height: 170,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    image: DecorationImage(
-                                      image: AssetImage("images/entertainmate_pics.jpeg"),
-                                      fit: BoxFit.cover,
-                                    )
-                                ),
-                              ),
+
+                mateHomeModel.feeds[pos].post.images==null ?
+                Container(height: 1,):
+                mateHomeModel.feeds[pos].post.images.isEmpty ?
+                Container(height: 1,):
+                mateHomeModel.feeds[pos].post.images.length==1?
+                Container(
+                  height: 170,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      image: DecorationImage(
+                        image: NetworkImage(Constants.IMAGE_BASE_URL + mateHomeModel.feeds[pos].post.images[0].image),
+                        fit: BoxFit.cover,
+                      )
+                  ),
+                ):
+                Container(
+                  height: 200,
+                  child: CarouselSlider.builder(
+                      slideBuilder: (index) {
+                        return Container(
+                          height: 170,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                image: NetworkImage(Constants.IMAGE_BASE_URL + mateHomeModel.feeds[pos].post.images[index].image),
+                                fit: BoxFit.cover,
+                              )
+                          ),
+                        );
+                      },
+                      slideIndicator: CircularSlideIndicator(
+                        currentIndicatorColor: Colors.blueAccent,
+                        indicatorBackgroundColor:Colors.grey[200] ,
+                        padding: EdgeInsets.only(bottom: 32),
+
+                      ),
+                      itemCount: mateHomeModel.feeds[pos].post.images.length),
+                ),
+
+
+
 
 
                               SizedBox(height: 10),
