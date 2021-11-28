@@ -360,15 +360,21 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                         ),
                       ),
 
-                      SizedBox(height: 20),
-                      Container(
-                        height: 90,
-                        width: 90,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          shape: BoxShape.circle,
-                        ),
-                      ),
+
+                      // SizedBox(height: 20),
+                      // Container(
+                      //   height: 90,
+                      //   width: 90,
+                      //   decoration: BoxDecoration(
+                      //     // color: Colors.grey[800],
+                      //     shape: BoxShape.circle,
+                      //     image: DecorationImage(
+                      //       image: AssetImage("images/entertainmate_pic.jpeg"),
+                      //       fit: BoxFit.cover
+                      //     )
+                      //   ),
+                      // ),
+
                     ],
                   )
 
