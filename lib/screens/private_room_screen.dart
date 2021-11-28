@@ -17,7 +17,7 @@ class _PrivateRoomScreenState extends State<PrivateRoomScreen> {
       appBar:  AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        centerTitle: false,
+        centerTitle: true,
         title: Text("Private Room",
             style: TextStyle( fontSize: 15, color: Colors.black38,  )),
       ),
