@@ -1,4 +1,5 @@
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/screens/register_business_screen.dart';
 import 'package:entertainmate/screens/create_event.dart';
@@ -216,7 +217,15 @@ class _MateHomeState extends State<MateHome> {
                       ),
                       onPressed: () {
                         // Navigator.push(context, MaterialPageRoute(builder: (context)=>  MateNotification()));
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>  RegisterBusinessScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>
+
+                            BlocProvider<RegisterBusinessBloc>(
+                                create: (context) => RegisterBusinessBloc(repository: Repository()),
+                                child:RegisterBusinessScreen()
+
+                            ),
+
+                        ));
 
                       },
                     ),
