@@ -210,9 +210,7 @@ class _MateHomeState extends State<MateHome> {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        // do something
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            PrivateRoomScreen(),));
+
                       },
                     ),
                     IconButton(

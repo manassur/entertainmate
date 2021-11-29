@@ -21,7 +21,7 @@ class RegisterBusinessBloc extends Bloc<RegisterBusinessEvent, RegisterBusinessS
       yield RegisterBusinessLoadingState();
       try {
         GenericResponse registerBusinessResponse =
-        await repository.registerBusiness(event.name, event.type, event.description, event.slogan, event.phone, event.email, event.location, event.time, event.website, event.more);
+        await repository.registerBusiness(event.name, event.type, event.description, event.slogan, event.phone, event.email, event.location, event.time, event.website, event.more,event.image);
         if(registerBusinessResponse.error!=true){
           yield RegisteredBusinessState( );
         }else{

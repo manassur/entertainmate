@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
 import 'package:entertainmate/bloc/register_business/register_business_event.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterBusinessScreen extends StatefulWidget {
 
@@ -27,6 +30,57 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   final moreController = TextEditingController();
 
   RegisterBusinessBloc registerBusinessBloc;
+  File _image;
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await  ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
 
   @override
   void initState() {
@@ -62,7 +116,10 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
           ),
           actions: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                _showPicker(context);
+
+              },
               child: Container(
                 width: 40,
                 margin: const EdgeInsets.only(right: 10.0, top: 8.0, bottom: 8.0),
@@ -72,7 +129,15 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                   border: Border.all(color: Colors.blueAccent)
                   // border: OutlineB
                 ),
-                child: Center(child: Icon(Icons.wb_auto_rounded, color: Colors.grey, size: 25,))
+                child:_image==null? Center(child: Icon(Icons.wb_auto_rounded, color: Colors.grey, size: 25,)):   ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(
+                    _image,
+                    height: 25,
+                    width: 25,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             )
           ],
@@ -443,6 +508,7 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                 time: openCloseController.text,
                                 website: websiteController.text,
                                 more: moreController.text,
+                                image: _image
                             ));
 
                       else await Flushbar(

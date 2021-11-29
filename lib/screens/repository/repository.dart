@@ -222,20 +222,29 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
-  Future<GenericResponse>registerBusiness(String name, String type, String description, String slogan,String phone, String email, String location, String time, String website, String more)
+  Future<GenericResponse>registerBusiness(String name, String type, String description, String slogan,String phone, String email, String location, String time, String website, String more,File f)
    async {
+     List<int> fileInByte = f.readAsBytesSync();
+    String fileInBase64 = base64Encode(fileInByte);
     var body = <String, dynamic>{
       'name': name,
       'type': type,
-      'description': description,
+      'tags': description,
       'slogan': slogan,
       'phone': phone,
       'email': email,
       'location': location,
-      'time': time,
+      'hours': time,
       'website': website,
-      'more': more,
+      'description': more,
+      'instagram':'',
+      'facebook':'',
+      'linkedin':'',
+      'photo':jsonEncode(fileInBase64).toString(),
+      'role':''
+
     };
+
     final response = await _apiClient.postFormWithHeader(Constants.REGISTER_BUSINESS,body);
     var data = json.decode(response);
     print("Business registered successfully " + response.toString());

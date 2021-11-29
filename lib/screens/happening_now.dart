@@ -23,6 +23,7 @@ import 'package:intl/intl.dart';
 import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'model/user.dart';
+import 'private_room_screen.dart';
 import 'utility/constants.dart' as Constants;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -366,11 +367,18 @@ repository = Repository();
 
                   isAuthor || isModerator || isGoing? InkWell(
                     onTap: (){
-                      setState(() {
-                        isInterested=!isInterested;
-                      });
-                      saveInterestBloc.add(FetchInterestEvent(postId: feedDetailsModel.feeds[0].post.postId, type: '1', action: isSaved?'0':'1'));
-                    },
+                      // do something
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                        return FractionallySizedBox(
+                          heightFactor: 0.9,
+                            child: PrivateRoomScreen());
+                        },
+                      );
+                      },
+
                     child: Container(
                       height: 50,
                       width: 135,
