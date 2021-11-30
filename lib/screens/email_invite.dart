@@ -84,7 +84,7 @@ class _EmailInviteState extends State<EmailInvite> {
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       color: Colors.white,
-                      height: 100,
+                      height: 120,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -140,6 +140,7 @@ class _EmailInviteState extends State<EmailInvite> {
                                       Expanded(
                                           child: TextField(
                                             controller: _nameController,
+                                        autofocus: true,
                                         onChanged: (value) {
                                             setState(() {
 

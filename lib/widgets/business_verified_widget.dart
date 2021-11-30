@@ -1,11 +1,13 @@
+import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
 import 'package:entertainmate/bloc/user_business/user_business_bloc.dart';
 import 'package:entertainmate/bloc/user_business/user_business_event.dart';
 import 'package:entertainmate/bloc/user_business/user_business_state.dart';
 import 'package:entertainmate/screens/model/businessModel.dart';
+import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constant;
+import 'package:entertainmate/widgets/add_authorized_user.dart';
 import 'package:entertainmate/widgets/business_position_widget.dart';
-import 'package:entertainmate/widgets/business_type_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,17 +79,21 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image.asset("images/entertainmate_pic.jpeg", height: 60, width: 60,),
-             Image.network(Constant.IMAGE_BASE_URL+ userBusinessModel.business[index].photo),
-
-              SizedBox(height: 10),
-              Text(userBusinessModel.business[index].name, style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold),),
-              Text("Registered on " + Constants.formattedTime(userBusinessModel.business[index].createdOn), style: TextStyle(color: Colors.grey, fontSize: 15),),
-              Text("Verified on June 5, 2021", style: TextStyle(color: Colors.red[900], fontSize: 14),),
+             Image.network(Constant.IMAGE_BASE_URL+ userBusinessModel.business[index].photo, height: 60, width: 60,
+                 errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                        return Container(color: Colors.grey[300], height: 60, width: 60);
+                }
+               ),
+              SizedBox(height: 2),
+              Text(userBusinessModel.business[index].name, style: TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold),),
+              SizedBox(height: 2),
+              Text("Registered on " + Constants.formattedTime(userBusinessModel.business[index].createdOn), style: TextStyle(color: Colors.grey, fontSize: 12),),
+              Text("Verified on June 5, 2021", style: TextStyle(color: Colors.red[900], fontSize: 12),),
               Row(
                 children: [
-                  Text("Last updated on " + Constants.formattedTime(userBusinessModel.business[index].updatedOn), style: TextStyle(color: Colors.black87, fontSize: 15, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
-                  Icon(Icons.edit, size: 20,),
+                  Text("Last updated on " + Constants.formattedTime(userBusinessModel.business[index].updatedOn), style: TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                  SizedBox(width: 8),
+                  Icon(Icons.edit, size: 13,),
                 ],
               ),
 
@@ -129,7 +135,28 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
                                       child: (
                                           MaterialButton (
                                             elevation: 0,
-                                            onPressed: () {Navigator.pop(context);},
+                                            onPressed: (){
+                                              showModalBottomSheet(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                backgroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                                builder: (context) {
+                                                  return StatefulBuilder(
+                                                      builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
+                                                        return FractionallySizedBox(
+                                                          heightFactor: 0.80,
+                                                          child: BlocProvider<InviteUserBloc>(
+                                                              create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
+                                                              child: AddAuthorizedUser()
+                                                          ),);
+                                                      });
+                                                },
+                                              );
+
+                                            },
 
                                             color: Colors.blueAccent,
                                             // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -178,7 +205,6 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             image: DecorationImage(
-                              // image:AssetImage("images/entertainmate_pic.jpeg"),fit: BoxFit.cover,
                               image: NetworkImage(Constant.IMAGE_BASE_URL+ userBusinessModel.business[index].staff[pos].profilePhoto),
                             )
                         ),
@@ -192,12 +218,15 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
                         children: [
                           Row(
                             children: [
-                              Text("Muhmamedzilla Agbshdf", style: TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold),),
-                              Icon(Icons.stars, color: Colors.blueAccent, size: 15,),
+                              Text("Muhmamedzilla Agbshdf  ", style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.bold),),
+
+                              userBusinessModel.business[index].createdBy == userBusinessModel.business[index].staff[pos].id ?
+                              Icon(Icons.stars, color: Colors.blueAccent, size: 15,)
+                                  : Container(),
                             ],
                           ),
-                          Text("Manager"),
-                          Text("Registered the business", style: TextStyle(color: Colors.grey, fontSize: 15)),
+                          Text("Manager", style: TextStyle(fontSize: 13)),
+                          Text("Registered the business", style: TextStyle(color: Colors.grey, fontSize: 13)),
                         ],
                       ),
                       Spacer(),

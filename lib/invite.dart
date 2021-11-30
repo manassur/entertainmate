@@ -27,8 +27,8 @@ class _InviteState extends State<Invite> {
     return  DefaultTabController(
         length: 2,
         child:Consumer<CompleteProfileProvider>(
-        builder: (context, data, child)
-    {return Scaffold(
+        builder: (context, data, child) {
+          return Scaffold(
           appBar: AppBar(
             leading: IconButton(color:Colors.grey,icon:Icon( Icons.arrow_back_ios),onPressed: (){Navigator.of(context).pop();},),
               title: Text("Invite Friends",style: TextStyle(color: Colors.black),),

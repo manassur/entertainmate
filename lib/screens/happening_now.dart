@@ -7,13 +7,11 @@ import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_state.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
 import 'package:entertainmate/screens/interested_user_screen.dart';
 import 'package:entertainmate/screens/model/post_comment_model.dart';
 import 'package:entertainmate/screens/post_comment_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/read_more.dart';
-import 'package:entertainmate/widgets/commenters_info_dialog.dart';
 import 'package:entertainmate/widgets/photos_widget.dart';
 import 'package:entertainmate/widgets/report_incident_widget.dart';
 import 'package:flutter/material.dart';
@@ -517,246 +515,251 @@ repository = Repository();
                           //ABOUT THIS STATIC HEIGHT FOR THE TABBAR
 
                           child: TabBarView(children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 0),
-                              child: Container(
-                                padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
+                            //DETAILS TAB
+                            SingleChildScrollView(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 0),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
                                   ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 10),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          color: Colors.grey,
-                                        ),
-                                        SizedBox(width: 20),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))} - ${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.endDate))}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black87),
-                                            ),
-
-                                            Text(
-                                              '${DateFormat('dd-MM-yyyy').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey[600]),
-                                            ),
-                                            // Padding(
-                                            //   padding: const EdgeInsets.only(top: 2.0),
-                                            //   child: Text(
-                                            //     "Thursday, June 4",
-                                            //     style: TextStyle(color: Colors.grey[500]),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Colors.grey,
-                                        ),
-                                        SizedBox(width: 20),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              feedDetailsModel.feeds[0].post.location,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey[800]),
-                                            ),
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 2.0),
-                                              child: Text(
-                                                feedDetailsModel.feeds[0].post.audience,
-                                                style: TextStyle(color: Colors.grey[500]),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 10),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.access_time,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))} - ${DateFormat('HH:mma').format(DateTime.parse(feedDetailsModel.feeds[0].post.endDate))}',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black87),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.lock_outline,
-                                          color: Colors.grey,
-                                        ),
-                                        SizedBox(width: 20),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Open to the ",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.grey[800]),
-                                                ),
-                                                Text(
-                                                  "${feedDetailsModel.feeds[0].post.audience}",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.grey[800]),
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 2.0),
-                                              child: Text(
-                                                "${typeList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${classList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${categoryList[ int.parse(feedDetailsModel.feeds[0].post.categoryId)]}",
-                                                style: TextStyle(color: Colors.grey[500]),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15),
-                                    Divider(color: Colors.grey[400]),
-                                    SizedBox(height: 15),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(17.0),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    Constants.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
 
-                                                    // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
-                                                  ),
-                                                  fit: BoxFit.cover,
+                                              Text(
+                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(feedDetailsModel.feeds[0].post.startDate))}',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[600]),
+                                              ),
+                                              // Padding(
+                                              //   padding: const EdgeInsets.only(top: 2.0),
+                                              //   child: Text(
+                                              //     "Thursday, June 4",
+                                              //     style: TextStyle(color: Colors.grey[500]),
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                feedDetailsModel.feeds[0].post.location,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[800]),
+                                              ),
+
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 2.0),
+                                                child: Text(
+                                                  feedDetailsModel.feeds[0].post.audience,
+                                                  style: TextStyle(color: Colors.grey[500]),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Flexible(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                          '${feedDetailsModel.feeds[0].username}',
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 18)),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(left: 8.0),
-                                                        child: Icon(
-                                                          Icons.stars,
-                                                          color: Colors.blue,
-                                                          size: 17,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(
-                                                        0.0, 4.5, 0.0, 0.0),
-                                                    child: Text(
-                                                      feedDetailsModel.feeds[0].description,
-                                                      style: TextStyle(
-                                                          fontSize: 16, color: Colors.grey),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "${timeago.format(DateTime.parse(feedDetailsModel.feeds[0].post.creation))}",
-                                                        style: TextStyle(color: Colors.grey),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(
-                                                            10.0, 0.0, 0.0, 0.0),
-                                                        child: Container(
-                                                            height: 16,
-                                                            width: 16,
-                                                            child: Image.network(
-                                                                "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png")),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 18,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15.0),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Flexible(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  ReadMoreText(
-                                                    '${feedDetailsModel.feeds[0].post.description}',
-                                                    trimLines: 3,
-                                                    colorClickableText:
-                                                    Colors.grey.withOpacity(0.9),
-                                                    trimMode: TrimMode.Line,
-                                                    trimCollapsedText: '...See More',
-                                                    trimExpandedText: ' See Less',
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Open to the ",
                                                     style: TextStyle(
-                                                        fontSize: 16, color: Colors.grey[700]),
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.grey[800]),
+                                                  ),
+                                                  Text(
+                                                    "${feedDetailsModel.feeds[0].post.audience}",
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.grey[800]),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 2.0),
+                                                child: Text(
+                                                  "${typeList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${classList[ int.parse(feedDetailsModel.feeds[0].post.type)]} . ${categoryList[ int.parse(feedDetailsModel.feeds[0].post.categoryId)]}",
+                                                  style: TextStyle(color: Colors.grey[500]),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15),
+                                      Divider(color: Colors.grey[400]),
+                                      SizedBox(height: 15),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 40,
+                                                width: 40,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(17.0),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      Constants.IMAGE_BASE_URL+ '${feedDetailsModel.feeds[0].profilePhoto}',
+
+                                                      // 'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjBtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Flexible(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                            '${feedDetailsModel.feeds[0].username}',
+                                                            style: TextStyle(
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 18)),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(left: 8.0),
+                                                          child: Icon(
+                                                            Icons.stars,
+                                                            color: Colors.blue,
+                                                            size: 17,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.fromLTRB(
+                                                          0.0, 4.5, 0.0, 0.0),
+                                                      child: Text(
+                                                        feedDetailsModel.feeds[0].description,
+                                                        style: TextStyle(
+                                                            fontSize: 16, color: Colors.grey),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "${timeago.format(DateTime.parse(feedDetailsModel.feeds[0].post.creation))}",
+                                                          style: TextStyle(color: Colors.grey),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(
+                                                              10.0, 0.0, 0.0, 0.0),
+                                                          child: Container(
+                                                              height: 16,
+                                                              width: 16,
+                                                              child: Image.network(
+                                                                  "https://cdn3.iconfinder.com/data/icons/faticons/32/globe-01-512.png")),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 18,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 40,
+                                                width: 40,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(15.0),
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Flexible(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    ReadMoreText(
+                                                      '${feedDetailsModel.feeds[0].post.description}',
+                                                      trimLines: 3,
+                                                      colorClickableText:
+                                                      Colors.grey.withOpacity(0.9),
+                                                      trimMode: TrimMode.Line,
+                                                      trimCollapsedText: '...See More',
+                                                      trimExpandedText: ' See Less',
+                                                      style: TextStyle(
+                                                          fontSize: 16, color: Colors.grey[700]),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
+
                             //PEOPLE TAB
                             Scaffold(
                               body: SingleChildScrollView(
@@ -1234,6 +1237,8 @@ repository = Repository();
                                 },
                               ),
                             ),
+
+
                             //PUBLIC COMMENTS TAB
                             Scaffold(
                               body:ListView.builder(
@@ -1306,17 +1311,20 @@ repository = Repository();
                                 },
                               ),
                             ),
+
+
                             //PHOTOS TAB
-                            Container(
-                              child:BlocProvider<PostCommentBloc>(
-                                  create: (context) =>
-                                      PostCommentBloc(postCommentRepository: Repository()),
-                                  child:   PhotosWidget(images:feedDetailsModel.feeds[0].post.images,postId:feedDetailsModel.feeds[0].post.postId),
+                            SingleChildScrollView(
+                              child: Container(
+                                child:BlocProvider<PostCommentBloc>(
+                                    create: (context) =>
+                                        PostCommentBloc(postCommentRepository: Repository()),
+                                    child:   PhotosWidget(images:feedDetailsModel.feeds[0].post.images,postId:feedDetailsModel.feeds[0].post.postId),
 
-                              ),)
+                                ),),
+                            )
 
 
-                            //DETAILS TAB
 
 
                           ])),
