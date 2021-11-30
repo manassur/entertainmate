@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:entertainmate/screens/model/InterestedUserModel.dart';
+import 'package:entertainmate/screens/model/businessModel.dart';
 import 'package:entertainmate/screens/model/feed_details_model.dart';
 import 'package:entertainmate/screens/model/generic_response.dart';
 import 'package:entertainmate/screens/model/invite_user_model.dart';
@@ -313,6 +314,13 @@ class Repository {
     print("this is response user following  " + response.toString());
 
     return InviteUserModel.fromJson(data);
+  }
+
+  Future<BusinessModel>fetchUserBusiness() async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_BUSINESS);
+    final data = json.decode(response);
+    print("this is user business response  " + response.toString());
+    return BusinessModel.fromJson(data);
   }
 
   SharedPreferences prefs = null;

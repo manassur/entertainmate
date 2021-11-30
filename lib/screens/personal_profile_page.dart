@@ -36,8 +36,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                0.0, 10.0, 0.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                             child: SizedBox(
                               height: 50,
                               child: AppBar(
@@ -68,7 +67,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
 
                           SingleChildScrollView(
                             child: Container(
-                                height: 800,
+                                height: 700,
                                 //height of TabBarView SOEMTHING HAS TO BE DONE
                                 //ABOUT THIS STATIC HEIGHT FOR THE TABBAR
 
@@ -77,14 +76,12 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                   Container(
                                     color: Colors.grey[100],
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Stack(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0),
+                                              padding: const EdgeInsets.only(top: 8.0),
                                               child: Center(
                                                 child: Container(
                                                   width: 80,
@@ -95,22 +92,17 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       image: new DecorationImage(
                                                         fit: BoxFit.fill,
                                                         image: NetworkImage(
-                                                          Constants.IMAGE_BASE_URL+
-                                                            data.user
-                                                                .profilePhoto),
+                                                          Constants.IMAGE_BASE_URL+ data.user.profilePhoto),
                                                       )
                                                   ),
                                                 ),
                                               ),
                                             ),
-
-
                                           ],
                                         ),
                                         Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 8.0),
+                                            padding: const EdgeInsets.only(top: 8.0),
                                             child: Text(data.user.firstname,
                                               style: TextStyle(
                                                 fontFamily: 'SF Pro',
@@ -131,18 +123,14 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets
-                                                  .fromLTRB(
-                                                  30.0, 10.0, 10.0, 0),
+                                              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 10.0, 0),
                                               child: Column(
                                                 children: [
                                                   Text('1', style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .w700),),
+                                                      fontWeight: FontWeight.w700),),
                                                   Text('Followers',
                                                     style: TextStyle(
-                                                        fontWeight: FontWeight
-                                                            .w700),),
+                                                        fontWeight: FontWeight.w700),),
                                                 ],
                                               ),
                                             ),
@@ -153,8 +141,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                               child: Column(
                                                 children: [
                                                   Text('1', style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .w700),),
+                                                      fontWeight: FontWeight.w700),),
                                                   Text('Following',
                                                     style: TextStyle(
                                                         fontWeight: FontWeight

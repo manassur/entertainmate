@@ -28,6 +28,12 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   final openCloseController = TextEditingController();
   final websiteController = TextEditingController();
   final moreController = TextEditingController();
+  final facebookController = TextEditingController();
+  final instagramController = TextEditingController();
+  final linkedInController = TextEditingController();
+
+  String facebook;
+
 
   RegisterBusinessBloc registerBusinessBloc;
   File _image;
@@ -85,7 +91,14 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   @override
   void initState() {
     registerBusinessBloc = BlocProvider.of<RegisterBusinessBloc>(context);
+
+    facebook="";
+
+    if (facebookController.text.isNotEmpty){
+      facebook="facebook";
+    }
     super.initState();
+
   }
 
   @override
@@ -173,7 +186,6 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             borderSide: BorderSide(width: 1,color: Colors.grey.shade500),
                           ),
-
                         ),
                       ),
 
@@ -411,57 +423,169 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
 
                       SizedBox(height: 20),
 
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10.0, 13.0, 15.0, 13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade500),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                SvgPicture.asset (
-                                  'images/005-instagram.svg', height: 30,
-                                  width: 25,
-                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10),
-                                Text("Instagram", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SvgPicture.asset (
-                                  'images/003-facebook.svg',  height: 30,
-                                  width: 25,
-                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10),
 
-                                Text("Facebook", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SvgPicture.asset (
-                                  'images/002-linkedin-logo.svg',
-                                  height: 30,
-                                  width: 25,
-                                  // color:fb.isNotEmpty?Colors.black87: Colors.grey,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                // return Dialog(
+                                //   shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(20.0)),
+                                //   child: Container(
+                                //     padding: const EdgeInsets.all(12.0),
+                                //     margin: EdgeInsets.only(top:50.0, bottom: 50.0),
+                                //     child: Column(
+                                //       mainAxisAlignment: MainAxisAlignment.center,
+                                //       crossAxisAlignment: CrossAxisAlignment.start,
+                                //       children: [
+                                //         TextField(
+                                //           decoration: InputDecoration(
+                                //               border: InputBorder.none,
+                                //               hintText: 'Facebook handle'),
+                                //         ),
+                                //         TextField(
+                                //           decoration: InputDecoration(
+                                //               border: InputBorder.none,
+                                //               hintText: 'Instagram handle'),
+                                //         ),
+                                //         TextField(
+                                //           decoration: InputDecoration(
+                                //               border: InputBorder.none,
+                                //               hintText: 'LinkedIn handle'),
+                                //         ),
+                                //         SizedBox(
+                                //           width: 320.0,
+                                //           child: RaisedButton(
+                                //             onPressed: () {},
+                                //             child: Text(
+                                //               "Save",
+                                //               style: TextStyle(color: Colors.white),
+                                //             ),
+                                //             color: const Color(0xFF1BC0C5),
+                                //           ),
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ),
+                                // );
 
-                                Text("LinkedIn", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
-                              ],
-                            ),
+                               return CustomAlertDialog(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text("Please fill",
+                                          style: TextStyle( fontSize: 18,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
 
-                          ],
+                                        Divider(color: Colors.grey,),
+                                        TextField(
+                                          controller: facebookController,
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Facebook handle'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        TextField(
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Facebook handle'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        TextField(
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Facebook handle'),
+                                        ),
+
+                                        SizedBox(height: 20),
+
+                                        MaterialButton(
+                                          child: Text( "Done",
+                                            style: TextStyle( color: Colors.white, fontSize: 16,
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+
+                                            //
+                                            // await Flushbar(
+                                            //   message: 'Details Saved',
+                                            //   duration: Duration(seconds: 3),
+                                            // ).show(context);
+                                          },
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+
+                              });
+                        },
+
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(10.0, 13.0, 15.0, 13.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  SvgPicture.asset (
+                                    'images/005-instagram.svg', height: 30,
+                                    width: 25,
+                                    // color:fb?Colors.black87: Colors.grey,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text("Instagram", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  SvgPicture.asset (
+                                    'images/003-facebook.svg',  height: 30,
+                                    width: 25,
+                                    color:facebook.isNotEmpty?Colors.black87: Colors.grey,
+                                    // color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 10),
+
+                                  Text("Facebook", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  SvgPicture.asset (
+                                    'images/002-linkedin-logo.svg',
+                                    height: 30,
+                                    width: 25,
+                                    // color:fb.isNotEmpty?Colors.black87: Colors.grey,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 10),
+
+                                  Text("LinkedIn", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                ],
+                              ),
+
+                            ],
+                          ),
                         ),
                       ),
 
@@ -515,6 +639,23 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                             message: 'Fields cannot be empty',
                             duration: Duration(seconds: 3),
                       ).show(context);
+
+
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                      //   ),
+                      //   isScrollControlled: true,
+                      //   backgroundColor: Colors.white,
+                      //   builder: (context) {
+                      //     return FractionallySizedBox(
+                      //       heightFactor: 0.5,
+                      //       child:  BusinessPositionWidget()
+                      //    );
+                      //   },
+                      // );
+
                     },
 
                     color: Colors.lightBlue.shade100,

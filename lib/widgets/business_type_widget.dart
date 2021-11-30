@@ -29,7 +29,7 @@ class _BusinessTypeWidgetState extends State<BusinessTypeWidget> {
       backgroundColor: Colors.white,
       appBar:  AppBar(
         backgroundColor: Colors.white,
-        elevation: 1,
+        elevation: 0,
         centerTitle: true,
         title: Text("Business type?",
             style: TextStyle( fontSize: 17, color: Colors.black87, fontWeight: FontWeight.normal  )),

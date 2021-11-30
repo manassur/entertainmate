@@ -1,6 +1,8 @@
 import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
+import 'package:entertainmate/bloc/user_business/user_business_bloc.dart';
 import 'package:entertainmate/screens/register_business_screen.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
+import 'package:entertainmate/widgets/business_verified_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,18 +60,22 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
               body: TabBarView(children: <Widget>[
 
                 //MEDIA TAB
-                Container(
-                  child: Text("Media Screen"),
-                ),
+                // Container(
+                //   child: Text("Verified Screen"),
+                // ),
+
+                BlocProvider<UserBusinessBloc>(create: (context)=> UserBusinessBloc(repository: Repository()),
+                child: BusinessVerifiedWidget()),
+
 
                 //MEDIA TAB
                 Container(
-                  child: Text("Media Screen"),
+                  child: Text("Registered Screen"),
                 ),
 
                 //EXPENSES TAB
                 Container(
-                  child: Text("Expenses Screen"),
+                  child: Text("Incomplete Screen"),
                 ),
 
 

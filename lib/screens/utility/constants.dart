@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-//import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart' as timeago;
 
 
 // http client constants
@@ -32,6 +32,7 @@ const String FETCH_FEED_DETAILS =BASE_URL+"feed/details/";
 const String FETCH_USER_COMMENTS=BASE_URL+"feed/comments/";
 const String SAVE_INTEREST=BASE_URL+"post/like?action=0&type=1&postId=1";
 const String POST_COMMENT=BASE_URL+"feed/comment";
+const String FETCH_USER_BUSINESS=BASE_URL+"user/business";
 
 const String REGISTER_BUSINESS=BASE_URL+"user/create_business";
 
@@ -57,10 +58,18 @@ class Constants {
   var time =
   // DateFormat().add_jm().format(timeDate);
   // DateFormat.yMEd().add_jms().format(DateTime.now());
-  DateFormat.yMMMMd().add_jm().format(timeDate);
+  // DateFormat.yMMMMd().add_jm().format(timeDate); //November 3, 2021 6:18pm
+     DateFormat.yMMMMd().format(timeDate); // November 3, 2021
 
   return time;
   }
+
+ // static String readTimestamp(String timestamp) {
+ //   final DateTime date = DateTime.parse(timestamp);
+ //   var time = timeago.timeAgo(date);
+ //   // print('time : '+time);
+ //   return time;
+ // }
 
   static String latestNewsCacheKey ="latest";
   static String featuredNewsCacheKey ="featured";
