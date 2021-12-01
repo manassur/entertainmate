@@ -79,11 +79,14 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             Image.network(Constant.IMAGE_BASE_URL+ userBusinessModel.business[index].photo, height: 60, width: 60,
-                 errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
-                        return Container(color: Colors.grey[300], height: 60, width: 60);
-                }
-               ),
+             Container(
+          color: Colors.grey[300], height: 60, width: 60,
+               child: Image.network(Constant.IMAGE_BASE_URL+ userBusinessModel.business[index].photo, height: 60, width: 60,
+                   errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                          return Container(color: Colors.grey[300], height: 60, width: 60);
+                  }
+                 ),
+             ),
               SizedBox(height: 2),
               Text(userBusinessModel.business[index].name, style: TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold),),
               SizedBox(height: 2),

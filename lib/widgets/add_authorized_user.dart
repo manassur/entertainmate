@@ -119,7 +119,11 @@ class _AddAuthorizedUserState extends State<AddAuthorizedUser> {
                             child: (
                                 MaterialButton (
                                   elevation: 0,
-                                  onPressed: () {Navigator.pop(context);},
+                                  onPressed: () {
+                                    // Navigator.pop(context);
+                                    int count = 0;
+                                    Navigator.of(context).popUntil((_) => count++ >= 2);// pops 2 screens backward
+                                    },
                                   color: Colors.blueAccent,
                                   // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                                   child: Text ( 'Continue',
@@ -170,7 +174,6 @@ class _AddAuthorizedUserState extends State<AddAuthorizedUser> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: inviteUserModel.followers.length,
-        // itemCount:  10,
         itemBuilder: (ctx, userPos) {
           return Container(
             child: GestureDetector(
