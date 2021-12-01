@@ -308,7 +308,7 @@ class Repository {
   }
 
 
-  Future<InviteUserModel>fetchUserFollowings() async {
+  Future<InviteUserModel>fetchUserFollowings(String event, String id) async {
     final response = await _apiClient.getWithHeader(Constants.FETCH_USER_FOLLOWING);
     final data = json.decode(response);
     print("this is response user following  " + response.toString());

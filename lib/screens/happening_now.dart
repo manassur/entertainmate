@@ -856,6 +856,7 @@ repository = Repository();
                                     ),
 
                                     SizedBox(height: 15),
+
                                     //FOR GOING USERS
                                     Container(
                                       child: Padding(
@@ -933,16 +934,12 @@ repository = Repository();
                                                     )
 
                                                 );
-
-
                                               },
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-
-
 
                                     //FOR INTERESTED USERS
                                     Container(
@@ -1034,6 +1031,7 @@ repository = Repository();
                                     ),
 
                                     SizedBox(height: 15),
+
                                     //FOR INVITED USERS
                                     Container(
                                       child: Padding(
@@ -1118,6 +1116,7 @@ repository = Repository();
                                         ),
                                       ),
                                     ),
+
                                     SizedBox(height: 15),
                                     //FOR SAVED USERS
                                     Container(
@@ -1227,7 +1226,7 @@ repository = Repository();
                                                 heightFactor: 0.80,
                                                 child: BlocProvider<InviteUserBloc>(
                                                     create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
-                                                    child: InviteScreen()
+                                                    child: InviteScreen(screen:"happening_now", id:feedDetailsModel.feeds[0].post.postId)
                                                 ),);
                                           });
                                     },

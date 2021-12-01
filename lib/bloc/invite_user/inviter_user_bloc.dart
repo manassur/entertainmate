@@ -22,12 +22,12 @@ class InviteUserBloc extends Bloc<InviteUserEvent, InviteUserState>{
     if (event is FetchInviteUserEvent) {
       yield InviteUserLoadingState();
       try{
-        InviteUserModel  inviteUser = await inviteUserRepository.fetchUserFollowings();
+        InviteUserModel  inviteUser = await inviteUserRepository.fetchUserFollowings(event.screen, event.id);
          if(inviteUser.followers.isNotEmpty){
-          yield InviteUserLoadedState(inviteUser:inviteUser, message: "User followings updated");
+          yield InviteUserLoadedState(inviteUser:inviteUser, message: "Users updated");
         }
          else {
-           yield InviteUserEmptyState(message: "You do not have any followers yet.");
+           yield InviteUserEmptyState(message: "You do not have any users yet.");
          }
       }catch(e){
         yield InviteUserFailureState(error: e.toString());

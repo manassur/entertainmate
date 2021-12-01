@@ -14,8 +14,14 @@ import 'model/invite_user_model.dart';
 
 class InviteScreen extends StatefulWidget {
 
+  String screen, id;
+
+  InviteScreen({Key key, @required this.screen, this.id}) : super(key: key);
+
+
   @override
   _InviteScreenState createState() => _InviteScreenState();
+
 }
 
 class _InviteScreenState extends State<InviteScreen> {
@@ -30,7 +36,7 @@ class _InviteScreenState extends State<InviteScreen> {
     super.initState();
 
     inviteUserBloc = BlocProvider.of<InviteUserBloc>(context);
-    inviteUserBloc.add(FetchInviteUserEvent());
+    inviteUserBloc.add(FetchInviteUserEvent(screen: widget.screen, id: widget.id));
   }
 
   @override
