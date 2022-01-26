@@ -2,11 +2,11 @@ import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
 import 'package:entertainmate/bloc/user_business/user_business_bloc.dart';
 import 'package:entertainmate/bloc/user_business/user_business_event.dart';
 import 'package:entertainmate/bloc/user_business/user_business_state.dart';
+import 'package:entertainmate/screens/invite_screen.dart';
 import 'package:entertainmate/screens/model/businessModel.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constant;
-import 'package:entertainmate/widgets/add_authorized_user.dart';
 import 'package:entertainmate/widgets/business_position_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +154,7 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
                                                           heightFactor: 0.80,
                                                           child: BlocProvider<InviteUserBloc>(
                                                               create: (context) => InviteUserBloc(inviteUserRepository: Repository()),
-                                                              child: AddAuthorizedUser()
+                                                              child: InviteScreen(screen: "add_authorized_user", id:userBusinessModel.business[index].id )
                                                           ),);
                                                       });
                                                 },

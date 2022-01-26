@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/invite_user/invite_user_event.dart';
 import 'package:entertainmate/bloc/invite_user/invite_user_state.dart';
 import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
@@ -124,16 +123,6 @@ class _AddAuthorizedUserState extends State<AddAuthorizedUser> {
                                     // Navigator.pop(context);
                                     int count = 0;
                                     Navigator.of(context).popUntil((_) => count++ >= 2);// pops 2 screens backward
-                                    Flushbar(
-                                      message: "Access granted to users",
-                                      icon: Icon(
-                                        Icons.done,
-                                        size: 28.0,
-                                        color: Colors.white,
-                                      ),
-                                      duration: Duration(seconds: 3),
-                                      backgroundColor: Colors.blue,
-                                    )..show(context);
                                     },
                                   color: Colors.blueAccent,
                                   // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),

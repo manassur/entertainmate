@@ -6,6 +6,10 @@ abstract class InviteUserEvent extends Equatable {
 }
 
 class FetchInviteUserEvent extends InviteUserEvent {
+  String screen, id;
+
+  FetchInviteUserEvent({this.screen, this.id});
+
   @override
   List<Object> get props => [];
 }
