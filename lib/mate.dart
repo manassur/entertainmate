@@ -59,7 +59,6 @@ class _MateState extends State<Mate> {
               elevation: 0,
               backgroundColor: Colors.white,
               actions: <Widget>[
-
                 Row(
                   children: [
                     IconButton(
