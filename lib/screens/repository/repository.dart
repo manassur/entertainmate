@@ -12,7 +12,10 @@ import 'package:entertainmate/screens/model/save_profile_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
 import 'package:entertainmate/screens/model/user_profile_model.dart';
+import 'package:entertainmate/screens/utility/complete_profile_provider.dart';
+import 'package:entertainmate/screens/utility/create_event_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utility/constants.dart' as Constants;
 import 'api_client.dart';
@@ -147,16 +150,32 @@ class Repository {
     return OldEventModel.fromJson(data);
   }
 
-  Future<MateHomeModel>fetchHomeFeed() async {
-    final response = await _apiClient.getWithHeader(Constants.FETCH_HOME_FEED);
+  Future<MateHomeModel>fetchHomeFeed(context) async {
+    CompleteProfileProvider _provider = Provider.of<CompleteProfileProvider>(context, listen: false);
+    var body = <String, dynamic>{
+      'type': _provider.filterType,
+      'category': _provider.filterCategory,
+      'class': _provider.filterClass,
+      'date':_provider.filterDate
+    };
+    final response = await _apiClient.postFormWithHeader(Constants.FETCH_HOME_FEED,body);
     final data = json.decode(response);
       print("this is response feeds " + response.toString());
 
     return MateHomeModel.fromJson(data);
   }
 
-  Future<FeedDetailsModel>fetchFeedDetails(postId) async {
-    final response = await _apiClient.getWithHeader(Constants.FETCH_FEED_DETAILS+postId);
+  Future<MateHomeModel>fetchDealsFeed() async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_DEALS_FEED);
+    final data = json.decode(response);
+    print("this is response feeds " + response.toString());
+
+    return MateHomeModel.fromJson(data);
+  }
+
+  Future<FeedDetailsModel>fetchFeedDetails(postId,branch) async {
+
+    final response = await _apiClient.getWithHeader(branch==0?Constants.FETCH_FEED_DETAILS+postId:Constants.FETCH_DEALS_DETAILS+postId);
     final data = json.decode(response);
     print("this is response feed details " + response.toString());
     return FeedDetailsModel.fromJson(data);
@@ -190,6 +209,20 @@ class Repository {
       'postId': postId,
     };
     final response = await _apiClient.postFormWithHeader(Constants.SAVE_INTEREST,body);
+    var data = json.decode(response);
+    print("this is response save post  " + response.toString());
+
+    return  GenericResponse.fromJson(data);
+  }
+
+  Future<GenericResponse>saveInterestAdmin(String action, postId,type,userId) async {
+    var body = <String, dynamic>{
+      'action': action,
+      'type': type,
+      'postId': postId,
+      'userId':userId
+    };
+    final response = await _apiClient.postFormWithHeader(Constants.SAVE_INTEREST_ADMIN,body);
     var data = json.decode(response);
     print("this is response save post  " + response.toString());
 
@@ -253,7 +286,7 @@ class Repository {
   }
 
 
-  Future<GenericResponse>publishEvent(eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded,List<File> images) async {
+  Future<GenericResponse>publishEvent(busid,branch,eventType,categoryId,peopleCount, title,description,location,startDate,endDate,audience,isLocationShown,isFirstInterestedAdded,List<File> images) async {
    // we have to convert each image to base64, and then convert the list to a json
     List<String> imagesInBase64 = List();
     for(var f in images){
@@ -266,6 +299,7 @@ class Repository {
     }
 
     var body = <String, dynamic>{
+      'branch':branch.toString(),
       'type':eventType.toString() ,
       'category_id': categoryId.toString(),
       'people_count':peopleCount.toString() ,
@@ -276,7 +310,7 @@ class Repository {
       'end_date':endDate ,
       'audience':audience.toString() ,
       'isLocationShown': isLocationShown==true?"1":"0 ",
-      'isFirstInterestedAdded':isFirstInterestedAdded==true?"1":"0",
+      'isFirstInterestedAdded':busid.toString(),
       'images':jsonEncode(imagesInBase64).toString(),
     };
     final response = await _apiClient.postFormWithHeader(Constants.CREATE_EVENT,body);

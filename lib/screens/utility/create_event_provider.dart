@@ -17,7 +17,7 @@ import 'dart:math';
 import '../../mate.dart';
 
 class CreateEventProvider extends ChangeNotifier {
-  int eventType=0,categoryId=0,peopleCount=0,audienceId=0;
+  int eventType=0,categoryId=0,peopleCount=0,audienceId=0,branch=0,busid=0;
   String title='',description='',location='',startDate='',endDate='',audience='',categoryName='',peopleCountText='';
   bool isLocationShown=false,isFirstInterestedAdded=false;
   List<File> images = List();
@@ -38,6 +38,16 @@ class CreateEventProvider extends ChangeNotifier {
   }
   void setAudienceId(value) {
     audienceId  = value;
+    notifyListeners();
+  }
+
+  void setBranch(value) {
+    branch  = value;
+    notifyListeners();
+  }
+
+  void setBusId(value) {
+    busid  = value;
     notifyListeners();
   }
 

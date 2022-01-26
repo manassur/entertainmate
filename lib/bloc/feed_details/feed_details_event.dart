@@ -10,7 +10,8 @@ abstract class FeedDetailsEvent extends Equatable {
 class FetchFeedDetailsEvent extends FeedDetailsEvent {
   List<FeedDetailsModel> feedDetails;
   final String postId;
-  FetchFeedDetailsEvent({ @required this.postId});
+  final int branch;
+  FetchFeedDetailsEvent({ @required this.postId,this.branch});
   @override
   List<Object> get props => [];
 }

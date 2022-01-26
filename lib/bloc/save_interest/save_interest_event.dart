@@ -16,6 +16,17 @@ class FetchSaveEvent extends SaveInterestEvent {
   List<Object> get props => [];
 }
 
+class UpdateLikeEvent extends SaveInterestEvent {
+  final String postId;
+  final String action;
+  final String type;
+  final String userId;
+  UpdateLikeEvent({ @required this.postId, this.type, this.action,this.userId});
+
+  @override
+  List<Object> get props => [];
+}
+
 class FetchInterestEvent extends SaveInterestEvent {
   final String postId;
   final String action;

@@ -349,7 +349,6 @@ class _PhoneState extends State<Phone> {
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(10, 20, 10, 15),
-              height: 250,
               width: double.maxFinite,
               child: Card(
                 color: Colors.blue[50],

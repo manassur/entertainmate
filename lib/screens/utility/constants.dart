@@ -28,9 +28,15 @@ const String SEND_EMAIL_INVITE =BASE_URL+"user/email/invite";
 const String UPDATE_USER_DETAILS =BASE_URL+"user/profile/edit";
 const String SEND_EMAIL_OTP =BASE_URL+"user/email/sendOtp";
 const String FETCH_HOME_FEED =BASE_URL+"user/feed";
+const String FETCH_DEALS_FEED =BASE_URL+"user/deals";
+
 const String FETCH_FEED_DETAILS =BASE_URL+"feed/details/";
+const String FETCH_DEALS_DETAILS =BASE_URL+"deal/details/";
+
 const String FETCH_USER_COMMENTS=BASE_URL+"feed/comments/";
-const String SAVE_INTEREST=BASE_URL+"post/like?action=0&type=1&postId=1";
+const String SAVE_INTEREST=BASE_URL+"post/like";
+const String SAVE_INTEREST_ADMIN=BASE_URL+"post/like/admin";
+
 const String POST_COMMENT=BASE_URL+"feed/comment";
 const String FETCH_USER_BUSINESS=BASE_URL+"user/business";
 

@@ -30,6 +30,15 @@ class _ProfileMainState extends State<ProfileMain> {
         appBar: AppBar (
           backgroundColor: Colors.white,
           actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.push(context,    MaterialPageRoute(builder: (context) => Account_Settings()));
+              },
+            ),
             // Row(
             //   children: [
             //     IconButton(
@@ -54,30 +63,39 @@ class _ProfileMainState extends State<ProfileMain> {
             // )
           ],
           centerTitle: true,
-          title:  TabBar(
+          title:  Container(
+            decoration:BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            height: 50,
+            child: TabBar(
 
-              unselectedLabelColor: Colors.black87,
-              labelColor: Colors.black87,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.white, Colors.white]),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              tabs: [
-                Tab(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Personal"),
-                  ),
+                unselectedLabelColor: Colors.black87,
+                labelColor: Colors.black87,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.white, Colors.white]),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                Tab(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Business"),
+                tabs: [
+                  Tab(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text("Personal"),
+                    ),
                   ),
-                ),
-              ]),
+                  Tab(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text("Business"),
+                    ),
+                  ),
+                ]),
+          ),
 
 
         ),

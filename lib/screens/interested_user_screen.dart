@@ -1,7 +1,10 @@
 import 'dart:ui';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_bloc.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_event.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_state.dart';
+import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
+import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constant;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +12,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'model/InterestedUserModel.dart';
+import 'model/user.dart';
+import 'repository/repository.dart';
 
 class InterestedUserScreen extends StatefulWidget {
 String userId;
 String action;
 String actor;
-InterestedUserScreen({@required this.userId,this.action,this.actor});
+String postId;
+InterestedUserScreen({@required this.userId,this.action,this.actor,this.postId});
   @override
   _InterestedUserScreenState createState() => _InterestedUserScreenState();
 }
@@ -22,14 +28,25 @@ InterestedUserScreen({@required this.userId,this.action,this.actor});
 class _InterestedUserScreenState extends State<InterestedUserScreen> {
   InterestedUserBloc interestedUserBloc;
   InterestedUserModel interestedUserModel;
+  SaveInterestBloc saveInterestBloc;
+  Repository repository;
+  User currentUser;
+
 
   @override
   void initState() {
     super.initState();
     interestedUserBloc = BlocProvider.of<InterestedUserBloc>(context);
     interestedUserBloc.add(FetchInterestedUserEvent(userId: widget.userId));
-
+    saveInterestBloc = BlocProvider.of<SaveInterestBloc>(context);
     print(' action :'+ widget.action + ' actor : '+widget.actor);
+
+    repository = Repository();
+    repository.getCurrentUser().then((valuee) =>   {
+      setState(() {
+        currentUser= valuee;
+      }),
+    },);
   }
 
   @override
@@ -137,7 +154,27 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
                     padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
                     child: MaterialButton (
                       elevation: 0,
-                      onPressed: () {},
+                      onPressed: () {
+                        saveInterestBloc.add(UpdateLikeEvent(
+                            postId: widget.postId,
+                            userId: widget.userId,
+                            type: "2",
+                            action: "1"));
+                        Navigator.pop(context,{
+                          "action": "interested",
+                          "userId": widget.userId,
+                        });
+                        Flushbar(
+                          message: "Removed from going",
+                          icon: Icon(
+                            Icons.done,
+                            size: 28.0,
+                            color: Colors.white,
+                          ),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.redAccent,
+                        )..show(context);
+                      },
                       color: Colors.white,
                       // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                       child: Text ( 'Remove from going',
@@ -155,7 +192,27 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
                     padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
                     child: MaterialButton (
                       elevation: 0,
-                      onPressed: () {},
+                      onPressed: () {
+                        saveInterestBloc.add(UpdateLikeEvent(
+                            postId: widget.postId,
+                            userId: widget.userId,
+                            type: "4",
+                            action: "1"));
+                        Navigator.pop(context,{
+                          "action": "moderate",
+                          "userId": widget.userId,
+                        });
+                        Flushbar(
+                          message: "Moved to moderating",
+                          icon: Icon(
+                            Icons.done,
+                            size: 28.0,
+                            color: Colors.white,
+                          ),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.blueAccent,
+                        )..show(context);
+                      },
                       color: Colors.blueAccent,
                       // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                       child: Text ( 'Start moderating',
@@ -169,14 +226,34 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
               ],
             ),
           if(widget.action=='moderating'&& (widget.actor=='author'))
-            Container(
+           currentUser.id!=widget.userId?Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
 
                 padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
                 child: MaterialButton (
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    saveInterestBloc.add(UpdateLikeEvent(
+                        postId: widget.postId,
+                        userId: widget.userId,
+                        type: "3",
+                        action: "1"));
+                    Navigator.pop(context,  {
+                      "action": "resign",
+                      "userId": widget.userId,
+                    },);
+                    Flushbar(
+                      message: "Resigned from moderating",
+                      icon: Icon(
+                        Icons.done,
+                        size: 28.0,
+                        color: Colors.white,
+                      ),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.redAccent,
+                    )..show(context);
+                  },
                   color: Colors.white,
 
                   // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -187,7 +264,7 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
                       side: BorderSide(color: Colors.redAccent, width: 2.0)
                   ),
                 )
-            ),
+            ):Container(),
           if(widget.action=='interested'&& (widget.actor=='moderator'))
             Container(
                 height: 50,
@@ -196,7 +273,27 @@ class _InterestedUserScreenState extends State<InterestedUserScreen> {
                 padding: EdgeInsets.only(left: 10, right: 10.0, bottom: 10.0),
                 child: MaterialButton (
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    saveInterestBloc.add(UpdateLikeEvent(
+                        postId: widget.postId,
+                        userId: widget.userId,
+                        type: "3",
+                        action: "1"));
+                    Navigator.pop(context,{
+                      "action": "going",
+                      "userId": widget.userId,
+                    });
+                    Flushbar(
+                      message: "Moved to going",
+                      icon: Icon(
+                        Icons.done,
+                        size: 28.0,
+                        color: Colors.white,
+                      ),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.blueAccent,
+                    )..show(context);
+                  },
                   color: Colors.blueAccent,
                   // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                   child: Text ( 'Move to going',

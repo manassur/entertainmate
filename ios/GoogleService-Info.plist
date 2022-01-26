@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>799389121233-aegak18lij5nhlaq32cjb88hdpeo45ib.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.799389121233-aegak18lij5nhlaq32cjb88hdpeo45ib</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>799389121233-8gtis222f6sg0jrbhcfpn8pf98ra38nt.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCU36g-DzavngjyB2-vUwlDGoEIw1NIEOY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>799389121233</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.entertainmate</string>
+	<key>PROJECT_ID</key>
+	<string>entertainmate-9af32</string>
+	<key>STORAGE_BUCKET</key>
+	<string>entertainmate-9af32.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:799389121233:ios:a75306664e5786429723f0</string>
+</dict>
+</plist>

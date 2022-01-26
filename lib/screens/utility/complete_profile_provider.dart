@@ -49,6 +49,9 @@ class CompleteProfileProvider extends ChangeNotifier {
   GenericResponse response; GenericResponse saveResponse;
   Repository repository = Repository();
 
+  // variables for filters
+  String filterDate='',filterType='',filterCategory='',filterClass='';
+
   checkIfUsernameIsAvailable() async {
     setLoading(true);
 
@@ -429,6 +432,22 @@ class CompleteProfileProvider extends ChangeNotifier {
   }
   void setName(value) {
     name  = value;
+    notifyListeners();
+  }
+  void setFilterCategory(value) {
+    filterCategory  = value;
+    notifyListeners();
+  }
+  void setFilterDate(value) {
+    filterDate  = value;
+    notifyListeners();
+  }
+  void setFilterType(value) {
+    filterType  = value;
+    notifyListeners();
+  }
+  void setFilterClass(value) {
+    filterClass  = value;
     notifyListeners();
   }
   void setHeadline(value) {

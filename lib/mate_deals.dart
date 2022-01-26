@@ -1,6 +1,7 @@
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
+import 'package:entertainmate/screens/create_business.dart';
 import 'package:entertainmate/screens/register_business_screen.dart';
 import 'package:entertainmate/screens/create_event.dart';
 import 'package:entertainmate/screens/happening_now.dart';
@@ -25,21 +26,20 @@ import 'bloc/feed_home/mate_home_event.dart';
 import 'bloc/feed_home/mate_home_state.dart';
 import 'bloc/invite_user/inviter_user_bloc.dart';
 import 'bloc/old_event/old_event_bloc.dart';
+import 'bloc/user_business/user_business_bloc.dart';
 import 'bloc/user_profile/user_profile_bloc.dart';
 import 'screens/profile_main.dart';
 import 'screens/utility/complete_profile_provider.dart';
 import 'screens/utility/constants.dart' as Constants;
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'screens/utility/create_event_provider.dart';
 
-
-class MateHome extends StatefulWidget {
+class MateDeals extends StatefulWidget {
   @override
-  _MateHomeState createState() => _MateHomeState();
+  _MateDealsState createState() => _MateDealsState();
 }
 
-class _MateHomeState extends State<MateHome> {
+class _MateDealsState extends State<MateDeals> {
   MateHomeBloc mateHomeBloc;
   Repository homeMateRepository;
   Repository feedDetailsRepository;
@@ -50,7 +50,7 @@ class _MateHomeState extends State<MateHome> {
   String pickedDate='This week';
 
   int selectedType = 0;
-  String pickedType='In-person';
+  String pickedType='Categories';
 
   int selectedClass = 0;
   int selectedCategory= 0;
@@ -66,24 +66,20 @@ class _MateHomeState extends State<MateHome> {
 
   }
   // RefreshController _refreshController = RefreshController(initialRefresh: true);
-  CompleteProfileProvider _createEventProvider;
 
-
-    @override
+  @override
   void initState(){
     super.initState();
     mateHomeBloc = BlocProvider.of<MateHomeBloc>(context);
-    mateHomeBloc.add(FetchMateHomeEvent());
-    _createEventProvider = Provider.of<CompleteProfileProvider>(context, listen: false);
-
-    }
+    mateHomeBloc.add(FetchMateDealsEvent());
+  }
 
   void refresh(){
     setState(() {
       isRefreshing =true;
     });
 
-    mateHomeBloc.add(FetchMateHomeEvent());
+    mateHomeBloc.add(RefreshMateHomeEvent());
   }
 
   void showOptionModal(){
@@ -101,95 +97,59 @@ class _MateHomeState extends State<MateHome> {
                     color:Colors.white,
                     child: Column(
                       children: [
+
+
                         ListTile(
-                            leading:Text("Class",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.blueAccent),
+                            leading:Text("Categories",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.blueAccent),
                             )
                         ),
                         Divider(),
-                        ListTile(
-                            onTap: (){
-                              _createEventProvider.setFilterClass("0");
-                              refresh();
-                              setState(() {
-                                selectedClass=0;
-                              });
-                            },
-                            leading:Icon(Icons.fingerprint,color:Colors.black54),
-                            title: Text("Non-anonymous",style: TextStyle(fontWeight: FontWeight.w600),),
-                            trailing: selectedClass==0? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
-                        ),
-                        Divider(indent: 70,),
                         ListTile(
                             onTap: (){
 
-                              _createEventProvider.setFilterClass("1");
-                              refresh();
-                              setState(() {
-                                selectedClass=1;
-                              });
-                            },
-                            leading:Icon(Icons.people_outline_sharp,color:Colors.black54),
-                            title: Text("Anonymous",style: TextStyle(fontWeight: FontWeight.w600)),
-                            trailing: selectedClass==1? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
-                        ),
-                        Divider(),
-                        ListTile(
-                            leading:Text("Category",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.blueAccent),
-                            )
-                        ),
-                        Divider(),
-                        ListTile(
-                            onTap: (){
-                              _createEventProvider.setFilterCategory("0");
-                              refresh();
+
                               setState(() {
                                 selectedCategory=0;
                               });
                             },
                             leading:Icon(Icons.coffee,color:Colors.black54),
-                            title: Text("Social",style: TextStyle(fontWeight: FontWeight.w600)),
+                            title: Text("Resturants / Fast food delivery",style: TextStyle(fontWeight: FontWeight.w600)),
                             trailing: selectedCategory==0? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
 
                         ),
                         Divider(indent: 70,),
                         ListTile(
                             onTap: (){
-                              _createEventProvider.setFilterCategory("1");
-                              refresh();
                               setState(() {
                                 selectedCategory=1;
                               });
                             },
-                            leading:Icon(Icons.motorcycle,color:Colors.black54),
-                            title: Text("Sports",style: TextStyle(fontWeight: FontWeight.w600)),
+                            leading:Icon(Icons.movie,color:Colors.black54),
+                            title: Text("Cinema / theatre / shows",style: TextStyle(fontWeight: FontWeight.w600)),
                             trailing: selectedCategory==1? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
 
                         ),
                         Divider(indent: 70,),
                         ListTile(
                             onTap: (){
-                              _createEventProvider.setFilterCategory("2");
-                              refresh();
                               setState(() {
                                 selectedCategory=2;
                               });
                             },
-                            leading:Icon(Icons.palette_sharp,color:Colors.black54),
-                            title: Text("Art",style: TextStyle(fontWeight: FontWeight.w600)),
+                            leading:Icon(Icons.accessibility_new_rounded,color:Colors.black54),
+                            title: Text("Recreation (Spa, massage, gym , salons)",style: TextStyle(fontWeight: FontWeight.w600)),
                             trailing: selectedCategory==2? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
 
                         ),
                         Divider(indent: 70,),
                         ListTile(
                             onTap: (){
-                              _createEventProvider.setFilterCategory("3");
-                              refresh();
                               setState(() {
                                 selectedCategory=3;
                               });
                             },
-                            leading:Icon(Icons.emoji_nature,color:Colors.black54),
-                            title: Text("Nature",style: TextStyle(fontWeight: FontWeight.w600)),
+                            leading:Icon(Icons.cleaning_services_outlined,color:Colors.black54),
+                            title: Text("Auto services",style: TextStyle(fontWeight: FontWeight.w600)),
                             trailing: selectedCategory==3? Icon(Icons.album,color: Colors.blueAccent,):SizedBox(height:2,width: 2,)
 
                         ),
@@ -207,7 +167,6 @@ class _MateHomeState extends State<MateHome> {
         builder: (context, data, child) {
           return Scaffold(
             backgroundColor: Colors.grey[200],
-
 
             body: Column(
               children: [
@@ -229,9 +188,6 @@ class _MateHomeState extends State<MateHome> {
                                   children: [
                                     ListTile(
                                         onTap:(){
-                                          var date = DateTime.now();
-                                          data.setFilterDate(date.toString());
-                                          refresh();
                                           setState(() {
                                             pickedDate='Today';
                                             selectedDate=1;
@@ -243,10 +199,6 @@ class _MateHomeState extends State<MateHome> {
                                     Divider(indent: 70,),
                                     ListTile(
                                         onTap:(){
-                                          var date = DateTime.now();
-                                          var newDate = new DateTime(date.year, date.month, date.day+1);
-                                          data.setFilterDate(newDate.toString());
-                                          refresh();
                                           setState(() {
                                             pickedDate='Tomorrow';
                                             selectedDate=2;
@@ -262,8 +214,6 @@ class _MateHomeState extends State<MateHome> {
                                               onChanged: (date) {
                                                 print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
                                               }, onConfirm: (date) {
-                                                data.setFilterDate(date.toString());
-                                                refresh();
                                                 setState(() {
                                                   pickedDate=DateFormat('yyyy-MM-dd').format(date);
                                                   selectedDate=3;
@@ -311,63 +261,8 @@ class _MateHomeState extends State<MateHome> {
                           SizedBox(width: 10,),
                           InkWell(
                             onTap: (){
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return FractionallySizedBox(
-                                      heightFactor: 0.20,
-                                      child: Container(
-                                        color:Colors.white,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                onTap:(){
-                                                  _createEventProvider.setFilterType("0");
-                                                  refresh();
-                                                  Navigator.of(context).pop();
-                                                  setState(() {
-                                                    pickedType='Online';
-                                                    selectedType=0;
-                                                  });
-
-                                                  showOptionModal();
-                                                },
-                                                leading:Icon(Icons.online_prediction,color:Colors.blueAccent),
-                                                title: Text("Online",style: TextStyle(fontWeight: FontWeight.w600),)
-                                            ),
-                                            Divider(indent: 70,),
-                                            ListTile(
-                                                onTap:(){
-                                                  _createEventProvider.setFilterType("1");
-                                                  refresh();
-
-                                                  Navigator.of(context).pop();
-                                                  setState(() {
-                                                    pickedType='In-person';
-                                                    selectedType=1;
-                                                  });
-
-                                                  showOptionModal();
-                                                },
-                                                leading:Icon(Icons.location_on_rounded,color:Colors.blueAccent),
-                                                title: Text("In-person",style: TextStyle(fontWeight: FontWeight.w600))
-                                            ),
-                                            // Divider(indent: 70,),
-                                            // ListTile(
-                                            //     onTap:(){
-                                            //       Navigator.of(context).pop();
-                                            //       showOptionModal();
-                                            //     },
-                                            //     leading:Icon(Icons.location_city_sharp,color:Colors.blueAccent),
-                                            //     title: Text("Pick another city",style: TextStyle(fontWeight: FontWeight.w600))
-                                            // ),
-                                          ],
-                                        ),
-                                      ));
-                                },
-                              );                        },
+                              showOptionModal();
+                            },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
 
@@ -392,13 +287,16 @@ class _MateHomeState extends State<MateHome> {
                           SizedBox(width: 10,),
                           InkWell(
                             onTap: (){
+                              data.setFilterDate('');
+                              data.setFilterCategory('');
+                              data.setFilterClass('');
+                              data.setFilterType('');
                               setState(() {
-                                pickedType='In-person';
+                                pickedType='Categories';
                                 pickedDate='This week';
                                 selectedDate=0;
                                 selectedType=0;
                               });
-                              refresh();
                               // Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
                             },
                             child: Container(
@@ -476,120 +374,9 @@ class _MateHomeState extends State<MateHome> {
                   context: context,
                   backgroundColor: Colors.transparent,
                   builder: (context) {
-                    return Wrap(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:35.0),
-                            child: Container(
-                              margin: EdgeInsets.all(10.0),
-                              padding: EdgeInsets.all(20.0),
-                              alignment: Alignment.topCenter,
-                              width: 100,
-                              decoration: BoxDecoration(
-
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow (
-                                      color: Colors.black54.withOpacity (
-                                          0.2 ),
-                                      blurRadius: 8.0,
-                                    ),]
-                              ),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                      onTap: (){
-                                        Navigator.pop(context);
-                                        showModalBottomSheet(
-                                          context: context,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-                                          ),
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return FractionallySizedBox(
-                                                heightFactor: 0.7,
-                                                child: CreateEvent());
-                                          },
-                                        );
-                                      },
-                                      child: Container(child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("Create new event", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
-                                        ],
-                                      ))),
-                                  Divider(),
-                                  InkWell(
-                                      onTap:(){
-                                        Navigator.pop(context);
-                                        showModalBottomSheet(
-                                          context: context,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-                                          ),
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return FractionallySizedBox(
-                                              heightFactor: 0.9,
-                                              child:   BlocProvider<OldEventBloc>(
-                                                  create: (context) => OldEventBloc(repository: Repository()),
-                                                  child:RenewOldEventScreen()
-
-                                              ),
-                                            );
-                                          },
-                                        );
-
-                                      } ,
-                                      child: Text("Renew an old event", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)
-                                      )
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height:5),
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            child: Container(
-                              margin: EdgeInsets.all(10.0),
-                              padding: EdgeInsets.all(20.0),
-                              alignment: Alignment.topCenter,
-                              width: 100,
-                              decoration: BoxDecoration(
-
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow (
-                                      color: Colors.black54.withOpacity (
-                                          0.2 ),
-                                      blurRadius: 8.0,
-                                    ),]
-                              ),
-                              child: Column(
-                                children: [
-                                  Text("Cancel", style: TextStyle(fontSize: 15,color: Colors.blue,fontWeight: FontWeight.w500)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height:20),
-                      ],
-                    );
+                    return
+                      BlocProvider<UserBusinessBloc>(create: (context)=> UserBusinessBloc(repository: Repository()),
+                          child: CreateBusiness());
                   },
                 );
 
@@ -601,7 +388,7 @@ class _MateHomeState extends State<MateHome> {
 
   Widget buildHomeFeedList (MateHomeModel mateHomeModel){
     return Expanded(
-      child: mateHomeModel.feeds.isEmpty?Text('There are no events'): ListView.builder(
+      child: ListView.builder(
         itemCount: mateHomeModel.feeds.length,
         itemBuilder: (context,pos){
           return  Padding (
@@ -632,7 +419,7 @@ class _MateHomeState extends State<MateHome> {
                           ),
 
                         ],
-                        child: HappeningNowScreen(postId: mateHomeModel.feeds[pos].post.postId,name:mateHomeModel.feeds[pos].name,branch:0)
+                        child: HappeningNowScreen(postId: mateHomeModel.feeds[pos].post.postId,name:mateHomeModel.feeds[pos].name,branch:1)
                     ),
                 )
                 );

@@ -90,7 +90,7 @@ class Post {
   List<GoingUsers> moderatingUsers;
   List<GoingUsers> savedUsers;
   List<Commenters> commenters;
-  List<InterestedUsers> interestedUsers;
+  List<GoingUsers> interestedUsers;
   List<Images> images;
   Post(
       {this.postId,
@@ -168,9 +168,9 @@ class Post {
       });
     }
     if (json['interested_users'] != null) {
-      interestedUsers = new List<InterestedUsers>();
+      interestedUsers = new List<GoingUsers>();
       json['interested_users'].forEach((v) {
-        interestedUsers.add(new InterestedUsers.fromJson(v));
+        interestedUsers.add(new GoingUsers.fromJson(v));
       });
     }
 

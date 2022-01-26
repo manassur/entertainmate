@@ -24,7 +24,7 @@ class _CreateEventState extends State<CreateEvent> {
               elevation: 1,
               centerTitle: true,
               title: Text("Create new event",
-                  style: TextStyle( fontSize: 15, color: Colors.black38,  )),
+                  style: TextStyle( fontSize: 15, color: Colors.black87,  )),
 
             ),
             body: Padding(
@@ -203,7 +203,7 @@ class _CreateEventState extends State<CreateEvent> {
                                 child: BlocProvider<PublishEventBloc>(
                                   create: (context) =>
                                       PublishEventBloc(repository: Repository(),context:context),
-                                  child: NewInPersonEventScreen(type:selectedEventType,clas:selectedEventClass),
+                                  child: NewInPersonEventScreen(type:selectedEventType,clas:selectedEventClass,branch: 0,),
                                 ),);
                           },
                         );

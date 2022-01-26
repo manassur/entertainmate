@@ -6,6 +6,13 @@ abstract class MateHomeEvent extends Equatable {
 }
 
 class FetchMateHomeEvent extends MateHomeEvent {
+
+  @override
+  List<Object> get props => [];
+}
+
+class FetchMateDealsEvent extends MateHomeEvent {
+
   @override
   List<Object> get props => [];
 }

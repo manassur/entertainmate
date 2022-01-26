@@ -10,8 +10,8 @@ import 'mate_home_state.dart';
 
 class MateHomeBloc extends Bloc<MateHomeEvent, MateHomeState>{
   Repository mateHomeRepository;
-
-  MateHomeBloc({ @required this.mateHomeRepository}) : super(null);
+  BuildContext context;
+  MateHomeBloc({ @required this.mateHomeRepository,this.context}) : super(null);
 
 
   @override
@@ -22,9 +22,20 @@ class MateHomeBloc extends Bloc<MateHomeEvent, MateHomeState>{
     if (event is FetchMateHomeEvent) {
       yield MateHomeLoadingState();
       try{
-        MateHomeModel  mateHome = await mateHomeRepository.fetchHomeFeed();
-        // if(mateHome.length>0){
+        MateHomeModel  mateHome = await mateHomeRepository.fetchHomeFeed(context);
           yield MateHomeLoadedState(mateHome:mateHome, message: "Feeds Updated");
+
+      }catch(e){
+        yield MateHomeFailureState(error: e.toString());
+      }
+    }
+
+    if (event is FetchMateDealsEvent) {
+      yield MateHomeLoadingState();
+      try{
+        MateHomeModel  mateHome = await mateHomeRepository.fetchDealsFeed();
+        // if(mateHome.length>0){
+        yield MateHomeLoadedState(mateHome:mateHome, message: "Deals Updated");
         // }
       }catch(e){
         yield MateHomeFailureState(error: e.toString());

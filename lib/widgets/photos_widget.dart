@@ -106,7 +106,7 @@ class _PhotosWidgetState extends State<PhotosWidget> {
           //   duration:  Duration(seconds: 3),
           // )..show(context);
           Fluttertoast.showToast(
-              msg: 'Image added to event',
+              msg: 'Image uploaded successfully',
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,

@@ -26,9 +26,20 @@ class SaveInterestBloc extends Bloc<SaveInterestEvent, SaveInterestState>{
       }catch(e){
         yield SaveInterestFailureState(error: e.toString());
       }
+    }else if (event is UpdateLikeEvent) {
+      try{
+        GenericResponse saveResponse =  await saveInterestRepository.saveInterestAdmin(event.action, event.postId, event.type,event.userId);
+        if (saveResponse.error == false) {
+          yield SaveSuccessState(message: saveResponse.message);
+        }
+        else yield SaveFailureState(message: saveResponse.message);
+      }catch(e){
+        yield SaveInterestFailureState(error: e.toString());
+      }
     }
 
-    if (event is FetchInterestEvent) {
+
+   else if (event is FetchInterestEvent) {
       try{
         GenericResponse interestResponse =   await saveInterestRepository.saveInterest(event.action, event.postId, event.type);
         if (interestResponse.error == false) {

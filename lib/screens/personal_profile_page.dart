@@ -235,7 +235,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                               color: Colors.white,
                                               borderRadius: BorderRadius.circular(10.0)
                                             ),
-                                            child: Text(" Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.Lorem ipsum dolor sitamet, consectetur adipiscing elit, sed do eiusmod tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.Lorem ipsum dolor sitamet, consectetur adipiscing elit, sed do eiusmod tempor.",
+                                            child: Text(data.user.headline,
                                               // child: Text(data.user.bio,
 
                                                 style: TextStyle(fontWeight: FontWeight.w500, height: 1.5, wordSpacing: 1),),)

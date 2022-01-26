@@ -20,13 +20,15 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class NewInPersonEventScreen extends StatefulWidget {
-  final int type,clas;
-  NewInPersonEventScreen({this.type,this.clas});
+  final int type,clas,branch,busid;
+  NewInPersonEventScreen({this.type,this.clas,this.branch,this.busid});
   @override
-  _NewInPersonEventScreenState createState() => _NewInPersonEventScreenState();
+  _NewInPersonEventScreenState createState() => _NewInPersonEventScreenState(branch: this.branch);
 }
 
 class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
+  int branch;
+  _NewInPersonEventScreenState({this.branch});
   DateTime startDateTime ,endDateTime;
 
   CreateEventProvider _createEventProvider;
@@ -46,7 +48,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
   ];
 
   String dropdownValue ='Category';
-  var dropDownItems=<String>[
+  var dropDownItems=  <String> [
     'Category',
     'Social',
     'Sports',
@@ -70,6 +72,9 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
 
     _createEventProvider.setEventType(widget.type);
     _createEventProvider.setPeopleCount(widget.clas);
+    _createEventProvider.setBranch(widget.branch);
+    _createEventProvider.setBusId(widget.busid);
+
     if(_createEventProvider.audience.isNotEmpty){
       odropdownValue = _createEventProvider.audience;
     }
@@ -109,7 +114,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
             backgroundColor: Colors.white,
             elevation: 1,
             centerTitle: true,
-            title: Text ( "New in-person event",
+            title: Text ( widget.branch==0?"New event":"New offer/deal",
                 style: TextStyle ( fontSize: 15,
                     color: Colors.black87,
                     fontWeight: FontWeight.w500 ) ),
@@ -147,7 +152,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                     decoration: InputDecoration (
                                         counterText: "",
                                         border: InputBorder.none,
-                                        hintText: 'Title (max 70 character)',
+                                        hintText: widget.branch==0?'Title (max 70 character)':'Flash offer / coupon',
                                         hintStyle: TextStyle ( color: Colors.grey,
                                             fontSize: 15 )
                                     ),
@@ -178,7 +183,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
 //                            ],
 //                          ),                            SizedBox(width: 10),
                           SizedBox(height: 10),
-                          RoundedContainerBg(
+                          widget.branch==0? RoundedContainerBg(
                             child: Container(
                               width: double.infinity,
                               child: Padding (
@@ -219,9 +224,9 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                 ),
                               ),
                             ),
-                          ),
-                        SizedBox(height: 10),
-                          RoundedContainerBg(
+                          ):Container(),
+                          widget.branch==0? SizedBox(height: 10):Container(),
+                          widget.branch==0? RoundedContainerBg(
                             child: Container(
                               width: double.infinity,
                               child: Padding (
@@ -262,9 +267,9 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
+                          ):Container(),
+                          widget.branch==0?SizedBox(height: 10):Container(),
+                          widget.branch==0?Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
@@ -289,8 +294,8 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                 ),
               ),
                         ],
-                      ),
-                          SizedBox(height: 10),
+                      ):Container(),
+                          widget.branch==0? SizedBox(height: 10):Container(),
                           Row (
                             crossAxisAlignment: CrossAxisAlignment.center ,
                             children: [
@@ -303,14 +308,14 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                             print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
                                           }, onConfirm: (date) {
                                             startDateTime = date;
-                                            data.setStartDate(DateFormat('HH:mma yyyy-MM-dd').format(startDateTime));
+                                            data.setStartDate(startDateTime.toString());
                                           }, currentTime: DateTime.now());
                                     });
                                   },
                                   child: RoundedContainerBg(
                                     child: Center(
                                       child: Text (
-                                        data.startDate.isEmpty?"Start date" : data.startDate,
+                                        data.startDate.isEmpty?"Start date" : DateFormat('HH:mma yyyy-MM-dd').format(startDateTime),
                                         style: TextStyle (
                                             fontSize: 14, fontWeight: FontWeight.w500,color: data.startDate.isEmpty?Colors.grey:Colors.black ),
 
@@ -329,14 +334,14 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                             print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
                                           }, onConfirm: (date) {
                                             endDateTime = date;
-                                            data.setEndDate(DateFormat('HH:mma yyyy-MM-dd').format(endDateTime));
+                                            data.setEndDate(endDateTime.toString());
                                           }, currentTime: DateTime.now());
                                     });
                                   },
                                   child: RoundedContainerBg(
                                     child: Center(
                                       child: Text (
-                                        data.endDate.isEmpty?"End date" : data.endDate,
+                                        data.endDate.isEmpty?"End date" : DateFormat('HH:mma yyyy-MM-dd').format(endDateTime),
                                         style: TextStyle (
                                             fontSize: 14,fontWeight: FontWeight.w500, color: data.startDate.isEmpty?Colors.grey:Colors.black ),
 
@@ -347,8 +352,8 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height:10),
-                          InkWell (
+                          widget.branch==0? SizedBox(height:10):Container(),
+                          widget.branch==0?InkWell (
                             onTap: (
                                 ) {
                               Navigator.push ( context, MaterialPageRoute (
@@ -382,7 +387,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                                 ],
                               ),
                             ),
-                          ),
+                          ):Container(),
                           SizedBox(height:10),
                           RoundedContainerBg(
                             child: Row (
@@ -432,7 +437,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                         // );
                       } else if (state is PublishEventLoadingState){
                         Fluttertoast.showToast(
-                            msg: "Posting your event...",
+                            msg: widget.branch==0? "Posting your event...":"Posting your deal...",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.CENTER,
                             timeInSecForIosWeb: 1,
@@ -442,7 +447,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                         );
                       } else if (state is PostedEventState) {
                         Fluttertoast.showToast(
-                            msg: "Your event has been posted",
+                            msg: widget.branch==0?"Your event has been posted":"Your deal has been posted",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.CENTER,
                             timeInSecForIosWeb: 1,
@@ -452,7 +457,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                         ).then((value) => Navigator.of(context).pop());
                       } else if (state is PublishEventFailureState) {
                         Fluttertoast.showToast(
-                            msg: "Event failed to post, please try again",
+                            msg: widget.branch==0?"Event failed to post, please try again":"Deal failed to post, please try again",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.CENTER,
                             timeInSecForIosWeb: 1,
@@ -493,7 +498,7 @@ class _NewInPersonEventScreenState extends State<NewInPersonEventScreen> {
                           MaterialButton (
                             color: Colors.lightBlueAccent.shade100.withOpacity (0.2 ),
                            disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
-                            child: Text ( 'Post',
+                            child: Text (widget.branch==0? 'Post event':'Post offer',
                               style: TextStyle ( color: Colors.grey ), ),
                             shape: RoundedRectangleBorder (
                               borderRadius: BorderRadius.circular ( 10.0 ),

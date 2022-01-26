@@ -27,6 +27,8 @@ class PublishEventBloc extends Bloc<PublishEventEvent, PublishEventState> {
       yield PublishEventLoadingState();
       try {
              GenericResponse response = await repository.publishEvent(
+               _provider.busid,
+               _provider.branch,
             _provider.eventType,
             _provider.categoryId,
             _provider.peopleCount,
@@ -35,7 +37,7 @@ class PublishEventBloc extends Bloc<PublishEventEvent, PublishEventState> {
             _provider.location,
             _provider.startDate,
             _provider.endDate,
-            _provider.audience,
+            _provider.audienceId,
             _provider.isLocationShown,
             _provider.isFirstInterestedAdded,
                _provider.images

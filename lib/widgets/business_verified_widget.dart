@@ -14,9 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BusinessVerifiedWidget extends StatefulWidget {
 
-  Business business;
-
-
+  int status;
+  BusinessVerifiedWidget({this.status});
   @override
   _BusinessVerifiedWidgetState createState() => _BusinessVerifiedWidgetState();
 }
@@ -54,6 +53,8 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
               return buildLoading();
             } else if (state is UserBusinessLoadedState) {
               return buildUserBusiness(state.businessModel);
+            }else if (state is UserBusinessEmptyState) {
+              return buildErrorUi('You do not have any businesses yet');
             } else if (state is UserBusinessFailureState) {
               return buildErrorUi(state.error);
             }
@@ -348,7 +349,7 @@ class _BusinessVerifiedWidgetState extends State<BusinessVerifiedWidget> {
 
   Widget buildErrorUi ( String message ) {
     return Center (
-      child: Text ( message , style: TextStyle ( color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20 ) ,
+      child: Text ( message , style: TextStyle ( color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20 ) ,
       ) ,
     );
   }
