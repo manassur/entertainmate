@@ -38,6 +38,8 @@ const String SAVE_INTEREST=BASE_URL+"post/like";
 const String SAVE_INTEREST_ADMIN=BASE_URL+"post/like/admin";
 
 const String POST_COMMENT=BASE_URL+"feed/comment";
+const String ADD_USER_TO_BUSINESS=BASE_URL+"/business/add_user";
+
 const String FETCH_USER_BUSINESS=BASE_URL+"user/business";
 
 const String REGISTER_BUSINESS=BASE_URL+"user/create_business";
@@ -46,6 +48,8 @@ const String CREATE_EVENT=BASE_URL+"user/add_event";
 const String CREATE_POST_IMAGE=BASE_URL+"event/add_photo";
 
 const String FETCH_USER_FOLLOWING=BASE_URL+"user/followings";
+const String FETCH_ALL_USERS=BASE_URL+"user/all";
+
 const String FETCH_INTERESTED_USER=BASE_URL+"user/info/";
 const String FETCH_USER_PROFILE=BASE_URL+"user/info/";
 const String FOLLOW_USER=BASE_URL+"user/follow";

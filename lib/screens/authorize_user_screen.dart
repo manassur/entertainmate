@@ -3,6 +3,9 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/invite_user/invite_user_event.dart';
 import 'package:entertainmate/bloc/invite_user/invite_user_state.dart';
 import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_event.dart';
+import 'package:entertainmate/bloc/send_invite/send_invite_event.dart';
 import 'package:entertainmate/screens/model/user_comment.dart';
 import 'package:entertainmate/screens/utility/constants.dart';
 import 'package:entertainmate/screens/utility/constants.dart' as Constant;
@@ -13,24 +16,32 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'model/invite_user_model.dart';
 
-class InviteScreen extends StatefulWidget {
+class AuthorizeUserScreen extends StatefulWidget {
 
   String screen, id;
 
-  InviteScreen({Key key, @required this.screen, this.id}) : super(key: key);
+  AuthorizeUserScreen({Key key, @required this.screen, this.id}) : super(key: key);
 
 
   @override
-  _InviteScreenState createState() => _InviteScreenState();
+  _AuthorizeUserScreenState createState() => _AuthorizeUserScreenState();
 
 }
 
-class _InviteScreenState extends State<InviteScreen> {
+class _AuthorizeUserScreenState extends State<AuthorizeUserScreen> {
   TextEditingController _inviterUserController= TextEditingController();
 
   InviteUserBloc inviteUserBloc;
+  PostCommentBloc postCommentBloc;
+
   // selected position of the busness creator
   int selectedPosition=0;
+  String selectedPositionName='Manager/Ceo';
+
+  //selected user to be invited or authorized
+  Followers selectedUser;
+
+
 
   // bool isSelected = false;
 
@@ -39,7 +50,9 @@ class _InviteScreenState extends State<InviteScreen> {
     super.initState();
 
     inviteUserBloc = BlocProvider.of<InviteUserBloc>(context);
+    postCommentBloc = BlocProvider.of<PostCommentBloc>(context);
     inviteUserBloc.add(FetchInviteUserEvent(screen: widget.screen, id: widget.id));
+
   }
 
   @override
@@ -134,9 +147,8 @@ class _InviteScreenState extends State<InviteScreen> {
                                   elevation: 0,
                                   onPressed: () async{
 
-                                    Navigator.pop(context);
 
-                                    if(widget.screen.contains('authorized'))
+                                    if(selectedUser!=null)
                                   {  showModalBottomSheet(
                                       context: context,
                                       shape: RoundedRectangleBorder(
@@ -148,7 +160,7 @@ class _InviteScreenState extends State<InviteScreen> {
                                         return StatefulBuilder(
                                             builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
                                               return FractionallySizedBox(
-                                                  heightFactor: 0.5,
+                                                  heightFactor: 0.6,
                                                   child:  Padding(
                                                     padding: const EdgeInsets.all(25.0),
                                                     child: Container (
@@ -156,12 +168,13 @@ class _InviteScreenState extends State<InviteScreen> {
                                                         mainAxisSize: MainAxisSize.max,
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Center(child: Text("Your position at this business", style: TextStyle(fontSize: 20),)),
+                                                          Center(child: Text(selectedUser.name+"'s position at this business", style: TextStyle(fontSize: 17),)),
                                                           Divider(),
                                                           GestureDetector(
                                                             onTap: (){
                                                               setState(() {
                                                                 selectedPosition=0;
+                                                                selectedPositionName='Owner/CEO';
                                                               });
                                                             },
                                                             child: Row(
@@ -197,6 +210,7 @@ class _InviteScreenState extends State<InviteScreen> {
                                                             onTap: (){
                                                               setState(() {
                                                                 selectedPosition=1;
+                                                                selectedPositionName='Manager';
                                                               });
                                                             },
                                                             child: Row(
@@ -233,6 +247,7 @@ class _InviteScreenState extends State<InviteScreen> {
                                                             onTap: (){
                                                               setState(() {
                                                                 selectedPosition=2;
+                                                                selectedPositionName='Employee';
                                                               });
                                                             },
                                                             child: Row(
@@ -269,6 +284,8 @@ class _InviteScreenState extends State<InviteScreen> {
                                                             onTap: (){
                                                               setState(() {
                                                                 selectedPosition=3;
+                                                                selectedPositionName='Others';
+
                                                               });
                                                             },
                                                             child: Row(
@@ -306,32 +323,15 @@ class _InviteScreenState extends State<InviteScreen> {
 
                                                           GestureDetector(
                                                             onTap: () async {
-                                                              // Navigator.pop(context);
-                                                              // if(businessNameController.text.isNotEmpty )
-                                                              //   registerBusinessBloc.add(
-                                                              //       RegisteringBusinessEvent(
-                                                              //           name: businessNameController.text,
-                                                              //           type: "",
-                                                              //           description: descriptiveController.text,
-                                                              //           slogan: sloganController.text,
-                                                              //           phone: phoneController.text,
-                                                              //           email: emailController.text,
-                                                              //           location: locationController.text,
-                                                              //           time: openCloseController.text,
-                                                              //           website: websiteController.text,
-                                                              //           more: moreController.text,
-                                                              //           image: _image
-                                                              //       ));
-                                                              //
-                                                              // else await Flushbar(
-                                                              //   message: 'Fields cannot be empty',
-                                                              //   duration: Duration(seconds: 3),
-                                                              // ).show(context);
-                                                              // Navigator.push(
-                                                              //   context,
-                                                              //   MaterialPageRoute(
-                                                              //       builder: (context) => CongratsBusinessCreate(business: businessNameController.text,)),
-                                                              // );
+                                                              postCommentBloc.add(AssignUserBusinessRoleEvent(userId: selectedUser.id,busId:widget.id , role:selectedPosition.toString(),action: 'add'));
+                                                              Navigator.of(context).pop();
+
+                                                               await Flushbar(
+                                                                message: selectedPositionName+" position now assigned to "+selectedUser.name,
+                                                                duration: Duration(seconds: 2),
+                                                              ).show(context).then((value) => (){
+
+                                                               });
 
                                                             },
 
@@ -363,7 +363,7 @@ class _InviteScreenState extends State<InviteScreen> {
                                     );}else{
                                       // just show a invite success jare
                                       await Flushbar(
-                                            message: 'Fields cannot be empty',
+                                            message: 'Please select a user',
                                             duration: Duration(seconds: 3),
                                           ).show(context);
                                     }
@@ -419,22 +419,17 @@ class _InviteScreenState extends State<InviteScreen> {
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 5.0),
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
         itemCount: inviteUserModel.followers.length,
         // itemCount:  10,
         itemBuilder: (ctx, userPos) {
           return Container(
             child: GestureDetector(
               onTap: () {
-                if(inviteUserModel.followers.any((item) =>item.isSelected)){
-                  setState(() {
-                    inviteUserModel.followers[userPos].isSelected = !inviteUserModel.followers[userPos].isSelected;
-                  });
-                } else{
-                  setState(() {
-                    inviteUserModel.followers[userPos].isSelected = true;
-                  });
-                }
+                setState(() {
+                  selectedUser=inviteUserModel.followers[userPos];
+                  inviteUserModel.followers.forEach((element) {element.isSelected=false;});
+                  inviteUserModel.followers[userPos].isSelected = true;
+                });
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -476,11 +471,11 @@ class _InviteScreenState extends State<InviteScreen> {
                   SizedBox(height: 10,),
                   Center(
                     child: Text(
-                      // 'Noshat',
                       '${inviteUserModel.followers[userPos].name}',
+                        textAlign:TextAlign.center,
                       style: TextStyle(
                           color: Colors.grey[800],
-                          fontWeight: FontWeight.bold, fontSize: 13),
+                          fontWeight: FontWeight.bold, fontSize: 10),
                     ),
                   )
 

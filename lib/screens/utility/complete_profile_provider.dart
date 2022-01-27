@@ -64,7 +64,6 @@ class CompleteProfileProvider extends ChangeNotifier {
           }else{
             setUsernameAvailable(false);
             setMessage(response.message);
-
           }
 
       setLoading(false);

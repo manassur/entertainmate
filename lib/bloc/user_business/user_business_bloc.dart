@@ -22,7 +22,7 @@ class UserBusinessBloc extends Bloc<UserBusinessEvent, UserBusinessState>{
     if (event is FetchUserBusinessEvent) {
       yield UserBusinessLoadingState();
       try{
-        BusinessModel  businessModel = await repository.fetchUserBusiness();
+        BusinessModel  businessModel = await repository.fetchUserBusiness(event.status);
         if(businessModel.business.isNotEmpty) {
           yield UserBusinessLoadedState(businessModel: businessModel, message: "user business Updated");
         } else{

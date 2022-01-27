@@ -1,9 +1,10 @@
-
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
 import 'package:entertainmate/bloc/register_business/register_business_event.dart';
+import 'package:entertainmate/screens/congrats_business_create.dart';
+import 'package:entertainmate/widgets/business_position_widget.dart';
 import 'package:entertainmate/widgets/business_type_widget.dart';
 import 'package:entertainmate/widgets/custom_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,9 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import 'utility/create_event_provider.dart';
 
 class RegisterBusinessScreen extends StatefulWidget {
-
   @override
   _RegisterBusinessScreenState createState() => _RegisterBusinessScreenState();
 }
@@ -28,15 +31,29 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   final openCloseController = TextEditingController();
   final websiteController = TextEditingController();
   final moreController = TextEditingController();
+  // social controller
   final facebookController = TextEditingController();
   final instagramController = TextEditingController();
   final linkedInController = TextEditingController();
 
-  String facebook;
+  // location controller
+  final street1Controller = TextEditingController();
+  final street2Controller = TextEditingController();
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final zipController = TextEditingController();
+
+  String facebook,instagram;
+
+  // selected position of the busness creator
+  int selectedPosition=0;
 
 
   RegisterBusinessBloc registerBusinessBloc;
   File _image;
+
+
+
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50
@@ -91,9 +108,7 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
   @override
   void initState() {
     registerBusinessBloc = BlocProvider.of<RegisterBusinessBloc>(context);
-
     facebook="";
-
     if (facebookController.text.isNotEmpty){
       facebook="facebook";
     }
@@ -106,7 +121,9 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
     return WillPopScope(
       onWillPop: () => exitDialog(context),
 
-      child: Scaffold(
+      child: Consumer<CreateEventProvider>(
+        builder: (context, data, child)
+    { return Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -196,7 +213,8 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.transparent,
+
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -219,7 +237,11 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                           ),
                           child: Row(
                             children: [
-                              Text("Business type", style: TextStyle(fontSize: 15.0, color: Colors.grey),),
+                             data.businessType.isEmpty?
+                             Text("Business type", style: TextStyle(fontSize: 15.0, color: Colors.grey),):
+                              Expanded(
+                                flex:4,
+                                  child: Text(data.businessTypeString.join(','), style: TextStyle(fontSize: 15.0, color: Colors.black),)),
                               Spacer(),
                               Icon(Icons.arrow_forward_ios_sharp, size: 16, color: Colors.grey,),
 
@@ -233,11 +255,12 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                       TextField(
                         controller: descriptiveController,
                         autofocus: false,
+                        maxLines: 2,
                         style: TextStyle(fontSize: 15.0, color: Colors.black87),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: 'Descriptive keywords',
+                          hintText: 'Description in 5 keywords (sepearate with commas)',
                           hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
                           contentPadding: EdgeInsets.only(left: 10.0),
                           border: OutlineInputBorder(
@@ -324,24 +347,131 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
 
                       SizedBox(height: 20),
 
-                      TextField(
-                        controller: locationController,
-                        autofocus: false,
-                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: 'Business Location',
-                          hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                          contentPadding: EdgeInsets.only(left: 10.0),
-                          border: OutlineInputBorder(
+                      GestureDetector(
+                        onTap: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+
+
+                                return CustomAlertDialog(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text("Business Location?",
+                                          style: TextStyle( fontSize: 18,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+
+                                        TextField(
+                                          controller: street1Controller,
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              border: InputBorder.none,
+                                              hintText: 'Street 1'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        TextField(
+                                          controller: street2Controller,
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              border: InputBorder.none,
+                                              hintText: 'Street 2'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        TextField(
+                                          controller: cityController,
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              border: InputBorder.none,
+                                              hintText: 'City'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              flex:2,
+                                              child: TextField(
+                                                controller: stateController,
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    hintText: 'State'),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              flex:1,
+                                              child: TextField(
+                                                controller: zipController,
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    hintText: 'Zip code'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        SizedBox(height: 20),
+                                        Container (
+                                          height: 40,
+                                          margin:  EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 15.0 ),
+                                          width: MediaQuery.of ( context ).size.width,
+                                          child: (
+                                              MaterialButton (
+                                                elevation: 0,
+                                                onPressed: () {
+                                                  data.setBusinessStreet(street1Controller.text,street2Controller.text,cityController.text,stateController.text,zipController.text);
+                                                  Navigator.pop(context);
+                                                },
+                                                color: Colors.blueAccent,
+                                                // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                                                child: Text ( 'Done',
+                                                  style: TextStyle ( color: Colors.white ), ),
+                                                shape: RoundedRectangleBorder (
+                                                  borderRadius: BorderRadius.circular ( 5.0 ),
+                                                ),
+                                              )
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+
+                              });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(10.0, 13.0, 15.0, 13.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade500),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1,color: Colors.grey.shade500),
+                          child: Row(
+                            children: [
+                              data.street1.isEmpty?
+                              Text("Business Location", style: TextStyle(fontSize: 15.0, color: Colors.grey),):
+                              Expanded(
+                                flex:4,
+                                  child: Text(data.street1, style: TextStyle(fontSize: 15.0, color: Colors.black),)),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_sharp, size: 16, color: Colors.grey,),
+
+                            ],
                           ),
-                          // suffixIcon: Icon(Icons.arrow_forward_ios_sharp, size: 16, color: Colors.grey,),
                         ),
                       ),
 
@@ -350,6 +480,8 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                       TextField(
                         controller: openCloseController,
                         autofocus: false,
+                        maxLines: 2,
+
                         style: TextStyle(fontSize: 15.0, color: Colors.black87),
                         decoration: InputDecoration(
                           filled: true,
@@ -401,7 +533,7 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                         controller: moreController,
                         autofocus: false,
                         style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                        maxLines: null,
+                        maxLines: 6,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                           filled: true,
@@ -429,46 +561,6 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                // return Dialog(
-                                //   shape: RoundedRectangleBorder(
-                                //       borderRadius: BorderRadius.circular(20.0)),
-                                //   child: Container(
-                                //     padding: const EdgeInsets.all(12.0),
-                                //     margin: EdgeInsets.only(top:50.0, bottom: 50.0),
-                                //     child: Column(
-                                //       mainAxisAlignment: MainAxisAlignment.center,
-                                //       crossAxisAlignment: CrossAxisAlignment.start,
-                                //       children: [
-                                //         TextField(
-                                //           decoration: InputDecoration(
-                                //               border: InputBorder.none,
-                                //               hintText: 'Facebook handle'),
-                                //         ),
-                                //         TextField(
-                                //           decoration: InputDecoration(
-                                //               border: InputBorder.none,
-                                //               hintText: 'Instagram handle'),
-                                //         ),
-                                //         TextField(
-                                //           decoration: InputDecoration(
-                                //               border: InputBorder.none,
-                                //               hintText: 'LinkedIn handle'),
-                                //         ),
-                                //         SizedBox(
-                                //           width: 320.0,
-                                //           child: RaisedButton(
-                                //             onPressed: () {},
-                                //             child: Text(
-                                //               "Save",
-                                //               style: TextStyle(color: Colors.white),
-                                //             ),
-                                //             color: const Color(0xFF1BC0C5),
-                                //           ),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // );
 
                                return CustomAlertDialog(
                                   child: Padding(
@@ -478,7 +570,7 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Text("Please fill",
+                                        Text("Social handles",
                                           style: TextStyle( fontSize: 18,
                                           ),
                                         ),
@@ -486,8 +578,21 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
 
                                         Divider(color: Colors.grey,),
                                         TextField(
+                                          controller: instagramController,
+                                          
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                              border: InputBorder.none,
+                                              hintText: 'Instagram handle'),
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        TextField(
                                           controller: facebookController,
+
                                           decoration: InputDecoration(
+                                              filled: true,
                                               border: InputBorder.none,
                                               hintText: 'Facebook handle'),
                                         ),
@@ -495,37 +600,36 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                         SizedBox(height: 10),
 
                                         TextField(
+                                          controller:linkedInController,
                                           decoration: InputDecoration(
+                                              filled: true,
                                               border: InputBorder.none,
-                                              hintText: 'Facebook handle'),
-                                        ),
-
-                                        SizedBox(height: 10),
-
-                                        TextField(
-                                          decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: 'Facebook handle'),
+                                              hintText: 'LinkedIn handle'),
                                         ),
 
                                         SizedBox(height: 20),
 
-                                        MaterialButton(
-                                          child: Text( "Done",
-                                            style: TextStyle( color: Colors.white, fontSize: 16,
-                                            ),
+                                        Container (
+                                          height: 40,
+                                          margin:  EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 15.0 ),
+                                          width: MediaQuery.of ( context ).size.width,
+                                          child: (
+                                              MaterialButton (
+                                                elevation: 0,
+                                                onPressed: () {
+                                                  data.setBusinessSocials(instagramController.text, facebookController.text, linkedInController.text);
+                                                  Navigator.pop(context);
+                                                },
+                                                color: Colors.blueAccent,
+                                                // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
+                                                child: Text ( 'Done',
+                                                  style: TextStyle ( color: Colors.white ), ),
+                                                shape: RoundedRectangleBorder (
+                                                  borderRadius: BorderRadius.circular ( 5.0 ),
+                                                ),
+                                              )
                                           ),
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-
-                                            //
-                                            // await Flushbar(
-                                            //   message: 'Details Saved',
-                                            //   duration: Duration(seconds: 3),
-                                            // ).show(context);
-                                          },
-                                          color: Colors.blueAccent,
-                                        ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -549,11 +653,10 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                   SvgPicture.asset (
                                     'images/005-instagram.svg', height: 30,
                                     width: 25,
-                                    // color:fb?Colors.black87: Colors.grey,
-                                    color: Colors.grey,
+                                  color:data.instagram.isNotEmpty?Colors.black87: Colors.grey,
                                   ),
                                   SizedBox(height: 10),
-                                  Text("Instagram", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                  Text("Instagram", style: TextStyle(fontSize: 15.0,color:data.instagram.isNotEmpty?Colors.black87: Colors.grey),),
                                 ],
                               ),
                               Column(
@@ -561,12 +664,12 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                   SvgPicture.asset (
                                     'images/003-facebook.svg',  height: 30,
                                     width: 25,
-                                    color:facebook.isNotEmpty?Colors.black87: Colors.grey,
+                                    color:data.facebook.isNotEmpty?Colors.black87: Colors.grey,
                                     // color: Colors.grey,
                                   ),
                                   SizedBox(height: 10),
 
-                                  Text("Facebook", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                  Text("Facebook", style: TextStyle(fontSize: 15.0, color:data.facebook.isNotEmpty?Colors.black87: Colors.grey),),
                                 ],
                               ),
                               Column(
@@ -575,12 +678,11 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                                     'images/002-linkedin-logo.svg',
                                     height: 30,
                                     width: 25,
-                                    // color:fb.isNotEmpty?Colors.black87: Colors.grey,
-                                    color: Colors.grey,
-                                  ),
+                                    color:data.linkedin.isNotEmpty?Colors.black87: Colors.grey,
+                              )                                  ,
                                   SizedBox(height: 10),
 
-                                  Text("LinkedIn", style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),),
+                                  Text("LinkedIn", style: TextStyle(fontSize: 15.0, color:data.linkedin.isNotEmpty?Colors.black87: Colors.grey),),
                                 ],
                               ),
 
@@ -590,19 +692,6 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                       ),
 
 
-                      // SizedBox(height: 20),
-                      // Container(
-                      //   height: 90,
-                      //   width: 90,
-                      //   decoration: BoxDecoration(
-                      //     // color: Colors.grey[800],
-                      //     shape: BoxShape.circle,
-                      //     image: DecorationImage(
-                      //       image: AssetImage("images/entertainmate_pic.jpeg"),
-                      //       fit: BoxFit.cover
-                      //     )
-                      //   ),
-                      // ),
 
                     ],
                   )
@@ -619,49 +708,239 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
                   MaterialButton (
                     elevation: 0,
                     onPressed: () async{
-                      if(businessNameController.text.isNotEmpty )
-                        registerBusinessBloc.add(
-                            RegisteringBusinessEvent(
-                              name: businessNameController.text,
-                                type: "",
-                                description: descriptiveController.text,
-                                slogan: sloganController.text,
-                                phone: phoneController.text,
-                                email: emailController.text,
-                                location: locationController.text,
-                                time: openCloseController.text,
-                                website: websiteController.text,
-                                more: moreController.text,
-                                image: _image
-                            ));
-
-                      else await Flushbar(
-                            message: 'Fields cannot be empty',
-                            duration: Duration(seconds: 3),
-                      ).show(context);
 
 
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-                      //   ),
-                      //   isScrollControlled: true,
-                      //   backgroundColor: Colors.white,
-                      //   builder: (context) {
-                      //     return FractionallySizedBox(
-                      //       heightFactor: 0.5,
-                      //       child:  BusinessPositionWidget()
-                      //    );
-                      //   },
-                      // );
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                        builder: (context) {
+                          return StatefulBuilder(
+                              builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
+                                return FractionallySizedBox(
+                                    heightFactor: 0.5,
+                                    child:  Padding(
+                                      padding: const EdgeInsets.all(25.0),
+                                      child: Container (
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Center(child: Text("Your position at this business", style: TextStyle(fontSize: 20),)),
+                                            Divider(),
+                                            GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  selectedPosition=0;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Owner/CEO",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                                                      Text("Own the business",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  CircleAvatar(
+                                                    backgroundColor: Colors.black87,
+                                                    radius: 14,
+                                                    child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 13,
+                                                        child: CircleAvatar(
+                                                          backgroundColor:   selectedPosition==0?Colors.blueAccent:Colors.white,
+                                                          radius: 10,
+
+                                                        )
+                                                    ),
+
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 25),
+
+                                            GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  selectedPosition=1;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Manager ",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                                                      Text("Manage the business ",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  CircleAvatar(
+                                                    backgroundColor: Colors.black87,
+                                                    radius: 14,
+                                                    child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 13,
+                                                        child: CircleAvatar(
+                                                          backgroundColor: selectedPosition==1?Colors.blueAccent:Colors.white,
+                                                          radius: 10,
+
+                                                        )
+                                                    ),
+
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 25),
+
+                                            GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  selectedPosition=2;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Employee ",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                                                      Text("Work at the business",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  CircleAvatar(
+                                                    backgroundColor: Colors.black87,
+                                                    radius: 14,
+                                                    child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 13,
+                                                        child: CircleAvatar(
+                                                          backgroundColor: selectedPosition==2?Colors.blueAccent:Colors.white,
+                                                          radius: 10,
+
+                                                        )
+                                                    ),
+
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 25),
+
+                                            GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  selectedPosition=3;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Others ",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600, fontSize: 15),),
+                                                      Text("Any other position not listed above",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w400, fontSize: 13),),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  CircleAvatar(
+                                                    backgroundColor: Colors.black87,
+                                                    radius: 14,
+                                                    child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 13,
+                                                        child: CircleAvatar(
+                                                          backgroundColor: selectedPosition==3?Colors.blueAccent:Colors.white,
+                                                          radius: 10,
+
+                                                        )
+                                                    ),
+
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 25),
+
+                                            Divider(),
+                                            Spacer(),
+
+                                            GestureDetector(
+                                              onTap: () async {
+                                                // Navigator.pop(context);
+                                                // if(businessNameController.text.isNotEmpty )
+                                                //   registerBusinessBloc.add(
+                                                //       RegisteringBusinessEvent(
+                                                //           name: businessNameController.text,
+                                                //           type: "",
+                                                //           description: descriptiveController.text,
+                                                //           slogan: sloganController.text,
+                                                //           phone: phoneController.text,
+                                                //           email: emailController.text,
+                                                //           location: locationController.text,
+                                                //           time: openCloseController.text,
+                                                //           website: websiteController.text,
+                                                //           more: moreController.text,
+                                                //           image: _image
+                                                //       ));
+                                                //
+                                                // else await Flushbar(
+                                                //   message: 'Fields cannot be empty',
+                                                //   duration: Duration(seconds: 3),
+                                                // ).show(context);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => CongratsBusinessCreate(business: businessNameController.text,)),
+                                                );
+
+                                              },
+
+                                              child: Container(
+                                                height: 50,
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.blueAccent,
+                                                    borderRadius: BorderRadius.circular(8)
+                                                ),
+                                                child: Center(
+                                                  child: Text("Continue",
+                                                      style: TextStyle( fontSize: 17, color: Colors.white,fontWeight: FontWeight.w500  )),
+                                                ),
+
+                                              ),
+                                            ),
+                                            SizedBox(height: 15),
+
+                                          ],
+                                        ),
+
+                                      ),
+                                    )
+                                );
+
+                              });
+                        },
+                      );
 
                     },
 
-                    color: Colors.lightBlue.shade100,
+                    color: Colors.blueAccent,
                     // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                     child: Text ( 'Continue',
-                      style: TextStyle ( color: Colors.grey ), ),
+                      style: TextStyle ( color: Colors.white ), ),
                     shape: RoundedRectangleBorder (
                       borderRadius: BorderRadius.circular ( 5.0 ),
                     ),
@@ -671,7 +950,8 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
 
           ],
         ),
-      ),
+      );
+    })
     );
   }
 
@@ -748,7 +1028,6 @@ class _RegisterBusinessScreenState extends State<RegisterBusinessScreen> {
       ),
     );
   }
-
 
 }
 

@@ -1783,7 +1783,9 @@ class _HappeningNowScreenState extends State<HappeningNowScreen> {
                                                   InviteUserBloc(
                                                       inviteUserRepository:
                                                           Repository()),
-                                              child: InviteScreen()),
+                                              child: InviteScreen(screen: 'Invite User Screen',id: feedDetailsModel
+                                                  .feeds[0]
+                                                  .post.postId ,)),
                                         );
                                       });
                                     },

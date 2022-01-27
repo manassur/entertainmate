@@ -1,5 +1,7 @@
+import 'package:entertainmate/screens/utility/create_event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class BusinessTypeWidget extends StatefulWidget {
 
@@ -9,19 +11,43 @@ class BusinessTypeWidget extends StatefulWidget {
 
 class _BusinessTypeWidgetState extends State<BusinessTypeWidget> {
   // bool checkBoxValue = false;
+  CreateEventProvider _provider;
+  TextEditingController _descriptionController= TextEditingController();
+  List<BusinessType> businessType=[];
+  List<BusinessType> oldBusinessType=[];
+  @override
+  void initState() {
+    super.initState ();
+    _provider = Provider.of<CreateEventProvider>(context, listen: false);
+    // if(_provider.title.isNotEmpty){
+    //   _descriptionController.text = _provider.description;
+    // }
 
-  List<BusinessType> businessType =  <BusinessType>[
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
-    BusinessType(title: 'Owner/CEO', description: "Own the business", isSelected: false),
+    businessType =  <BusinessType>[
+      BusinessType(title: 'Resturant', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Arts and Entertainment', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Spas and Salons', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Health and Medical', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Hotels and travels', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Education', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Services', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Religious Organizations', description: "Own the business", isSelected: false),
+      BusinessType(title: 'Finance and Investment', description: "Own the business", isSelected: false),
+    ];
 
-  ];
+     oldBusinessType = _provider.businessType;
+     // select the ones that has been selected before
+    for ( int i=0; i<oldBusinessType.length;i++ ){
+      if(oldBusinessType[i].isSelected){
+        setState(() {
+          businessType[i].isSelected=true;
+        });
+
+      }
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +90,7 @@ class _BusinessTypeWidgetState extends State<BusinessTypeWidget> {
                               style: TextStyle(
                                   fontSize: 16, color: Colors.black87, fontWeight: FontWeight.w500  )
                           ),
-                          Text(businessType[index].title)
+                         // Text(businessType[index].title)
                         ],
                       ),
                       Spacer(),
@@ -86,16 +112,19 @@ class _BusinessTypeWidgetState extends State<BusinessTypeWidget> {
 
             Container (
               height: 40,
-              margin:  EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 10.0 ),
+              margin:  EdgeInsets.fromLTRB( 10.0, 10.0, 10.0, 15.0 ),
               width: MediaQuery.of ( context ).size.width,
               child: (
                   MaterialButton (
                     elevation: 0,
-                    onPressed: () {},
-                    color: Colors.lightBlue.shade100,
+                    onPressed: () {
+                      _provider.setBusinessTypes(businessType.where((element) => element.isSelected).toList());
+                      Navigator.pop(context);
+                    },
+                    color: Colors.blueAccent,
                     // disabledColor: Colors.lightBlueAccent.withOpacity(0.1),
                     child: Text ( 'Done',
-                      style: TextStyle ( color: Colors.grey ), ),
+                      style: TextStyle ( color: Colors.white ), ),
                     shape: RoundedRectangleBorder (
                       borderRadius: BorderRadius.circular ( 5.0 ),
                     ),

@@ -1,3 +1,4 @@
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/register_business/register_business_bloc.dart';
 import 'package:entertainmate/bloc/user_business/user_business_bloc.dart';
 import 'package:entertainmate/widgets/business_verified_widget.dart';
@@ -66,19 +67,28 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             BlocProvider<UserBusinessBloc>(
                                 create: (context) =>
                                     UserBusinessBloc(repository: Repository()),
-                                child: BusinessVerifiedWidget(status: 2,)),
+                                child: BlocProvider<PostCommentBloc>(
+                                    create: (context) =>
+                                        PostCommentBloc(postCommentRepository: Repository()),
+                                    child: BusinessVerifiedWidget(status: 'verified',))),
 
                             //REGISTERED TAB
                             BlocProvider<UserBusinessBloc>(
                                 create: (context) =>
                                     UserBusinessBloc(repository: Repository()),
-                                child: BusinessVerifiedWidget(status: 1,)),
+                                child: BlocProvider<PostCommentBloc>(
+                                    create: (context) =>
+                                        PostCommentBloc(postCommentRepository: Repository()),
+                                    child: BusinessVerifiedWidget(status: 'registered',))),
 
                             //INCOMPLETE TAB
                             BlocProvider<UserBusinessBloc>(
                                 create: (context) =>
                                     UserBusinessBloc(repository: Repository()),
-                                child: BusinessVerifiedWidget(status: 0,)),
+                                child: BlocProvider<PostCommentBloc>(
+                                    create: (context) =>
+                                        PostCommentBloc(postCommentRepository: Repository()),
+                                    child: BusinessVerifiedWidget(status: 'incomplete',))),
                           ])),
                     )
                   ])),
@@ -92,7 +102,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return FractionallySizedBox(
-                    heightFactor: 0.9,
+                    heightFactor: 0.95,
                     child: BlocProvider<RegisterBusinessBloc>(
                         create: (context) =>
                             RegisterBusinessBloc(repository: Repository()),

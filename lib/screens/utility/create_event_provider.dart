@@ -4,6 +4,7 @@ import 'package:entertainmate/screens/congrats.dart';
 import 'package:entertainmate/screens/model/generic_response.dart';
 import 'package:entertainmate/screens/model/user.dart';
 import 'package:entertainmate/screens/model/user.dart';
+import 'package:entertainmate/widgets/business_type_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../utility/constants.dart' as Constants;
 import 'package:entertainmate/screens/repository/repository.dart';
@@ -21,6 +22,38 @@ class CreateEventProvider extends ChangeNotifier {
   String title='',description='',location='',startDate='',endDate='',audience='',categoryName='',peopleCountText='';
   bool isLocationShown=false,isFirstInterestedAdded=false;
   List<File> images = List();
+  List<BusinessType> businessType =[];
+  List<String> businessTypeString=[];
+
+  // company location
+  String street1='',street2='',city='',state='',zipcode='';
+  //business socials
+  String instagram='',facebook='',linkedin='';
+
+
+
+  void setBusinessTypes( List<BusinessType> value) {
+    businessTypeString.clear();
+    value.forEach((element) {businessTypeString.add(element.title);});
+    businessType = value;
+    notifyListeners();
+  }
+
+  void setBusinessStreet(streetOne,streetTwo,city1,state1,zipcode1) {
+    street1= streetOne;
+    street2= streetTwo;
+    city =city1;
+    state= state1;
+    zipcode=zipcode1;
+    notifyListeners();
+  }
+
+  void setBusinessSocials(insta,fb,link) {
+    instagram= insta;
+    facebook= fb;
+    linkedin =link;
+    notifyListeners();
+  }
 
   void setEventType(value) {
     eventType = value;
@@ -51,7 +84,6 @@ class CreateEventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void setPeopleCount(value) {
     peopleCount= value;
     notifyListeners();
@@ -61,6 +93,7 @@ class CreateEventProvider extends ChangeNotifier {
    title = value;
     notifyListeners();
   }
+
   void setDescription(value) {
   description  = value;
     notifyListeners();

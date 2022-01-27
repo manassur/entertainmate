@@ -19,9 +19,8 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
     if(_provider.title.isNotEmpty){
       _descriptionController.text = _provider.description;
     }
-
-
   }
+
   @override
   Widget build(BuildContext context) {
     return  Consumer<CreateEventProvider>(

@@ -224,9 +224,6 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                     ),
                     SizedBox(height: 15),
-
-
-
                   ],
                 ),
 

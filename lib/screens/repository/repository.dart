@@ -256,6 +256,19 @@ class Repository {
     return  GenericResponse.fromJson(data);
   }
 
+  Future<GenericResponse>addUserToBusiness(String userId,String busId,String role,String action) async {
+    var body = <String, dynamic>{
+      'user_id': userId,
+      'bus_id': busId,
+      'role':role,
+      'action':action
+    };
+    final response = await _apiClient.postFormWithHeader(Constants.ADD_USER_TO_BUSINESS,body);
+    var data = json.decode(response);
+    print("user added successfully " + response.toString());
+    return  GenericResponse.fromJson(data);
+  }
+
   Future<GenericResponse>registerBusiness(String name, String type, String description, String slogan,String phone, String email, String location, String time, String website, String more,File f)
    async {
      List<int> fileInByte = f.readAsBytesSync();
@@ -349,9 +362,16 @@ class Repository {
 
     return InviteUserModel.fromJson(data);
   }
+  Future<InviteUserModel>fetchAllUsers(String event, String id) async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_ALL_USERS);
+    final data = json.decode(response);
+    print("this is response all user fetch   " + response.toString());
 
-  Future<BusinessModel>fetchUserBusiness() async {
-    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_BUSINESS);
+    return InviteUserModel.fromJson(data);
+  }
+
+  Future<BusinessModel>fetchUserBusiness(String status) async {
+    final response = await _apiClient.getWithHeader(Constants.FETCH_USER_BUSINESS+'/'+status);
     final data = json.decode(response);
     print("this is user business response  " + response.toString());
     return BusinessModel.fromJson(data);

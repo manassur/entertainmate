@@ -29,6 +29,15 @@ class _ProfileMainState extends State<ProfileMain> {
         backgroundColor: Colors.grey[200],
         appBar: AppBar (
           backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              },
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -63,6 +72,7 @@ class _ProfileMainState extends State<ProfileMain> {
             // )
           ],
           centerTitle: true,
+          elevation: 0,
           title:  Container(
             decoration:BoxDecoration(
               color: Colors.grey[200],

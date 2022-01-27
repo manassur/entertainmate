@@ -6,7 +6,9 @@ abstract class UserBusinessEvent extends Equatable {
 }
 
 class FetchUserBusinessEvent extends UserBusinessEvent {
+String status;
 
+FetchUserBusinessEvent({this.status});
   @override
   List<Object> get props => [];
 }

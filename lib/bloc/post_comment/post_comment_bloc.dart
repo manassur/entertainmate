@@ -31,6 +31,22 @@ class PostCommentBloc extends Bloc<PostCommentEvent, PostCommentState> {
       }
     }
 
+    if (event is AssignUserBusinessRoleEvent) {
+      yield PostCommentLoadingState();
+      try {
+        print('trying to padd user to authorized users');
+        GenericResponse postCommentResponse = await postCommentRepository.addUserToBusiness(event.userId, event.busId,event.role,event.action);
+        if(postCommentResponse.error!=true){
+          yield PostedCommentState(postId: postCommentResponse.message );
+
+        }else{
+          yield  PostCommentFailureState(message: postCommentResponse.message );
+        }
+      } catch (e) {
+        yield PostCommentFailureState(message: e.toString());
+      }
+    }
+
     if (event is PostImageEvent) {
       yield PostCommentLoadingState();
       try {

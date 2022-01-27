@@ -21,9 +21,16 @@ class InviteUserBloc extends Bloc<InviteUserEvent, InviteUserState>{
   Stream<InviteUserState> mapEventToState(InviteUserEvent event) async* {
     if (event is FetchInviteUserEvent) {
       yield InviteUserLoadingState();
+      InviteUserModel inviteUser;
       try{
-        InviteUserModel  inviteUser = await inviteUserRepository.fetchUserFollowings(event.screen, event.id);
-         if(inviteUser.followers.isNotEmpty){
+        if(event.screen.contains('authorized')) {
+           inviteUser = await inviteUserRepository
+              .fetchAllUsers(event.screen, event.id);
+        }else {
+           inviteUser = await inviteUserRepository
+              .fetchUserFollowings(event.screen, event.id);
+        }
+        if(inviteUser.followers.isNotEmpty){
           yield InviteUserLoadedState(inviteUser:inviteUser, message: "Users updated");
         }
          else {

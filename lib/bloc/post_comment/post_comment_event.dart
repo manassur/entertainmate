@@ -16,6 +16,17 @@ class PostingCommentEvent extends PostCommentEvent {
   List<Object> get props => [];
 }
 
+class AssignUserBusinessRoleEvent extends PostCommentEvent {
+  String role;
+  String busId;
+  String userId;
+  String action='add';
+  AssignUserBusinessRoleEvent({@required this.userId,this.busId, this.role,this.action});
+  @override
+  List<Object> get props => [];
+}
+
+
 class FollowEvent extends PostCommentEvent {
   String userId;
   int action;
