@@ -28,19 +28,99 @@ class _Account_SettingsState extends State<Account_Settings> {
             leading: IconButton(color:Colors.grey,icon:Icon( Icons.arrow_back_ios),onPressed: (){Navigator.of(context).pop();},),
             title: Text("Account Settings",style: TextStyle(color: Colors.black),),
             centerTitle: true,
-            actions: [Center(child: Padding(
+            actions: [
+              Center(child: Padding(
               padding: const EdgeInsets.only(right:15.0),
               child: InkResponse(
-                onTap: (){
-                  _userRepository.logoutUser();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Welcome(),
-                    ),
-                        (route) => false,
-                  );
-                },
+                  onTap: (){
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) {
+                        return FractionallySizedBox(
+                            heightFactor: 0.40,
+                            child:
+                            Container(
+                              padding: EdgeInsets.all(20.0),
+                              color:Colors.white,
+                              child:
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SizedBox(height: 15),
+                                  Text("Logging Out?",
+                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w200)),
+                                  SizedBox(height: 25),
+
+                                  Text("Sad to see you are leaving. You can log in back using the same number you're logged in with now.\n Are you sure you want to log out?",
+                                    style: TextStyle( fontWeight: FontWeight.w300, fontSize: 18,
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 50),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 50,
+                                        width: 150,
+                                        child: MaterialButton(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(7.0),
+                                            side: BorderSide(color: Colors.red[900])
+                                          ),
+                                          // borderSide: BorderSide(color: Colors.red),
+                                          child: Text( "Log out", style: TextStyle( color: Colors.red[900], fontSize: 20,
+                                          ),
+                                          ),
+
+                                          onPressed: (){
+                                            _userRepository.logoutUser();
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (BuildContext context) => Welcome(),
+                                              ),
+                                                  (route) => false,
+                                            );
+                                          },
+                                        ),
+                                      ),
+
+                                      SizedBox(width: 10),
+
+                                      Container(
+                                        height: 50,
+                                        width: 150,
+                                        child: RaisedButton(
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(7.0),
+                                          ),
+                                          child: Text( "Stay in",
+                                            style: TextStyle( color: Colors.white, fontSize: 20,
+                                            ),
+                                          ),
+                                          onPressed: ()=>Navigator.pop(context),
+
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
+
+                            )
+                        );
+                      },
+                    );
+                  },
                   child: Text("Log out",style: TextStyle(color:Colors.blue,fontSize: 18,fontWeight: FontWeight.w500),)),
             ))],
           ),

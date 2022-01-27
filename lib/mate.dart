@@ -1,4 +1,7 @@
+import 'package:entertainmate/screens/home_calendar.dart';
 import 'package:entertainmate/mate_home.dart';
+import 'package:entertainmate/screens/home_notification.dart';
+import 'package:entertainmate/screens/home_search.dart';
 import 'package:entertainmate/screens/mate_notification.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +70,7 @@ class _MateState extends State<Mate> {
                         color: Colors.black,
                       ),
                       onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeCalendar()));
 
                       },
                     ),
@@ -76,7 +80,7 @@ class _MateState extends State<Mate> {
                         color: Colors.black,
                       ),
                       onPressed: () {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeNotification()));
 
                       },
                     ),
@@ -87,6 +91,7 @@ class _MateState extends State<Mate> {
                         color: Colors.black,
                       ),
                       onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeSearch()));
 
                       },
                     ),
