@@ -1,4 +1,15 @@
+import 'package:entertainmate/bloc/feed_details/feed_details_bloc.dart';
+import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
+import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
+import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
+import 'package:entertainmate/screens/happening_now.dart';
+import 'package:entertainmate/screens/personal_profile_followers.dart';
+import 'package:entertainmate/screens/personal_profile_following.dart';
+import 'package:entertainmate/screens/profile_activities_inperson_event.dart';
+import 'package:entertainmate/screens/profile_activities_interest.dart';
+import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +70,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                       ),
 
                       Container(
-                          height: 600,
+                          height: 650,
                           child: TabBarView(children: <Widget>[
                             //BIOGRAPHY TAB
                             SingleChildScrollView(
@@ -113,24 +124,36 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          children: [
-                                            Text("1", style: TextStyle(
-                                                fontWeight: FontWeight.w600),),
-                                            Text('Followers',
-                                              style: TextStyle(
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> PersonalProfileFollowers()));
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Text("1", style: TextStyle(
                                                   fontWeight: FontWeight.w600),),
-                                          ],
+                                              Text('Followers',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600),),
+                                            ],
+                                          ),
                                         ),
-                                        Column(
-                                          children: [
-                                            Text('1', style: TextStyle(
-                                                fontWeight: FontWeight.w600),),
-                                            Text('Following',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight
-                                                      .w600),),
-                                          ],
+
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> PersonalProfileFollowing()));
+
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Text('1', style: TextStyle(
+                                                  fontWeight: FontWeight.w600),),
+                                              Text('Following',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .w600),),
+                                            ],
+                                          ),
                                         ),
                                         MaterialButton(
                                           elevation: 0,
@@ -250,22 +273,219 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                             ),
 
 
-                            //MEDIA TAB
+                            //ACTIVITIES TAB
                             SingleChildScrollView(
                               child: Container(
-                                child: Column(
-                                  children: [
-                                    Text("Media Screen"),
+                                padding: EdgeInsets.only(top:20.0, bottom:20.0),
+                                height: MediaQuery.of(context).size.height,
+                                color: Colors.grey[200],
+                                child:
+                                  GridView.extent(
+                                    primary: false,
+                                    padding: const EdgeInsets.all(16),
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 30,
+                                    maxCrossAxisExtent: 200.0,
+                                      children: <Widget>[
+                                        //IN-PERSON EVENTS
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                                MultiBlocProvider(
+                                                    providers:[
+                                                      BlocProvider<FeedDetailsBloc>(
+                                                        create: (context) =>
+                                                            FeedDetailsBloc(feedDetailsRepository: Repository()),
+                                                      ),
 
-                                  ],
-                                ),
+                                                      BlocProvider<SaveInterestBloc>(
+                                                        create: (context) =>
+                                                            SaveInterestBloc(saveInterestRepository: Repository()),
+                                                      ),
+
+                                                      BlocProvider<PostCommentBloc>(
+                                                        create: (context) =>
+                                                            PostCommentBloc(postCommentRepository: Repository()),
+                                                      ),
+
+                                                      BlocProvider<InviteUserBloc>(
+                                                        create: (context) =>
+                                                            InviteUserBloc(inviteUserRepository: Repository()),
+                                                      ),
+
+                                                    ],
+                                                    child: ActivitiesInPersonEvent(
+                                                        // postId: mateHomeModel.feeds[pos].post.postId,
+                                                        // name:mateHomeModel.feeds[pos].name,
+                                                        // branch:0
+                                                    )
+                                                ),
+                                            )
+                                            );
+                                          },
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0.7, 0.7), // changes position of shadow
+                                                  ),
+                                                ],),
+                                              child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 42,
+                                                      padding: EdgeInsets.only(left: 5.0),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey[500],
+                                                          borderRadius: BorderRadius.only(
+                                                            bottomLeft:  Radius.circular(12.0),
+                                                            bottomRight:  Radius.circular(12.0),
+                                                          ),
+                                                      ),
+                                                      width: MediaQuery.of(context).size.width,
+                                                      child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text("In-person Events",
+                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                        ),
+                                                      )
+                                                  )
+                                              )
+                                          ),
+                                        ),
+
+                                        //ONLINE EVENTS
+                                        Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 5,
+                                                  offset: Offset(0.7, 0.7), // changes position of shadow
+                                                ),
+                                              ],),
+                                            child: Align(
+                                                alignment: Alignment.bottomCenter,
+                                                child: Container(
+                                                    height: 42,
+                                                    padding: EdgeInsets.only(left: 5.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[500],
+                                                      borderRadius: BorderRadius.only(
+                                                        bottomLeft:  Radius.circular(12.0),
+                                                        bottomRight:  Radius.circular(12.0),
+                                                      ),
+                                                    ),
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text("Online Events",
+                                                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                      ),
+                                                    )
+                                                )
+                                            )
+                                        ),
+
+                                        //OFFERS
+                                        Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 5,
+                                                  offset: Offset(0.7, 0.7), // changes position of shadow
+                                                ),
+                                              ],),
+                                            child: Align(
+                                                alignment: Alignment.bottomCenter,
+                                                child: Container(
+                                                    height: 42,
+                                                    padding: EdgeInsets.only(left: 5.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[500],
+                                                      borderRadius: BorderRadius.only(
+                                                        bottomLeft:  Radius.circular(12.0),
+                                                        bottomRight:  Radius.circular(12.0),
+                                                      ),
+                                                    ),
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text("Offers",
+                                                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                      ),
+                                                    )
+                                                )
+                                            )
+                                        ),
+
+                                        //INTERESTS
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>InterestScreen()));
+                                          },
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0.7, 0.7), // changes position of shadow
+                                                  ),
+                                                ],),
+                                              child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 42,
+                                                      padding: EdgeInsets.only(left: 5.0),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[500],
+                                                        borderRadius: BorderRadius.only(
+                                                          bottomLeft:  Radius.circular(12.0),
+                                                          bottomRight:  Radius.circular(12.0),
+                                                        ),
+                                                      ),
+                                                      width: MediaQuery.of(context).size.width,
+                                                      child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text("Interests",
+                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                        ),
+                                                      )
+                                                  )
+                                              )
+                                          ),
+                                        ),
+
+
+                                      ],
+                                    )
                               ),
                             ),
 
-                            //EXPENSES TAB
+                            //MESSAGES TAB
                             SingleChildScrollView(
                               child: Container(
-                                child: Text("Expenses Screen"),
+                                child: Text(""),
                               ),
                             ),
 
