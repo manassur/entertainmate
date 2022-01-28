@@ -260,7 +260,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                         "Moderating (2)",
+                                         "MODERATING (2)",
                                         // widget.branch == 0
                                         //     ? "GOING (${feedDetailsModel.feeds[0].post.goingUsers.length})"
                                         //     : "CONFIRMED (${feedDetailsModel.feeds[0].post.goingUsers.length})",
@@ -428,7 +428,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                        "Going (3)",
+                                        "GOING (3)",
                                         // widget.branch == 0
                                         //     ? "GOING (${feedDetailsModel.feeds[0].post.goingUsers.length})"
                                         //     : "CONFIRMED (${feedDetailsModel.feeds[0].post.goingUsers.length})",
@@ -581,9 +581,9 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                             ),
                           ),
                         ),
-
                         SizedBox(height: 10),
                         //FOR INVITED USERS
+
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
@@ -758,7 +758,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                        "Interested (4)",
+                                        "INTERESTED (4)",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -916,7 +916,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                        "Saved (0)",
+                                        "SAVED (0)",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -1073,7 +1073,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                        "Invited (1)",
+                                        "INVITED (1)",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -1230,7 +1230,7 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     children: [
                                       Divider(),
                                       Text(
-                                        "Commented (1)",
+                                        "COMMENTED (1)",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
