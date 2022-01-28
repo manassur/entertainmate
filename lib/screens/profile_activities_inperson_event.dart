@@ -305,9 +305,32 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                                   SizedBox(height: 5),
 
-                                                  Text(
-                                                    "somthing",
-                                                    style:(TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "In-person",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                      Container(
+                                                        height: 2,
+                                                        width: 2,
+                                                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.black87
+
+                                                        ),
+                                                      ),
+
+                                                      Text(
+                                                        "Social",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                    ],
+                                                  ),
+
 
                                                   SizedBox(height: 5),
 
@@ -473,10 +496,31 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                                   SizedBox(height: 5),
 
-                                                  Text(
-                                                    "In-person ",
-                                                    style:(TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "In-person",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
 
+                                                      Container(
+                                                        height: 2,
+                                                        width: 2,
+                                                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.black87
+
+                                                        ),
+                                                      ),
+
+                                                      Text(
+                                                        "Sports",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                    ],
+                                                  ),
                                                   SizedBox(height: 5),
 
                                                   Text("June 4 2021 ", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
