@@ -7,6 +7,8 @@ import 'package:entertainmate/screens/personal_profile_followers.dart';
 import 'package:entertainmate/screens/personal_profile_following.dart';
 import 'package:entertainmate/screens/profile_activities_inperson_event.dart';
 import 'package:entertainmate/screens/profile_activities_interest.dart';
+import 'package:entertainmate/screens/profile_activities_offers_event.dart';
+import 'package:entertainmate/screens/profile_activities_online_event.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -361,77 +363,87 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                         ),
 
                                         //ONLINE EVENTS
-                                        Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(0.5),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(0.7, 0.7), // changes position of shadow
-                                                ),
-                                              ],),
-                                            child: Align(
-                                                alignment: Alignment.bottomCenter,
-                                                child: Container(
-                                                    height: 42,
-                                                    padding: EdgeInsets.only(left: 5.0),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.grey[500],
-                                                      borderRadius: BorderRadius.only(
-                                                        bottomLeft:  Radius.circular(12.0),
-                                                        bottomRight:  Radius.circular(12.0),
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ActivitiesOnlineEvent()));
+                                          },
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0.7, 0.7), // changes position of shadow
+                                                  ),
+                                                ],),
+                                              child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 42,
+                                                      padding: EdgeInsets.only(left: 5.0),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[500],
+                                                        borderRadius: BorderRadius.only(
+                                                          bottomLeft:  Radius.circular(12.0),
+                                                          bottomRight:  Radius.circular(12.0),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    width: MediaQuery.of(context).size.width,
-                                                    child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Text("Online Events",
-                                                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                                                      ),
-                                                    )
-                                                )
-                                            )
+                                                      width: MediaQuery.of(context).size.width,
+                                                      child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text("Online Events",
+                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                        ),
+                                                      )
+                                                  )
+                                              )
+                                          ),
                                         ),
 
                                         //OFFERS
-                                        Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(0.5),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(0.7, 0.7), // changes position of shadow
-                                                ),
-                                              ],),
-                                            child: Align(
-                                                alignment: Alignment.bottomCenter,
-                                                child: Container(
-                                                    height: 42,
-                                                    padding: EdgeInsets.only(left: 5.0),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.grey[500],
-                                                      borderRadius: BorderRadius.only(
-                                                        bottomLeft:  Radius.circular(12.0),
-                                                        bottomRight:  Radius.circular(12.0),
+                                        InkWell(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ActivitiesOffersEvent()));
+                                          },
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0.7, 0.7), // changes position of shadow
+                                                  ),
+                                                ],),
+                                              child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 42,
+                                                      padding: EdgeInsets.only(left: 5.0),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[500],
+                                                        borderRadius: BorderRadius.only(
+                                                          bottomLeft:  Radius.circular(12.0),
+                                                          bottomRight:  Radius.circular(12.0),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    width: MediaQuery.of(context).size.width,
-                                                    child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Text("Offers",
-                                                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                                                      ),
-                                                    )
-                                                )
-                                            )
+                                                      width: MediaQuery.of(context).size.width,
+                                                      child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text("Offers",
+                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                        ),
+                                                      )
+                                                  )
+                                              )
+                                          ),
                                         ),
 
                                         //INTERESTS

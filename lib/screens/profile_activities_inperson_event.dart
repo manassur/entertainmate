@@ -1,31 +1,16 @@
 import 'package:entertainmate/bloc/feed_details/feed_details_bloc.dart';
 import 'package:entertainmate/bloc/feed_details/feed_details_event.dart';
-import 'package:entertainmate/bloc/feed_details/feed_details_state.dart';
 import 'package:entertainmate/bloc/interested_user/interested_user_bloc.dart';
-import 'package:entertainmate/bloc/invite_user/inviter_user_bloc.dart';
 import 'package:entertainmate/bloc/post_comment/post_comment_bloc.dart';
 import 'package:entertainmate/bloc/save_interest/save_interest_bloc.dart';
-import 'package:entertainmate/bloc/save_interest/save_interest_event.dart';
-import 'package:entertainmate/bloc/save_interest/save_interest_state.dart';
-import 'package:entertainmate/bloc/user_comment/user_comment_bloc.dart';
 import 'package:entertainmate/screens/interested_user_screen.dart';
 import 'package:entertainmate/screens/model/post_comment_model.dart';
-import 'package:entertainmate/screens/post_comment_screen.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
-import 'package:entertainmate/screens/utility/read_more.dart';
-import 'package:entertainmate/widgets/commenters_info_dialog.dart';
-import 'package:entertainmate/widgets/photos_widget.dart';
-import 'package:entertainmate/widgets/report_incident_widget.dart';
+import 'package:entertainmate/widgets/profile_activities_inperson_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'invite_screen.dart';
 import 'model/feed_details_model.dart';
 import 'model/user.dart';
-import 'private_room_screen.dart';
-import 'utility/constants.dart' as Constants;
-import 'package:timeago/timeago.dart' as timeago;
 
 
 class ActivitiesInPersonEvent extends StatefulWidget {
@@ -175,62 +160,11 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
+
                 builder: (context) {
                   return FractionallySizedBox(
                       heightFactor: 0.80,
-                      child:
-                      AppBar(
-                        automaticallyImplyLeading: false,
-                        titleSpacing: 0,
-                        backgroundColor: Colors.white,
-                        elevation: 0,
-                        title: Container(
-                          margin: EdgeInsets.fromLTRB( 10.0, 20.0, 20.0, 15.0),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius: BorderRadius.circular(10.0)
-                          ),
-                          child: TextField(
-                            autofocus: false,
-                            controller: searchController,
-                            onChanged: (String txt) {},
-                            style:  TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search here ',
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[500],
-                                ),
-                                prefixIcon: Icon(Icons.search, color: Colors.grey[400],),
-                                suffixIcon: InkWell(
-                                    onTap: (){
-                                      searchController.clear();
-                                    },
-                                    child: Icon(Icons.cancel, size: 20, color: Colors.grey[400],))
-                            ),
-                          ),
-                        ),
-                        actions: <Widget>[
-                          InkWell(
-                            onTap: (){
-                              Navigator.pop(context);
-                            },
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right:10.0),
-                                child: Text(
-                                  "Cancel", style: TextStyle(color: Colors.blue, fontSize: 17),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: ProfileActivitiesInPersonSearch()
                   );
                 },
               );
@@ -305,174 +239,28 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
           ),
           body:  TabBarView(
               children: <Widget>[
-                //SOCIAL TAB
                 Scaffold(
                   body: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment:
                       CrossAxisAlignment.stretch,
                       children: [
-                        //FOR MODERATING USERS
-                        widget.branch == 0
-                            ? Container(
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.fromLTRB(
-                                20.0, 20.0, 10.0, 0.0),
-                            child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(
-                                      bottom: 8.0),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        // "MODERATING (${feedDetailsModel.feeds[0].post.moderatingUsers.length})",
-                                        "MODERATING (2)",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color:
-                                            Colors.grey,
-                                            letterSpacing: 1),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(),
-                                ListView.separated(
-                                  separatorBuilder:
-                                      (ctx, interestedPos) {
-                                    return Divider(
-                                      indent: 15,
-                                    );
-                                  },
-                                  physics:
-                                  NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 3,
-                                  // feedDetailsModel.feeds[0].post.moderatingUsers.length,
-                                  itemBuilder:
-                                      (ctx, interestedPos) {
-                                    return ListTile(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            shape:
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .vertical(
-                                                  top:
-                                                  Radius.circular(25.0)),
-                                            ),
-                                            isScrollControlled:
-                                            true,
-                                            backgroundColor:
-                                            Colors.white,
-                                            builder:
-                                                (context) {
-                                              return FractionallySizedBox(
-                                                heightFactor:
-                                                0.5,
-                                                child: BlocProvider<
-                                                    InterestedUserBloc>(
-                                                  create: (context) =>
-                                                      InterestedUserBloc(
-                                                          interestedUserRepository:
-                                                          Repository()),
-                                                  child: BlocProvider<
-                                                      SaveInterestBloc>(
-                                                      create: (context) => SaveInterestBloc(
-                                                          saveInterestRepository:
-                                                          Repository()),
-                                                      child: InterestedUserScreen(
-                                                          // postId: feedDetailsModel.feeds[0].post.postId,
-                                                          // userId: feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].id,
-                                                          // action: "moderating",
-                                                          // actor: isAuthor ? 'author' : ''
-                                                      )
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ).then((value) {
-                                            Map<String,
-                                                dynamic>
-                                            myData =
-                                                value;
-                                            resolvePostActions(
-                                                myData[
-                                                "action"],
-                                                myData[
-                                                "userId"]);
-                                          });
-                                        },
-                                        leading: Padding(
-                                          padding:
-                                          const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 8.0),
-                                          child: Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration:
-                                            BoxDecoration(
-                                              color: Colors.grey[500],
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  15.0),
-                                              // image:
-                                              // DecorationImage(
-                                              //   image: NetworkImage(Constants
-                                              //       .IMAGE_BASE_URL + feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].profilePhoto),
-                                              //   fit: BoxFit.cover,
-                                              // ),
-                                            ),
-                                          ),
-                                        ),
-                                        title: Text(
-                                         "Somrthing here",
-                                          // feedDetailsModel.feeds[0].post.moderatingUsers[interestedPos].name,
-                                          style: TextStyle(
-                                              color: Colors
-                                                  .grey[800],
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold,
-                                              fontSize: 16),
-                                        ));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                            : Container(),
 
-                        SizedBox(height: 15),
-                        //FOR GOING/CONFIRMED USERS
+                        //MODERATING
                         Container(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20.0, 20.0, 10.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 8.0),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Row(
                                     children: [
                                       Divider(),
                                       Text(
-                                         "Moderating (2)",
+                                         "MODERATING (2)",
                                         // widget.branch == 0
                                         //     ? "GOING (${feedDetailsModel.feeds[0].post.goingUsers.length})"
                                         //     : "CONFIRMED (${feedDetailsModel.feeds[0].post.goingUsers.length})",
@@ -484,128 +272,164 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     ],
                                   ),
                                 ),
-                                Divider(),
-                                ListView.separated(
-                                  separatorBuilder:
-                                      (ctx, interestedPos) {
-                                    return Divider(
-                                      indent: 15,
-                                    );
-                                  },
+                                ListView.builder(
                                   shrinkWrap: true,
-                                  physics:
-                                  NeverScrollableScrollPhysics(),
-                                  itemCount:
-                                  3,
-                                  // feedDetailsModel.feeds[0].post.goingUsers.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: 2,
                                   itemBuilder: (ctx, goingPos) {
-                                    return ListTile(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            shape:
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.vertical(
-                                                  top: Radius
-                                                      .circular(
-                                                      25.0)),
-                                            ),
-                                            isScrollControlled:
-                                            true,
-                                            backgroundColor:
-                                            Colors.white,
-                                            builder: (context) {
-                                              return FractionallySizedBox(
-                                                heightFactor: 0.5,
-                                                child: BlocProvider<
-                                                    InterestedUserBloc>(
-                                                  create: (context) =>
-                                                      InterestedUserBloc(
-                                                          interestedUserRepository:
-                                                          Repository()),
-                                                  child:
-                                                  BlocProvider<
-                                                      SaveInterestBloc>(
-                                                      create: (context) =>
-                                                          SaveInterestBloc(
-                                                              saveInterestRepository:
-                                                              Repository()),
-                                                      child:
-                                                      InterestedUserScreen(
-                                                        // postId:
-                                                        // feedDetailsModel
-                                                        //     .feeds[
-                                                        // 0]
-                                                        //     .post
-                                                        //     .postId,
-                                                        // userId: feedDetailsModel
-                                                        //     .feeds[0]
-                                                        //     .post
-                                                        //     .goingUsers[
-                                                        // goingPos]
-                                                        //     .id,
-                                                        // action:
-                                                        // 'going',
-                                                        // actor: isModerator
-                                                        //     ? 'moderator'
-                                                        //     : '',
-                                                      )
-                                                     ),),
-                                              );
-                                            },
-                                          ).then((value) {
-                                            Map<String, dynamic>
-                                            myData = value;
-                                            resolvePostActions(
-                                                myData["action"],
-                                                myData["userId"]);
-                                          });
-                                        },
-                                        leading: Padding(
-                                          padding: const EdgeInsets
-                                              .fromLTRB(
-                                              0.0, 10.0, 10.0, 8.0),
-                                          child: Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration:
-                                            BoxDecoration(
-                                              color: Colors.grey[500],
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  15.0),
-                                              // image:
-                                              // DecorationImage(
-                                              //   image: NetworkImage(Constants
-                                              //       .IMAGE_BASE_URL +
-                                              //       feedDetailsModel
-                                              //           .feeds[0]
-                                              //           .post
-                                              //           .goingUsers[
-                                              //       goingPos]
-                                              //           .profilePhoto),
-                                              //
-                                              //   fit: BoxFit.cover,
-                                              // ),
-                                            ),
+                                    return Container(
+                                      margin:EdgeInsets.only(bottom: 10.0),
+                                      padding: EdgeInsets.fromLTRB( 20.0, 10.0, 20.0, 10.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: Offset(1.0, 1.0), //(x,y)
+                                            blurRadius: 6.0,
+                                            spreadRadius: 1.0
                                           ),
-                                        ),
-                                        title: Text(
-                                          "someth",
-                                          // feedDetailsModel
-                                          //     .feeds[0]
-                                          //     .post
-                                          //     .goingUsers[goingPos]
-                                          //     .name,
-                                          style: TextStyle(
-                                              color:
-                                              Colors.grey[800],
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              fontSize: 16),
-                                        ));
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      'Mafia (Warewolf)',
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                                  SizedBox(height: 5),
+
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "In-person",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                      Container(
+                                                        height: 2,
+                                                        width: 2,
+                                                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.black87
+
+                                                        ),
+                                                      ),
+
+                                                      Text(
+                                                        "Social",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                    ],
+                                                  ),
+
+
+                                                  SizedBox(height: 5),
+
+                                                  Text("June 4 2021 ", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                  Text("9:00 PM - 12:00 AM", style: TextStyle(fontSize: 13, color: Colors.deepOrange.withOpacity(0.5)),),
+                                                  Text(
+                                                      "2 Andover Rd, Athens, OH 45701",
+                                                      style: TextStyle( fontSize: 13,  decoration: TextDecoration.underline,
+                                                      )),
+
+                                                  SizedBox(height: 15),
+
+                                                  Container(
+                                                    padding: EdgeInsets.fromLTRB(5.0, 3.0, 15.0, 3.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey.shade100,
+                                                      borderRadius: BorderRadius.circular(13.0),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey,
+                                                          offset: Offset(0.0, 1.0), //(x,y)
+                                                          blurRadius: 4.0,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 13.0,
+                                                          backgroundImage: AssetImage("images/entertainmate_pic.jpeg",),
+                                                          backgroundColor: Colors.transparent,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("Name name name",  style: TextStyle( fontSize: 11, color: Colors.black87, fontWeight: FontWeight.w500)),
+                                                            Text("June 1, 2021",  style: TextStyle( fontSize: 10, color: Colors.grey.shade500)),
+
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+
+                                              Spacer(),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 20,)
+                                            ],
+                                          ),
+
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(top:5.0, bottom: 5.0),
+                                            child: Divider(color: Colors.grey),
+                                          ),
+
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text("Reactions ", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                  Text("250",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                ],
+                                              ),
+                                              Spacer(),
+
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      "1K",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                  Text(" Comments", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                ],
+                                              ),
+
+                                              SizedBox(width: 12.0,),
+
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      "500",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                  Text(" Shares", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
                               ],
@@ -613,27 +437,24 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                           ),
                         ),
 
-                        //FOR INTERESTED USERS
+                        //FOR GOING USERS
                         Container(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20.0, 20.0, 10.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 8.0),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Row(
                                     children: [
+                                      Divider(),
                                       Text(
-                                        "Going (2)",
+                                        "GOING (3)",
                                         // widget.branch == 0
-                                        //     ? "INTERESTED (${feedDetailsModel.feeds[0].post.interestedUsers.length})"
-                                        //     : "LIKED (${feedDetailsModel.feeds[0].post.interestedUsers.length})",
+                                        //     ? "GOING (${feedDetailsModel.feeds[0].post.goingUsers.length})"
+                                        //     : "CONFIRMED (${feedDetailsModel.feeds[0].post.goingUsers.length})",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -642,142 +463,175 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                                     ],
                                   ),
                                 ),
-                                Divider(),
-                                ListView.separated(
-                                  separatorBuilder:
-                                      (ctx, interestedPos) {
-                                    return Divider(
-                                      indent: 15,
-                                    );
-                                  },
-                                  physics:
-                                  NeverScrollableScrollPhysics(),
+                                ListView.builder(
                                   shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
                                   itemCount: 2,
-                                  // feedDetailsModel
-                                  //     .feeds[0]
-                                  //     .post
-                                  //     .interestedUsers
-                                  //     .length,
-                                  itemBuilder:
-                                      (ctx, interestedPos) {
-                                    return ListTile(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            shape:
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.vertical(
-                                                  top: Radius
-                                                      .circular(
-                                                      25.0)),
-                                            ),
-                                            isScrollControlled:
-                                            true,
-                                            backgroundColor:
-                                            Colors.white,
-                                            builder: (context) {
-                                              return FractionallySizedBox(
-                                                heightFactor: 0.5,
-                                                child: BlocProvider<
-                                                    InterestedUserBloc>(
-                                                  create: (context) =>
-                                                      InterestedUserBloc(
-                                                          interestedUserRepository:
-                                                          Repository()),
-                                                  child:  BlocProvider<
-                                                      SaveInterestBloc>(
-                                                      create: (context) =>
-                                                          SaveInterestBloc(
-                                                              saveInterestRepository:
-                                                              Repository()),
-                                                      child: InterestedUserScreen(
-                                                          // postId: feedDetailsModel
-                                                          //     .feeds[
-                                                          // 0]
-                                                          //     .post
-                                                          //     .postId,
-                                                          // userId: feedDetailsModel
-                                                          //     .feeds[
-                                                          // 0]
-                                                          //     .post
-                                                          //     .interestedUsers[
-                                                          // interestedPos]
-                                                          //     .id,
-                                                          // action:
-                                                          // "interested",
-                                                          // actor: isModerator
-                                                          //     ? "moderator"
-                                                          //     : ''
-                                                      )),),
-                                              );
-                                            },
-                                          ).then((value) {
-                                            Map<String, dynamic>
-                                            myData = value;
-                                            resolvePostActions(
-                                                myData["action"],
-                                                myData["userId"]);
-                                          });
-                                        },
-                                        leading: Padding(
-                                          padding: const EdgeInsets
-                                              .fromLTRB(
-                                              0.0, 10.0, 10.0, 8.0),
-                                          child: Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration:
-                                            BoxDecoration(
-                                              color: Colors.grey[500],
-                                              borderRadius: BorderRadius.circular(15.0),
-                                              // image:
-                                              // DecorationImage(
-                                              //   image: NetworkImage(Constants
-                                              //       .IMAGE_BASE_URL +
-                                              //       feedDetailsModel
-                                              //           .feeds[0]
-                                              //           .post
-                                              //           .interestedUsers[
-                                              //       interestedPos]
-                                              //           .profilePhoto),
-                                              //
-                                              //   // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
-                                              //   fit: BoxFit.cover,
-                                              // ),
-                                            ),
+                                  itemBuilder: (ctx, goingPos) {
+                                    return Container(
+                                      margin:EdgeInsets.only(bottom: 10.0),
+                                      padding: EdgeInsets.fromLTRB( 20.0, 10.0, 20.0, 10.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey,
+                                              offset: Offset(1.0, 1.0), //(x,y)
+                                              blurRadius: 6.0,
+                                              spreadRadius: 1.0
                                           ),
-                                        ),
-                                        title: Text(
-                                         "feedDetailsModel",
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      'PickleBall',
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                                  SizedBox(height: 5),
 
-                                         // feedDetailsModel
-//                                               .feeds[0]
-//                                               .post
-//                                               .interestedUsers[
-//                                           interestedPos]
-//                                               .name,
-                                          style: TextStyle(
-                                              color:
-                                              Colors.grey[800],
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              fontSize: 16),
-                                        ));
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "In-person",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                      Container(
+                                                        height: 2,
+                                                        width: 2,
+                                                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.black87
+
+                                                        ),
+                                                      ),
+
+                                                      Text(
+                                                        "Sports",
+                                                        style:(TextStyle(fontWeight: FontWeight.w400, fontSize: 15,
+                                                            color: Colors.black87)),),
+
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 5),
+
+                                                  Text("June 4 2021 ", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                  Text("9:00 PM - 12:00 AM", style: TextStyle(fontSize: 13, color: Colors.deepOrange.withOpacity(0.5)),),
+                                                  Text(
+                                                      "2 Andover Rd, Athens, OH 45701",
+                                                      style: TextStyle( fontSize: 13,  decoration: TextDecoration.underline,
+                                                      )),
+
+                                                  SizedBox(height: 15),
+
+                                                  Container(
+                                                    padding: EdgeInsets.fromLTRB(5.0, 3.0, 15.0, 3.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey.shade100,
+                                                      borderRadius: BorderRadius.circular(13.0),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey,
+                                                          offset: Offset(0.0, 1.0), //(x,y)
+                                                          blurRadius: 4.0,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 13.0,
+                                                          backgroundImage: AssetImage("images/entertainmate_pic.jpeg",),
+                                                          backgroundColor: Colors.transparent,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("Name name name",  style: TextStyle( fontSize: 11, color: Colors.black87, fontWeight: FontWeight.w500)),
+                                                            Text("June 1, 2021",  style: TextStyle( fontSize: 10, color: Colors.grey.shade500)),
+
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+
+                                              Spacer(),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 20,)
+                                            ],
+                                          ),
+
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(top:5.0, bottom: 5.0),
+                                            child: Divider(color: Colors.grey),
+                                          ),
+
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text("Reactions ", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                  Text("250",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                ],
+                                              ),
+                                              Spacer(),
+
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      "1K",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                  Text(" Comments", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                ],
+                                              ),
+
+                                              SizedBox(width: 12.0,),
+
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      "500",
+                                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                                                  Text(" Shares", style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
                               ],
                             ),
                           ),
                         ),
-
-                        SizedBox(height: 15),
+                        SizedBox(height: 10),
                         //FOR INVITED USERS
+
                         Container(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20.0, 20.0, 10.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+
                             child: Column(
                               mainAxisAlignment:
                               MainAxisAlignment.start,
@@ -929,157 +783,637 @@ class _ActivitiesInPersonEventState extends State<ActivitiesInPersonEvent> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 10),
+
+                        //FOR INTERESTED USERS
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Divider(),
+                                      Text(
+                                        "INTERESTED (4)",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            letterSpacing: 1),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                ListView.separated(
+                                  separatorBuilder:
+                                      (ctx, interestedPos) {
+                                    return Divider(
+                                      indent: 15,
+                                    );
+                                  },
+                                  physics:
+                                  NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 3,
+                                  // feedDetailsModel
+                                  //     .feeds[0]
+                                  //     .post
+                                  //     .invitedUsers
+                                  //     .length,
+                                  itemBuilder:
+                                      (ctx, interestedPos) {
+                                    return ListTile(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.vertical(
+                                                  top: Radius
+                                                      .circular(
+                                                      25.0)),
+                                            ),
+                                            isScrollControlled:
+                                            true,
+                                            backgroundColor:
+                                            Colors.white,
+                                            builder: (context) {
+                                              return FractionallySizedBox(
+                                                heightFactor: 0.5,
+                                                child: BlocProvider<
+                                                    InterestedUserBloc>(
+                                                  create: (context) =>
+                                                      InterestedUserBloc(
+                                                          interestedUserRepository:
+                                                          Repository()),
+                                                  child: BlocProvider<
+                                                      SaveInterestBloc>(
+                                                      create: (context) =>
+                                                          SaveInterestBloc(
+                                                              saveInterestRepository:
+                                                              Repository()),
+                                                      child: InterestedUserScreen(
+                                                        // postId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .postId,
+                                                        // userId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .invitedUsers[
+                                                        // interestedPos]
+                                                        //     .id,
+                                                        // actor: '',
+                                                        // action:
+                                                        // ''
+                                                      )),),
+                                              );
+                                            },
+                                          ).then((value) {
+                                            Map<String, dynamic>
+                                            myData = value;
+                                            resolvePostActions(
+                                                myData["action"],
+                                                myData["userId"]);
+                                          });
+                                        },
+                                        leading: Padding(
+                                          padding: const EdgeInsets
+                                              .fromLTRB(
+                                              0.0, 10.0, 10.0, 8.0),
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration:
+                                            BoxDecoration(
+                                              color: Colors.grey[500],
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  15.0),
+                                              // image:
+                                              // DecorationImage(
+                                              //   image: NetworkImage(Constants
+                                              //       .IMAGE_BASE_URL +
+                                              //       feedDetailsModel
+                                              //           .feeds[0]
+                                              //           .post
+                                              //           .invitedUsers[
+                                              //       interestedPos]
+                                              //           .profilePhoto),
+                                              //
+                                              //   // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                              //   fit: BoxFit.cover,
+                                              // ),
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          "feedDetailsModel",
+                                          // feedDetailsModel
+                                          //     .feeds[0]
+                                          //     .post
+                                          //     .invitedUsers[
+                                          // interestedPos]
+                                          //     .name,
+                                          style: TextStyle(
+                                              color:
+                                              Colors.grey[800],
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 16),
+                                        ));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+
                         //FOR SAVED USERS
-                        // Container(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.fromLTRB(
-                        //         20.0, 20.0, 10.0, 0.0),
-                        //     child: Column(
-                        //       mainAxisAlignment:
-                        //       MainAxisAlignment.start,
-                        //       crossAxisAlignment:
-                        //       CrossAxisAlignment.start,
-                        //       children: [
-                        //         Padding(
-                        //           padding: const EdgeInsets.only(
-                        //               bottom: 8.0),
-                        //           child: Row(
-                        //             children: [
-                        //               Divider(),
-                        //               Text(
-                        //                 "SAVED (${feedDetailsModel.feeds[0].post.savedUsers.length})",
-                        //                 style: TextStyle(
-                        //                     fontSize: 16,
-                        //                     color: Colors.grey,
-                        //                     letterSpacing: 1),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //         Divider(),
-                        //         ListView.separated(
-                        //           separatorBuilder:
-                        //               (ctx, interestedPos) {
-                        //             return Divider(
-                        //               indent: 15,
-                        //             );
-                        //           },
-                        //           shrinkWrap: true,
-                        //           physics:
-                        //           NeverScrollableScrollPhysics(),
-                        //           itemCount: feedDetailsModel
-                        //               .feeds[0]
-                        //               .post
-                        //               .savedUsers
-                        //               .length,
-                        //           itemBuilder: (ctx, goingPos) {
-                        //             return ListTile(
-                        //                 onTap: () {
-                        //                   showModalBottomSheet(
-                        //                     context: context,
-                        //                     shape:
-                        //                     RoundedRectangleBorder(
-                        //                       borderRadius:
-                        //                       BorderRadius.vertical(
-                        //                           top: Radius
-                        //                               .circular(
-                        //                               25.0)),
-                        //                     ),
-                        //                     isScrollControlled:
-                        //                     true,
-                        //                     backgroundColor:
-                        //                     Colors.transparent,
-                        //                     builder: (context) {
-                        //                       return FractionallySizedBox(
-                        //                         heightFactor: 0.5,
-                        //                         child: BlocProvider<
-                        //                             InterestedUserBloc>(
-                        //                           create: (context) =>
-                        //                               InterestedUserBloc(
-                        //                                   interestedUserRepository:
-                        //                                   Repository()),
-                        //                           child: BlocProvider<
-                        //                               SaveInterestBloc>(
-                        //                               create: (context) =>
-                        //                                   SaveInterestBloc(
-                        //                                       saveInterestRepository:
-                        //                                       Repository()),
-                        //                               child: InterestedUserScreen(
-                        //                                   postId: feedDetailsModel
-                        //                                       .feeds[
-                        //                                   0]
-                        //                                       .post
-                        //                                       .postId,
-                        //                                   userId: feedDetailsModel
-                        //                                       .feeds[
-                        //                                   0]
-                        //                                       .post
-                        //                                       .savedUsers[
-                        //                                   goingPos]
-                        //                                       .id,
-                        //                                   actor: '',
-                        //                                   action:
-                        //                                   '')),),
-                        //                       );
-                        //                     },
-                        //                   ).then((value) {
-                        //                     Map<String, dynamic>
-                        //                     myData = value;
-                        //                     resolvePostActions(
-                        //                         myData["action"],
-                        //                         myData["userId"]);
-                        //                   });
-                        //                 },
-                        //                 leading: Padding(
-                        //                   padding: const EdgeInsets
-                        //                       .fromLTRB(
-                        //                       0.0, 10.0, 10.0, 8.0),
-                        //                   child: Container(
-                        //                     height: 40,
-                        //                     width: 40,
-                        //                     decoration:
-                        //                     BoxDecoration(
-                        //                       borderRadius:
-                        //                       BorderRadius
-                        //                           .circular(
-                        //                           15.0),
-                        //                       image:
-                        //                       DecorationImage(
-                        //                         image: NetworkImage(Constants
-                        //                             .IMAGE_BASE_URL +
-                        //                             feedDetailsModel
-                        //                                 .feeds[0]
-                        //                                 .post
-                        //                                 .savedUsers[
-                        //                             goingPos]
-                        //                                 .profilePhoto),
-                        //
-                        //                         // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
-                        //                         fit: BoxFit.cover,
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //                 title: Text(
-                        //                   feedDetailsModel
-                        //                       .feeds[0]
-                        //                       .post
-                        //                       .savedUsers[goingPos]
-                        //                       .name,
-                        //                   style: TextStyle(
-                        //                       color:
-                        //                       Colors.grey[800],
-                        //                       fontWeight:
-                        //                       FontWeight.bold,
-                        //                       fontSize: 16),
-                        //                 ));
-                        //           },
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Divider(),
+                                      Text(
+                                        "SAVED (0)",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            letterSpacing: 1),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                ListView.separated(
+                                  separatorBuilder:
+                                      (ctx, interestedPos) {
+                                    return Divider(
+                                      indent: 15,
+                                    );
+                                  },
+                                  physics:
+                                  NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 0,
+                                  // feedDetailsModel
+                                  //     .feeds[0]
+                                  //     .post
+                                  //     .invitedUsers
+                                  //     .length,
+                                  itemBuilder:
+                                      (ctx, interestedPos) {
+                                    return ListTile(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.vertical(
+                                                  top: Radius
+                                                      .circular(
+                                                      25.0)),
+                                            ),
+                                            isScrollControlled:
+                                            true,
+                                            backgroundColor:
+                                            Colors.white,
+                                            builder: (context) {
+                                              return FractionallySizedBox(
+                                                heightFactor: 0.5,
+                                                child: BlocProvider<
+                                                    InterestedUserBloc>(
+                                                  create: (context) =>
+                                                      InterestedUserBloc(
+                                                          interestedUserRepository:
+                                                          Repository()),
+                                                  child: BlocProvider<
+                                                      SaveInterestBloc>(
+                                                      create: (context) =>
+                                                          SaveInterestBloc(
+                                                              saveInterestRepository:
+                                                              Repository()),
+                                                      child: InterestedUserScreen(
+                                                        // postId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .postId,
+                                                        // userId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .invitedUsers[
+                                                        // interestedPos]
+                                                        //     .id,
+                                                        // actor: '',
+                                                        // action:
+                                                        // ''
+                                                      )),),
+                                              );
+                                            },
+                                          ).then((value) {
+                                            Map<String, dynamic>
+                                            myData = value;
+                                            resolvePostActions(
+                                                myData["action"],
+                                                myData["userId"]);
+                                          });
+                                        },
+                                        leading: Padding(
+                                          padding: const EdgeInsets
+                                              .fromLTRB(
+                                              0.0, 10.0, 10.0, 8.0),
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration:
+                                            BoxDecoration(
+                                              color: Colors.grey[500],
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  15.0),
+                                              // image:
+                                              // DecorationImage(
+                                              //   image: NetworkImage(Constants
+                                              //       .IMAGE_BASE_URL +
+                                              //       feedDetailsModel
+                                              //           .feeds[0]
+                                              //           .post
+                                              //           .invitedUsers[
+                                              //       interestedPos]
+                                              //           .profilePhoto),
+                                              //
+                                              //   // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                              //   fit: BoxFit.cover,
+                                              // ),
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          "feedDetailsModel",
+                                          // feedDetailsModel
+                                          //     .feeds[0]
+                                          //     .post
+                                          //     .invitedUsers[
+                                          // interestedPos]
+                                          //     .name,
+                                          style: TextStyle(
+                                              color:
+                                              Colors.grey[800],
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 16),
+                                        ));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+
+                        //FOR INVITED USERS
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Divider(),
+                                      Text(
+                                        "INVITED (1)",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            letterSpacing: 1),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                ListView.separated(
+                                  separatorBuilder:
+                                      (ctx, interestedPos) {
+                                    return Divider(
+                                      indent: 15,
+                                    );
+                                  },
+                                  physics:
+                                  NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 1,
+                                  // feedDetailsModel
+                                  //     .feeds[0]
+                                  //     .post
+                                  //     .invitedUsers
+                                  //     .length,
+                                  itemBuilder:
+                                      (ctx, interestedPos) {
+                                    return ListTile(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.vertical(
+                                                  top: Radius
+                                                      .circular(
+                                                      25.0)),
+                                            ),
+                                            isScrollControlled:
+                                            true,
+                                            backgroundColor:
+                                            Colors.white,
+                                            builder: (context) {
+                                              return FractionallySizedBox(
+                                                heightFactor: 0.5,
+                                                child: BlocProvider<
+                                                    InterestedUserBloc>(
+                                                  create: (context) =>
+                                                      InterestedUserBloc(
+                                                          interestedUserRepository:
+                                                          Repository()),
+                                                  child: BlocProvider<
+                                                      SaveInterestBloc>(
+                                                      create: (context) =>
+                                                          SaveInterestBloc(
+                                                              saveInterestRepository:
+                                                              Repository()),
+                                                      child: InterestedUserScreen(
+                                                        // postId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .postId,
+                                                        // userId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .invitedUsers[
+                                                        // interestedPos]
+                                                        //     .id,
+                                                        // actor: '',
+                                                        // action:
+                                                        // ''
+                                                      )),),
+                                              );
+                                            },
+                                          ).then((value) {
+                                            Map<String, dynamic>
+                                            myData = value;
+                                            resolvePostActions(
+                                                myData["action"],
+                                                myData["userId"]);
+                                          });
+                                        },
+                                        leading: Padding(
+                                          padding: const EdgeInsets
+                                              .fromLTRB(
+                                              0.0, 10.0, 10.0, 8.0),
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration:
+                                            BoxDecoration(
+                                              color: Colors.grey[500],
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  15.0),
+                                              // image:
+                                              // DecorationImage(
+                                              //   image: NetworkImage(Constants
+                                              //       .IMAGE_BASE_URL +
+                                              //       feedDetailsModel
+                                              //           .feeds[0]
+                                              //           .post
+                                              //           .invitedUsers[
+                                              //       interestedPos]
+                                              //           .profilePhoto),
+                                              //
+                                              //   // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                              //   fit: BoxFit.cover,
+                                              // ),
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          "feedDetailsModel",
+                                          // feedDetailsModel
+                                          //     .feeds[0]
+                                          //     .post
+                                          //     .invitedUsers[
+                                          // interestedPos]
+                                          //     .name,
+                                          style: TextStyle(
+                                              color:
+                                              Colors.grey[800],
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 16),
+                                        ));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        //FOR COMMENTED USERS
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Divider(),
+                                      Text(
+                                        "COMMENTED (1)",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            letterSpacing: 1),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                ListView.separated(
+                                  separatorBuilder:
+                                      (ctx, interestedPos) {
+                                    return Divider(
+                                      indent: 15,
+                                    );
+                                  },
+                                  physics:
+                                  NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 1,
+                                  // feedDetailsModel
+                                  //     .feeds[0]
+                                  //     .post
+                                  //     .invitedUsers
+                                  //     .length,
+                                  itemBuilder:
+                                      (ctx, interestedPos) {
+                                    return ListTile(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.vertical(
+                                                  top: Radius
+                                                      .circular(
+                                                      25.0)),
+                                            ),
+                                            isScrollControlled:
+                                            true,
+                                            backgroundColor:
+                                            Colors.white,
+                                            builder: (context) {
+                                              return FractionallySizedBox(
+                                                heightFactor: 0.5,
+                                                child: BlocProvider<
+                                                    InterestedUserBloc>(
+                                                  create: (context) =>
+                                                      InterestedUserBloc(
+                                                          interestedUserRepository:
+                                                          Repository()),
+                                                  child: BlocProvider<
+                                                      SaveInterestBloc>(
+                                                      create: (context) =>
+                                                          SaveInterestBloc(
+                                                              saveInterestRepository:
+                                                              Repository()),
+                                                      child: InterestedUserScreen(
+                                                        // postId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .postId,
+                                                        // userId: feedDetailsModel
+                                                        //     .feeds[
+                                                        // 0]
+                                                        //     .post
+                                                        //     .invitedUsers[
+                                                        // interestedPos]
+                                                        //     .id,
+                                                        // actor: '',
+                                                        // action:
+                                                        // ''
+                                                      )),),
+                                              );
+                                            },
+                                          ).then((value) {
+                                            Map<String, dynamic>
+                                            myData = value;
+                                            resolvePostActions(
+                                                myData["action"],
+                                                myData["userId"]);
+                                          });
+                                        },
+                                        leading: Padding(
+                                          padding: const EdgeInsets
+                                              .fromLTRB(
+                                              0.0, 10.0, 10.0, 8.0),
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration:
+                                            BoxDecoration(
+                                              color: Colors.grey[500],
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  15.0),
+                                              // image:
+                                              // DecorationImage(
+                                              //   image: NetworkImage(Constants
+                                              //       .IMAGE_BASE_URL +
+                                              //       feedDetailsModel
+                                              //           .feeds[0]
+                                              //           .post
+                                              //           .invitedUsers[
+                                              //       interestedPos]
+                                              //           .profilePhoto),
+                                              //
+                                              //   // '${feedDetailsModel.feeds[0].post.goingUsers[0].profilePhoto}'),
+                                              //   fit: BoxFit.cover,
+                                              // ),
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          "feedDetailsModel",
+                                          // feedDetailsModel
+                                          //     .feeds[0]
+                                          //     .post
+                                          //     .invitedUsers[
+                                          // interestedPos]
+                                          //     .name,
+                                          style: TextStyle(
+                                              color:
+                                              Colors.grey[800],
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 16),
+                                        ));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
                       ],
                     ),
                   ),
