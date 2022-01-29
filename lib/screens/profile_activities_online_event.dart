@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 
 class ActivitiesOnlineEvent extends StatefulWidget {
-
+ final String type;
   ActivitiesOnlineEvent(
-      {Key key});
+      {Key key, this.type});
   @override
   _ActivitiesOnlineEventState createState() => _ActivitiesOnlineEventState();
 }

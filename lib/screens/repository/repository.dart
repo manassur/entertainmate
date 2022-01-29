@@ -181,6 +181,14 @@ class Repository {
     return FeedDetailsModel.fromJson(data);
   }
 
+  Future<FeedDetailsModel>fetchPostsByTypeAndCategory(type,category) async {
+
+    final response = await _apiClient.getWithHeader(Constants.FETCH_FEED_DETAILS+type+'/'+category);
+    final data = json.decode(response);
+    print("this is response feed details " + response.toString());
+    return FeedDetailsModel.fromJson(data);
+  }
+
   Future<UserProfileModel>fetchUserProfile(userId) async {
     final response = await _apiClient.getWithHeader(Constants.FETCH_USER_PROFILE+userId);
     final data = json.decode(response);

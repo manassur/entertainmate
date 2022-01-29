@@ -31,6 +31,7 @@ const String FETCH_HOME_FEED =BASE_URL+"user/feed";
 const String FETCH_DEALS_FEED =BASE_URL+"user/deals";
 
 const String FETCH_FEED_DETAILS =BASE_URL+"feed/details/";
+
 const String FETCH_DEALS_DETAILS =BASE_URL+"deal/details/";
 
 const String FETCH_USER_COMMENTS=BASE_URL+"feed/comments/";

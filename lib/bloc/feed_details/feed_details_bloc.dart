@@ -32,6 +32,18 @@ class FeedDetailsBloc extends Bloc<FeedDetailsEvent, FeedDetailsState>{
       }
     }
 
+    if (event is FetchPostsByTypeAndCategoryEvent) {
+      yield FeedDetailsLoadingState();
+      try{
+        FeedDetailsModel  feedDetails = await feedDetailsRepository.fetchPostsByTypeAndCategory(event.type,event.category);
+          yield FeedDetailsLoadedState(
+              feedDetails: feedDetails, message: event.branch==0?"Feed Details Updated":"Deal details loaded");
+
+      }catch(e){
+        yield FeedDetailsFailureState(error: e.toString());
+      }
+    }
+
     // if (event is RefreshMateHomeEvent) {
     //   yield MateHomeRefreshingState();
     //   try{

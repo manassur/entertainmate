@@ -7,7 +7,6 @@ import 'package:entertainmate/screens/personal_profile_followers.dart';
 import 'package:entertainmate/screens/personal_profile_following.dart';
 import 'package:entertainmate/screens/profile_activities_inperson_event.dart';
 import 'package:entertainmate/screens/profile_activities_interest.dart';
-import 'package:entertainmate/screens/profile_activities_offers_event.dart';
 import 'package:entertainmate/screens/profile_activities_online_event.dart';
 import 'package:entertainmate/screens/repository/repository.dart';
 import 'package:flutter/material.dart';
@@ -317,9 +316,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
 
                                                     ],
                                                     child: ActivitiesInPersonEvent(
-                                                        // postId: mateHomeModel.feeds[pos].post.postId,
-                                                        // name:mateHomeModel.feeds[pos].name,
-                                                        // branch:0
+                                                      type: "0", // inperson events
                                                     )
                                                 ),
                                             )
@@ -344,7 +341,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       height: 42,
                                                       padding: EdgeInsets.only(left: 5.0),
                                                       decoration: BoxDecoration(
-                                                          color: Colors.grey[500],
+                                                          color: Colors.grey[400],
                                                           borderRadius: BorderRadius.only(
                                                             bottomLeft:  Radius.circular(12.0),
                                                             bottomRight:  Radius.circular(12.0),
@@ -354,7 +351,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       child: Align(
                                                         alignment: Alignment.centerLeft,
                                                         child: Text("In-person Events",
-                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                                         ),
                                                       )
                                                   )
@@ -365,7 +362,35 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                         //ONLINE EVENTS
                                         InkWell(
                                           onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ActivitiesOnlineEvent()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                                MultiBlocProvider(
+                                                    providers:[
+                                                      BlocProvider<FeedDetailsBloc>(
+                                                        create: (context) =>
+                                                            FeedDetailsBloc(feedDetailsRepository: Repository()),
+                                                      ),
+
+                                                      BlocProvider<SaveInterestBloc>(
+                                                        create: (context) =>
+                                                            SaveInterestBloc(saveInterestRepository: Repository()),
+                                                      ),
+
+                                                      BlocProvider<PostCommentBloc>(
+                                                        create: (context) =>
+                                                            PostCommentBloc(postCommentRepository: Repository()),
+                                                      ),
+
+                                                      BlocProvider<InviteUserBloc>(
+                                                        create: (context) =>
+                                                            InviteUserBloc(inviteUserRepository: Repository()),
+                                                      ),
+
+                                                    ],
+                                                    child: ActivitiesOnlineEvent(
+                                                      type: "0", // inperson events
+                                                    )
+                                                ),
+                                            ));
                                           },
                                           child: Container(
                                               alignment: Alignment.center,
@@ -386,7 +411,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       height: 42,
                                                       padding: EdgeInsets.only(left: 5.0),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.grey[500],
+                                                        color: Colors.grey[400],
                                                         borderRadius: BorderRadius.only(
                                                           bottomLeft:  Radius.circular(12.0),
                                                           bottomRight:  Radius.circular(12.0),
@@ -396,7 +421,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       child: Align(
                                                         alignment: Alignment.centerLeft,
                                                         child: Text("Online Events",
-                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                                         ),
                                                       )
                                                   )
@@ -405,45 +430,40 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                         ),
 
                                         //OFFERS
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ActivitiesOffersEvent()));
-                                          },
-                                          child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(12),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.5),
-                                                    spreadRadius: 2,
-                                                    blurRadius: 5,
-                                                    offset: Offset(0.7, 0.7), // changes position of shadow
-                                                  ),
-                                                ],),
-                                              child: Align(
-                                                  alignment: Alignment.bottomCenter,
-                                                  child: Container(
-                                                      height: 42,
-                                                      padding: EdgeInsets.only(left: 5.0),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.grey[500],
-                                                        borderRadius: BorderRadius.only(
-                                                          bottomLeft:  Radius.circular(12.0),
-                                                          bottomRight:  Radius.circular(12.0),
-                                                        ),
+                                        Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 5,
+                                                  offset: Offset(0.7, 0.7), // changes position of shadow
+                                                ),
+                                              ],),
+                                            child: Align(
+                                                alignment: Alignment.bottomCenter,
+                                                child: Container(
+                                                    height: 42,
+                                                    padding: EdgeInsets.only(left: 5.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[400],
+                                                      borderRadius: BorderRadius.only(
+                                                        bottomLeft:  Radius.circular(12.0),
+                                                        bottomRight:  Radius.circular(12.0),
                                                       ),
-                                                      width: MediaQuery.of(context).size.width,
-                                                      child: Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Text("Offers",
-                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                                                        ),
-                                                      )
-                                                  )
-                                              )
-                                          ),
+                                                    ),
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text("Offers",
+                                                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                                      ),
+                                                    )
+                                                )
+                                            )
                                         ),
 
                                         //INTERESTS
@@ -470,7 +490,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       height: 42,
                                                       padding: EdgeInsets.only(left: 5.0),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.grey[500],
+                                                        color: Colors.grey[400],
                                                         borderRadius: BorderRadius.only(
                                                           bottomLeft:  Radius.circular(12.0),
                                                           bottomRight:  Radius.circular(12.0),
@@ -480,7 +500,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                                       child: Align(
                                                         alignment: Alignment.centerLeft,
                                                         child: Text("Interests",
-                                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                                         ),
                                                       )
                                                   )

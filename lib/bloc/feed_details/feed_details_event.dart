@@ -16,7 +16,14 @@ class FetchFeedDetailsEvent extends FeedDetailsEvent {
   List<Object> get props => [];
 }
 
-
+class FetchPostsByTypeAndCategoryEvent extends FeedDetailsEvent {
+  List<FeedDetailsModel> feedDetails;
+  final String type,category;
+  final int branch;
+  FetchPostsByTypeAndCategoryEvent({ @required this.branch,this.type,this.category});
+  @override
+  List<Object> get props => [];
+}
 class RefreshFeedDetailsEvent extends FeedDetailsEvent {
   @override
   List<Object> get props => [];
