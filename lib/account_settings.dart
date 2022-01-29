@@ -50,9 +50,8 @@ class _Account_SettingsState extends State<Account_Settings> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  SizedBox(height: 15),
                                   Text("Logging Out?",
-                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w200)),
+                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400)),
                                   SizedBox(height: 25),
 
                                   Text("Sad to see you are leaving. You can log in back using the same number you're logged in with now.\n Are you sure you want to log out?",
